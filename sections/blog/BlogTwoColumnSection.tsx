@@ -29,7 +29,7 @@ export function BlogTwoColumnSection() {
     <section
       id="blog-two-column"
       aria-labelledby="blog-two-column-heading"
-      className="py-16 sm:py-20 lg:py-24 bg-transparent"
+      className="py-16 sm:py-20 bg-transparent"
     >
       <Container>
         <div className="max-w-[1280px] mx-auto px-4 lg:px-8">

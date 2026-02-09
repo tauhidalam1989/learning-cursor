@@ -15,7 +15,7 @@ const steps = [
  */
 export function HowWeWorkSection() {
   return (
-    <section id="how-we-work" aria-labelledby="how-we-work-heading" className="bg-transparent py-16 sm:py-20 lg:py-24">
+    <section id="how-we-work" aria-labelledby="how-we-work-heading" className="bg-transparent py-16 sm:py-20">
       <Container>
         <SectionHeader  title="How We Work" description="We follow agile methodologies to ensure transparency, efficiency and timely delivery at every stage." />
 

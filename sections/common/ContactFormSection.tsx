@@ -159,7 +159,7 @@ export function ContactFormSection({
     <section
       id={id}
       aria-labelledby={`${id}-heading`}
-    className="relative overflow-hidden py-16 sm:py-20 lg:py-24"
+    className="relative overflow-hidden py-16 sm:py-20"
       style={{
         background: 'linear-gradient(180deg, #010101 0%, #012112 100%)',
         borderTopWidth: 2,

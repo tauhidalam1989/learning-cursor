@@ -17,7 +17,7 @@ export function TechnologySolutionsSection({
   imageAlt = 'Digital workspace with laptop, mobile devices, cloud and charts',
 }: TechnologySolutionsSectionProps) {
   return (
-    <section id="technology-solutions" aria-labelledby="technology-solutions-heading" className="bg-transparent py-16 sm:py-20 lg:py-24">
+    <section id="technology-solutions" aria-labelledby="technology-solutions-heading" className="bg-transparent py-16 sm:py-20">
       <Container>
         <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
           {/* Left: Header + description (placed in left column for pixel-perfect layout) */}

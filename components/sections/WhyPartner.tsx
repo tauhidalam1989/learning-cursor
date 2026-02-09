@@ -130,7 +130,7 @@ export function WhyPartner() {
     <section
       id="why-partner"
       aria-labelledby="why-partner-heading"
-      className="relative overflow-hidden bg-gradient-to-r from-[#0D1D13] via-[#021E14] to-[#063C2C] py-16 sm:py-20 lg:py-24"
+      className="relative overflow-hidden bg-gradient-to-r from-[#0D1D13] via-[#021E14] to-[#063C2C] py-16 sm:py-20"
     >
       {/* Subtle glow overlay effect */}
       <div

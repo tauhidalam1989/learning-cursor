@@ -15,7 +15,7 @@ export function VisionMissionSection({
   imageAlt = 'Hand holding a glowing holographic globe with technology icons',
 }: VisionMissionSectionProps) {
   return (
-    <section id="vision-mission" aria-labelledby="vision-mission-heading" className="bg-transparent py-16 sm:py-20 lg:py-24">
+    <section id="vision-mission" aria-labelledby="vision-mission-heading" className="bg-transparent py-16 sm:py-20">
       <Container>
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
           <div>

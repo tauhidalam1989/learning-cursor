@@ -10,7 +10,7 @@ const items = [
 
 export function PartnerBenefitsSection() {
   return (
-    <section className="bg-black py-16 sm:py-20 lg:py-24">
+    <section className="bg-black py-16 sm:py-20">
       <Container>
         <div className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-20">
           {/* Left column - features list */}

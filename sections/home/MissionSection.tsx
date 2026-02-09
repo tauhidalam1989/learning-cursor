@@ -8,7 +8,7 @@ export function MissionSection() {
     <section
       id="mission"
       aria-labelledby="mission-heading"
-      className="py-16 sm:py-20 lg:py-24 bg-transparent"
+      className="py-16 sm:py-20 bg-transparent"
     >
       <Container>
         <div className="grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-16">

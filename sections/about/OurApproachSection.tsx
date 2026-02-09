@@ -46,7 +46,7 @@ export function OurApproachSection() {
     <section
       id="our-approach"
       aria-labelledby="our-approach-heading"
-      className="bg-transparent py-16 sm:py-20 lg:py-24"
+      className="bg-transparent py-16 sm:py-20"
       style={{
         borderTopWidth: 2,
         borderTopStyle: 'solid',

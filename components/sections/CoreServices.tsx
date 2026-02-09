@@ -165,7 +165,7 @@ export function CoreServices() {
     <section
       id="core-services"
       aria-labelledby="core-services-heading"
-      className="relative overflow-hidden bg-gradient-to-b from-[#0a0a0a] via-[#021E14] to-[#063C2C] py-16 sm:py-20 lg:py-24"
+      className="relative overflow-hidden bg-gradient-to-b from-[#0a0a0a] via-[#021E14] to-[#063C2C] py-16 sm:py-20"
     >
       {/* Subtle glow overlay effect */}
       <div

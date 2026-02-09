@@ -6,7 +6,7 @@ export function HeroSection() {
     <section
       id="hero"
       aria-labelledby="hero-heading"
-      className="relative overflow-hidden py-20 lg:py-28 bg-transparent"
+      className="relative overflow-hidden pt-20 bg-transparent"
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#06210f]/30 to-transparent opacity-40 pointer-events-none" />
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
@@ -14,7 +14,7 @@ export function HeroSection() {
           <div className="relative z-10">
             <h1
               id="hero-heading"
-              className="max-w-[640px] text-[40px] sm:text-[48px] md:text-[60px] lg:text-[60px] xl:text-[60px] text-white leading-[1.06] font-medium font-display"
+              className="max-w-[640px] text-[40px] sm:text-[48px] md:text-[54px] lg:text-[54px] xl:text-[60px] text-white leading-[1.06] font-medium font-display"
             >
               Technology Services Built for
               <br />
@@ -49,14 +49,12 @@ export function HeroSection() {
                 <Image
                   src="/images/Frame (3).png"
                   alt="Technology services illustration"
-                  width={640}
-                  height={640}
+                  width={540}
+                  height={540}
                   className="h-auto w-full object-cover drop-shadow-[0_30px_80px_rgba(0,0,0,0.7)]"
                   priority
                   quality={95}
                 />
-                {/* subtle bottom fade to blend with page */}
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#021E14] to-transparent" />
               </div>
             </div>
           </div>
