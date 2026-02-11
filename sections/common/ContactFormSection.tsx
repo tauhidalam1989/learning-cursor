@@ -75,21 +75,34 @@ export function ContactFormSection({
 
     setSubmitting(true);
     try {
-      // simulate submission (replace with actual API call)
-      await new Promise((r) => setTimeout(r, 900));
-      onSubmit?.(formData);
-      setSubmitted(true);
-      // reset form
-      setFormData({
-        fullName: '',
-        email: '',
-        phoneCountry: '+91',
-        phoneNumber: '',
-        company: '',
-        message: '',
+      const res = await fetch('/api/contact/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
-      setErrors({});
-      setTouched({});
+      if (res.status === 201) {
+        onSubmit?.(formData);
+        setSubmitted(true);
+        // reset form
+        setFormData({
+          fullName: '',
+          email: '',
+          phoneCountry: '+91',
+          phoneNumber: '',
+          company: '',
+          message: '',
+        });
+        setErrors({});
+        setTouched({});
+      } else if (res.status === 400) {
+        const data = await res.json();
+        setErrors((prev) => ({ ...prev, ...(data?.errors ?? {}) }));
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setErrors((prev) => ({ ...prev, submit: data?.error ?? 'Submission failed. Please try again.' }));
+      }
+    } catch (err) {
+      setErrors((prev) => ({ ...prev, submit: 'Network error. Please try again.' }));
     } finally {
       setSubmitting(false);
     }

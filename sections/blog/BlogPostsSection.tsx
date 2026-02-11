@@ -4,11 +4,23 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Container } from '@/components/ui/Container';
-import { getLatestBlogPosts } from '@/data/blog';
 import { SectionHeader } from '@/components/common/SectionHeader';
 
-export function BlogPostsSection() {
-  const allPosts = getLatestBlogPosts(10); // fetch up to 10 for carousel
+type Props = {
+  posts: Array<{
+    id: string;
+    slug: string;
+    title: string;
+    excerpt: string;
+    publishedAt: string;
+    imageSrc?: string;
+    imageAlt?: string;
+    author?: string;
+  }>;
+};
+
+export function BlogPostsSection({ posts: allPosts }: Props) {
+  const allPostsLocal = allPosts ?? [];
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [slidesPerView, setSlidesPerView] = useState<number>(3);
   const [index, setIndex] = useState(0);
@@ -30,7 +42,7 @@ export function BlogPostsSection() {
     return () => window.removeEventListener('resize', update);
   }, []);
 
-  const posts = useMemo(() => allPosts, [allPosts]);
+  const posts = useMemo(() => allPostsLocal, [allPostsLocal]);
 
   // clamp index when slidesPerView changes
   useEffect(() => {

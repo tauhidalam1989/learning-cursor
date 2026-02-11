@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
-import { getFeaturedBlogBlock, getAllBlogPosts } from '@/data/blog';
+import { getFeaturedBlogBlock, getAllBlogPosts } from '@/lib/posts';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { GlassCard } from '@/components/common/GlassCard';
 
@@ -20,10 +20,17 @@ function formatRelativeDate(iso: string) {
  * Blog section 2: Large featured card left, 3 smaller summaries right.
  * Dark theme. Uses data/blog.
  */
-export function BlogTwoColumnSection() {
-  const { featured, recent } = getFeaturedBlogBlock();
-  const allPosts = getAllBlogPosts();
+export async function BlogTwoColumnSection() {
+  const { featured, recent } = await getFeaturedBlogBlock();
+  const allPosts = await getAllBlogPosts();
   const sidePosts = recent.length >= 3 ? recent.slice(0, 3) : allPosts.slice(1, 4);
+  
+  // If there's no featured post available, avoid rendering the section
+  // which would otherwise read properties from `null`.
+  if (!featured) {
+    console.warn('BlogTwoColumnSection: no featured post found, skipping render.');
+    return null;
+  }
 
   return (
     <section

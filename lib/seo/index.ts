@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import type { PageMetadataConfig } from '@/types';
 
 /** Base URL for the site. Set NEXT_PUBLIC_SITE_URL in production. */
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.com';
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? 'https://example.com';
 
 /** Default site name used in title template and Open Graph. */
 const siteName = 'Marketing Website';

@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
-import { getLatestBlogPosts } from '@/data/blog';
+import { getLatestBlogPosts } from '@/lib/posts';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { GlassCard } from '@/components/common/GlassCard';
 
-export function FeaturedBlogSection() {
-  const posts = getLatestBlogPosts(3);
+export async function FeaturedBlogSection() {
+  const posts = await getLatestBlogPosts(3);
   const [featured, ...others] = posts;
 
   return (

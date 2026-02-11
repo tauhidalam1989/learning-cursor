@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
-import { getAllBlogPosts } from '@/data/blog';
+import { getAllBlogPosts } from '@/lib/posts';
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', {
@@ -14,8 +14,8 @@ function formatDate(iso: string) {
  * Blog listing section: shows latest posts from data/blog.
  * Single source of truth – same data as FeaturedBlogSection.
  */
-export function BlogListSection() {
-  const posts = getAllBlogPosts();
+export async function BlogListSection() {
+  const posts = await getAllBlogPosts();
 
   if (posts.length === 0) {
     return (

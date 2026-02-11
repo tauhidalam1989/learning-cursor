@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  // Use a local SQLite file for development. This keeps development simple
+  // and avoids requiring a running Postgres server.
+  url      = "file:./dev.db"
+}
+
+////////////////////////////////////////////
+// Authentication & Admin-ready data model
+// - This file prepares the backend schema for a future admin panel.
+// - Roles are stored as strings for SQLite compatibility (admin/editor/viewer).
+// - Includes Account/Session models to be compatible with typical OAuth/JWT flows.
+// - Add a RolePermission table so permissions can be managed without schema changes.
+// - Comments below explain where the admin panel will plug in later.
+////////////////////////////////////////////
+
+// NOTE: We use string fields for "role" and "status" instead of native enums
+// to keep the schema compatible with SQLite in development. In production
+// (Postgres/MySQL) you can migrate these to native enums if desired.
+
+model User {
+  id                Int      @id @default(autoincrement())
+  email             String   @unique
+  name              String?
+  // Authentication-ready fields:
+  hashedPassword    String?  // store password hashes (Argon2/Bcrypt). Nullable for OAuth-only accounts.
+  emailVerified     DateTime?
+  lastLogin         DateTime?
+  twoFactorEnabled  Boolean  @default(false)
+  isActive          Boolean  @default(true)
+
+  // Role: 'admin' | 'editor' | 'viewer' (stored as string for SQLite)
+  // The admin panel will read this field to control access to routes and UI.
+  role              String   @default("viewer")
+
+  createdAt         DateTime @default(now())
+
+  // Relations
+  accounts  Account[]
+  sessions  Session[]
+
+  @@map("users")
+}
+
+model BlogPost {
+  id            String     @id @default(uuid())
+  title         String
+  slug          String     @unique
+  excerpt       String?
+  content       String
+  coverImage    String?
+  seoTitle      String?
+  seoDescription String?
+  status        String     @default("DRAFT")
+  publishedAt   DateTime?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model ContactSubmission {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}
+
+// OAuth / External account linkage.
+// The admin panel can list connected providers and manage user accounts.
+model Account {
+  id                 Int     @id @default(autoincrement())
+  userId             Int
+  provider           String
+  providerAccountId  String
+  type               String?
+  accessToken        String?
+  refreshToken       String?
+  expiresAt          Int?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+// Session model suitable for database-backed sessions (NextAuth-like).
+// The admin panel and backend can use sessions to invalidate user sessions.
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+// Lightweight permission mapping so roles can map to arbitrary permissions
+// without changing the schema. The admin panel will manage these records.
+model RolePermission {
+  id         Int    @id @default(autoincrement())
+  role       String // e.g. 'admin', 'editor', 'viewer'
+  permission String // e.g. 'posts.create', 'posts.publish', 'users.manage'
+
+  @@index([role])
+  @@map("role_permissions")
+}
+
