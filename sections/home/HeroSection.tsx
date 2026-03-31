@@ -10,6 +10,11 @@ interface Node {
   vy: number;
 }
 
+const CANVAS_W = 520;
+const CANVAS_H = 480;
+const NODE_COUNT = 35;
+const CONNECT_DIST = 120;
+
 function HeroNeuralCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -19,11 +24,10 @@ function HeroNeuralCanvas() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const width = 520;
-    const height = 480;
-    const connectDist = 120;
+    const width = CANVAS_W;
+    const height = CANVAS_H;
 
-    const nodes: Node[] = Array.from({ length: 35 }, () => ({
+    const nodes: Node[] = Array.from({ length: NODE_COUNT }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
       vx: (Math.random() - 0.5) * 0.6,
@@ -47,8 +51,8 @@ function HeroNeuralCanvas() {
           const dx = nodes[i].x - nodes[j].x;
           const dy = nodes[i].y - nodes[j].y;
           const d = Math.sqrt(dx * dx + dy * dy);
-          if (d < connectDist) {
-            const alpha = 0.15 * (1 - d / connectDist);
+          if (d < CONNECT_DIST) {
+            const alpha = 0.15 * (1 - d / CONNECT_DIST);
             ctx.strokeStyle = `rgba(74, 222, 128, ${alpha})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
@@ -89,8 +93,8 @@ function HeroNeuralCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      width={520}
-      height={480}
+      width={CANVAS_W}
+      height={CANVAS_H}
       className="rounded-xl border border-corematrix-border bg-corematrix-card"
       aria-hidden
     />
