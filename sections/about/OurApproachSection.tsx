@@ -1,135 +1,127 @@
 import { Container } from '@/components/ui/Container';
 
-const approachItems = [
+type Step = { num: string; title: string; body: string };
+
+const STEPS: Step[] = [
   {
-    title: 'Getting to the heart of the problem',
-    description:
-      'We start by understanding your business challenges and goals before proposing solutions.',
-    icon: '/images/benefit-1.png',
+    num: '01',
+    title: 'Understand Before Everything',
+    body: 'We invest heavily in discovery — understanding your industry, users, competitors, and constraints before recommending or designing anything.',
   },
   {
-    title: 'Building for scale',
-    description:
-      'Our architecture is designed to grow with you, from startup to enterprise.',
-    icon: '/images/benefit-2.png',
+    num: '02',
+    title: 'Design for Scale, Not Just MVP',
+    body: 'We architect systems that can scale 100x without being rebuilt. Your MVP will be lean, but its foundations will be enterprise-grade.',
   },
   {
-    title: 'Partnership-focused delivery',
-    description:
-      'We work alongside your team with clear communication and transparent timelines.',
-    icon: '/images/benefit-3.png',
+    num: '03',
+    title: 'AI as a Layer, Not an Add-On',
+    body: "We don't bolt AI onto finished products. We weave intelligent capabilities into the architecture from the start.",
   },
   {
-    title: 'Continuous improvement',
-    description:
-      'We iterate based on feedback and evolving needs to deliver lasting value.',
-    icon: '/images/benefit-4.png',
+    num: '04',
+    title: 'Ship, Learn, Improve — Repeat',
+    body: 'We believe in continuous delivery. Working software in your hands every two weeks with feedback cycles built directly into our process.',
+  },
+  {
+    num: '05',
+    title: 'Measure What Matters',
+    body: 'Every project ends with measurable outcomes — performance benchmarks, user metrics, and business KPIs tracked against what we promised.',
   },
 ];
 
-import { IconBadge } from '@/components/common/IconBadge';
+const TAGS = [
+  'Clean Architecture',
+  'TDD',
+  'CI/CD',
+  'Observability',
+  '12-Factor Apps',
+  'Zero-Downtime Deploy',
+  'Security by Design',
+  'API-First',
+  'RAG Pipelines',
+  'Serverless',
+  'Event-Driven',
+  'DDD',
+];
 
-function IconCircle({ src }: { src: string }) {
-  return (
-    <div className="mx-auto mb-4">
-      <IconBadge src={src} size={64} />
-    </div>
-  );
-}
-
-/**
- * "Our Approach" section - centered heading, description, 4-column feature grid.
- * Dark theme. Each item: circular icon, title, description.
- */
 export function OurApproachSection() {
   return (
     <section
       id="our-approach"
       aria-labelledby="our-approach-heading"
-      className="bg-transparent py-16 sm:py-20"
-      style={{
-        borderTopWidth: 2,
-        borderTopStyle: 'solid',
-        borderImageSource: 'linear-gradient(90deg, #010D07 0%, #026835 49.04%, #010D07 98.56%)',
-        borderImageSlice: 1,
-      }}
+      className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <Container>
-        <div className="text-center">
+      <div className="grid grid-cols-1 items-start gap-20 lg:grid-cols-2">
+        <div>
+          <p className="section-label text-corematrix-green400">OUR APPROACH</p>
           <h2
             id="our-approach-heading"
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontWeight: 500,
-              fontSize: 39,
-              lineHeight: '106%',
-              color: '#fff',
-              textAlign: 'center',
-            }}
+            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
           >
-            Our Approach
+            How We Think Before We Build
           </h2>
-
-          <p
-            className="mx-auto mt-6 max-w-2xl"
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontWeight: 300,
-              fontSize: 17,
-              lineHeight: '178%',
-              color: '#fff',
-              textAlign: 'center',
-            }}
-          >
-            We do things our way, and that means taking a business-first approach with a focus on clarity, results and value that lasts.
+          <p className="mt-4 text-base leading-relaxed text-corematrix-textSecondary">
+            Our process isn&apos;t just a checklist — it&apos;s a philosophy rooted in deep collaboration
+            and technical rigor.
           </p>
-        </div>
-        <div className="mt-12 grid gap-8 sm:mt-16 sm:grid-cols-2 lg:mt-20 lg:grid-cols-4">
-          {approachItems.map((item, idx) => {
-            // show a vertical separator to the left of columns (responsive)
-            const separatorClasses = [
-              // For >=sm (2-column layout) add separator for the second column (odd indexes)
-              idx % 2 === 1 ? 'sm:border-l sm:border-white/10 sm:pl-6 sm:ml-6' : '',
-              // For >=lg (4-column layout) add separator for all columns except the first
-              idx !== 0 ? 'lg:border-l lg:border-white/10 lg:pl-8 lg:ml-8' : '',
-            ]
-              .filter(Boolean)
-              .join(' ');
 
-            return (
-              <article
-                key={item.title}
-                className={`flex flex-col items-center text-center ${separatorClasses}`}
+          <div className="mt-8">
+            {STEPS.map((step, i) => (
+              <div
+                key={step.num}
+                className="group flex gap-5 border-b border-corematrix-border py-6 last:border-0 reveal"
               >
-                <IconCircle src={item.icon} />
-                <h3
-                  className="mt-2 text-white"
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontWeight: 500,
-                    fontSize: 21,
-                    lineHeight: '136%',
-                    textAlign: 'center',
-                  }}
-                >
-                  {item.title}
-                </h3>
-                <p
-                  className="mt-2 text-white/70"
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontWeight: 300,
-                    fontSize: 14,
-                    lineHeight: '156%',
-                    textAlign: 'center',
-                  }}
-                >
-                  {item.description}
-                </p>
-              </article>
-            );
-          })}
+                <div className="flex flex-shrink-0 flex-col items-center">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-corematrix-border2 bg-corematrix-card2 font-display text-xs font-extrabold text-corematrix-green400 transition-all group-hover:border-corematrix-green500 group-hover:bg-corematrix-green700 group-hover:text-white group-hover:shadow-[0_0_20px_rgba(34,197,94,0.3)]">
+                    {step.num}
+                  </div>
+                  {i < STEPS.length - 1 && (
+                    <div className="mt-1 h-8 w-px bg-corematrix-border" aria-hidden />
+                  )}
+                </div>
+                <div className="pb-2">
+                  <h3 className="font-display font-semibold text-corematrix-textPrimary">
+                    {step.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-corematrix-textSecondary">
+                    {step.body}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
+
+        <article className="reveal reveal-delay-2 rounded-2xl border border-corematrix-border bg-corematrix-card p-9 lg:sticky lg:top-24">
+          <h3 className="font-display text-xl font-bold text-corematrix-textPrimary">
+            Engineering Philosophy
+          </h3>
+          <p className="mt-4 font-light text-corematrix-textMuted">
+            We build systems that last. Our philosophy centers on clean architecture, test-driven
+            development, and a relentless focus on observability and maintainability.
+          </p>
+          <p className="mt-3 font-light text-corematrix-textMuted">
+            Every decision — from technology choice to deployment strategy — is made with scale,
+            security, and developer experience in mind.
+          </p>
+          <p className="mt-3 font-light text-corematrix-textMuted">
+            We embrace modern practices like 12-factor apps, API-first design, and event-driven
+            architectures to deliver software that grows with your business.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {TAGS.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-md border border-corematrix-green700/20 bg-corematrix-green900/20 px-3 py-1 font-mono text-xs font-semibold text-corematrix-green700"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </article>
+      </div>
       </Container>
     </section>
   );

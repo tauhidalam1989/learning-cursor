@@ -62,10 +62,7 @@ export interface PageMetadataConfig {
   };
 }
 
-export interface NavLink {
-  label: string;
-  href: string;
-}
+export type { NavLink } from './shared';
 
 export interface Service {
   id: string;

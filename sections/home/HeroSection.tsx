@@ -1,60 +1,197 @@
-import Image from 'next/image';
+'use client';
+
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+
+interface Node {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+}
+
+function HeroNeuralCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const width = 520;
+    const height = 480;
+    const connectDist = 120;
+
+    const nodes: Node[] = Array.from({ length: 35 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.6,
+      vy: (Math.random() - 0.5) * 0.6,
+    }));
+
+    let rafId: number;
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      nodes.forEach((n) => {
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0 || n.x > width) n.vx *= -1;
+        if (n.y < 0 || n.y > height) n.vy *= -1;
+      });
+
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < connectDist) {
+            const alpha = 0.15 * (1 - d / connectDist);
+            ctx.strokeStyle = `rgba(74, 222, 128, ${alpha})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      const t = performance.now() * 0.001;
+      nodes.forEach((n, i) => {
+        const glow = 0.4 + 0.3 * Math.sin(t + i * 0.5);
+        const gradient = ctx.createRadialGradient(
+          n.x, n.y, 0,
+          n.x, n.y, 8
+        );
+        gradient.addColorStop(0, `rgba(74, 222, 128, ${glow})`);
+        gradient.addColorStop(0.5, 'rgba(74, 222, 128, 0.15)');
+        gradient.addColorStop(1, 'transparent');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(34, 197, 94, 0.9)';
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      rafId = requestAnimationFrame(draw);
+    };
+
+    draw();
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      width={520}
+      height={480}
+      className="rounded-xl border border-corematrix-border bg-corematrix-card"
+      aria-hidden
+    />
+  );
+}
 
 export function HeroSection() {
   return (
     <section
       id="hero"
       aria-labelledby="hero-heading"
-      className="relative overflow-hidden pt-20 bg-transparent"
+      className="relative min-h-screen overflow-hidden bg-corematrix-bg1"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#06210f]/30 to-transparent opacity-40 pointer-events-none" />
-      <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[3fr_2fr] lg:items-center">
-          <div className="relative z-10">
+      <div
+        className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-corematrix-green700 opacity-10 blur-3xl"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-corematrix-green700 opacity-10 blur-3xl"
+        aria-hidden
+      />
+      <div className="noise-overlay absolute inset-0 z-0" aria-hidden />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 pt-20 pb-16 sm:px-8 lg:px-12">
+        <div className="grid min-h-[calc(100vh-8rem)] grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <div className="space-y-8">
+            <div
+              className="inline-flex animate-fade-up-in items-center gap-2 rounded-full border border-corematrix-green700 bg-corematrix-green900/30 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-corematrix-green400"
+              style={{ animationDelay: '0s', animationFillMode: 'both' }}
+            >
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-corematrix-green400" />
+              AI-First Technology Company
+            </div>
+
             <h1
               id="hero-heading"
-              className="max-w-[640px] text-[40px] sm:text-[48px] md:text-[54px] lg:text-[54px] xl:text-[60px] text-white leading-[1.06] font-medium font-display"
+              className="animate-fade-up-in font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-corematrix-textPrimary md:text-5xl lg:text-6xl"
+              style={{ animationDelay: '0.1s', animationFillMode: 'both' }}
             >
-              Technology Services Built for
+              Build Smarter with
               <br />
-              Taking Your Business to the Next Level
+              <em className="not-italic text-corematrix-green400">AI-Powered</em> Digital Solutions
             </h1>
 
-            <p className="mt-6 max-w-[560px] text-[19px] text-[#9fbfb3] leading-[1.78] font-light font-sans">
-              Our team designs, builds, and scales secure digital solutions — from web
-              apps and SaaS platforms to enterprise systems and integrations that help
-              your business grow.
+            <p
+              className="animate-fade-up-in max-w-[560px] text-base text-corematrix-textSecondary sm:text-lg"
+              style={{ animationDelay: '0.2s', animationFillMode: 'both' }}
+            >
+              We design, build, and deploy intelligent software — from custom AI products
+              and full-stack web apps to enterprise systems that drive real, measurable growth.
             </p>
 
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center w-[272px] h-[46px] rounded-[5px] bg-gradient-to-r from-[#016C36] to-[#084225] text-white font-sans font-semibold text-[15px] leading-[1.45] uppercase transition"
-              >
-                NEED SOME EXPERT ADVICE?
-              </Link>
+            <div
+              className="animate-fade-up-in flex flex-wrap gap-4"
+              style={{ animationDelay: '0.3s', animationFillMode: 'both' }}
+            >
               <Link
                 href="/services"
-                className="inline-flex items-center justify-center w-[317px] h-[46px] rounded-[5px] border border-[#026634] bg-transparent text-white font-sans font-semibold text-[15px] leading-[1.45] uppercase px-4 transition"
+                className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
               >
-                LET'S GET STARTED ON YOUR PROJECT
+                Explore AI Services →
               </Link>
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center rounded-lg border border-corematrix-border2 bg-transparent px-6 py-3 text-sm font-semibold text-corematrix-textPrimary transition hover:border-corematrix-green700 hover:bg-corematrix-green900/20"
+              >
+                Start Your Project
+              </Link>
+            </div>
+
+            <div
+              className="animate-fade-up-in flex flex-wrap gap-6 text-sm font-medium text-corematrix-textMuted"
+              style={{ animationDelay: '0.4s', animationFillMode: 'both' }}
+            >
+              <span className="flex items-center gap-2">
+                <span aria-hidden>⚡</span>
+                50+ Projects Delivered
+              </span>
+              <span className="flex items-center gap-2">
+                <span aria-hidden>🤖</span>
+                AI-First Approach
+              </span>
+              <span className="flex items-center gap-2">
+                <span aria-hidden>🌍</span>
+                Global Clients
+              </span>
+              <span className="flex items-center gap-2">
+                <span aria-hidden>⭐</span>
+                98% Satisfaction
+              </span>
             </div>
           </div>
 
-          <div className="relative z-10 flex items-center justify-center lg:justify-end">
-            <div className="relative w-full max-w-[560px] lg:max-w-[640px] transform translate-x-[6%] -translate-y-[8%]">
-              <div className="relative overflow-visible">
-                <Image
-                  src="/images/Frame (3).png"
-                  alt="Technology services illustration"
-                  width={540}
-                  height={540}
-                  className="h-auto w-full object-cover drop-shadow-[0_30px_80px_rgba(0,0,0,0.7)]"
-                  priority
-                  quality={95}
-                />
+          <div className="relative flex justify-center lg:justify-end">
+            <div className="relative">
+              <HeroNeuralCanvas />
+              <div className="absolute -bottom-4 left-4 rounded-xl border border-corematrix-border2 bg-corematrix-card2 px-4 py-3 shadow-lg">
+                <span className="text-corematrix-textSecondary">
+                  AI systems <span className="text-corematrix-green400">online</span> & running
+                </span>
+                <span className="ml-2 inline-block h-2 w-2 animate-pulse rounded-full bg-corematrix-green400" />
               </div>
             </div>
           </div>
@@ -63,4 +200,3 @@ export function HeroSection() {
     </section>
   );
 }
-

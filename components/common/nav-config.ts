@@ -1,16 +1,11 @@
 import type { NavLink } from '@/types';
+import { NAV_LINKS, NAV_CTA } from '@/config/nav';
 
 /** Main navigation links (shared by Navbar and Footer). */
-export const navLinks: NavLink[] = [
-  { label: 'HOME', href: '/' },
-  { label: 'ABOUT US', href: '/about' },
-  { label: 'SERVICE', href: '/services' },
-  { label: 'BLOG', href: '/blog' },
-  { label: 'PORTFOLIO', href: '/portfolio' },
-];
+export const navLinks: NavLink[] = NAV_LINKS;
 
 /** CTA for Navbar and Footer. */
 export const navCta = {
-  label: 'CONTACT US',
-  href: '/contact',
+  label: NAV_CTA.label,
+  href: NAV_CTA.href,
 } as const;

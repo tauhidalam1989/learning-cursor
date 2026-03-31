@@ -1,9 +1,10 @@
 import { siteUrl } from '@/lib/seo';
 import { getAllBlogPosts } from '@/lib/posts';
+import { PROJECTS, FEATURED_PROJECT } from '@/data/portfolioData';
 
 /**
  * Dynamic sitemap.xml route for Next.js App Router.
- * - Includes common static routes and all published blog posts.
+ * - Includes common static routes, portfolio slugs, and all published blog posts.
  * - Uses NEXT_PUBLIC_SITE_URL (via siteUrl) for canonical absolute URLs.
  */
 export async function GET() {
@@ -13,10 +14,20 @@ export async function GET() {
     { url: '/about', priority: 0.7 },
     { url: '/services', priority: 0.7 },
     { url: '/contact', priority: 0.7 },
+    { url: '/careers', priority: 0.7 },
+    { url: '/portfolio', priority: 0.8 },
+    { url: '/privacy', priority: 0.3 },
+    { url: '/terms', priority: 0.3 },
+    { url: '/feedback', priority: 0.3 },
   ];
 
+  const portfolioSlugs = [...PROJECTS, FEATURED_PROJECT].map((p) => ({
+    url: `/portfolio/${p.slug}`,
+    priority: 0.6,
+  }));
+
   // Fetch blog posts from the DB
-  let posts = [];
+  let posts: Awaited<ReturnType<typeof getAllBlogPosts>> = [];
   try {
     posts = await getAllBlogPosts();
   } catch (err) {
@@ -24,11 +35,21 @@ export async function GET() {
     posts = [];
   }
 
+  const now = new Date().toISOString();
   const urls = [
     ...pages.map((p) => {
       return `<url>
   <loc>${siteUrl}${p.url}</loc>
+  <lastmod>${now}</lastmod>
   <changefreq>weekly</changefreq>
+  <priority>${p.priority}</priority>
+</url>`;
+    }),
+    ...portfolioSlugs.map((p) => {
+      return `<url>
+  <loc>${siteUrl}${p.url}</loc>
+  <lastmod>${now}</lastmod>
+  <changefreq>monthly</changefreq>
   <priority>${p.priority}</priority>
 </url>`;
     }),

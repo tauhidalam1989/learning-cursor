@@ -1,4 +1,5 @@
 import type { ContactBlock } from '@/types';
+import { siteConfig } from '@/config/site';
 
 /**
  * Default contact block content for the Contact Form section.
@@ -9,22 +10,21 @@ export const defaultContactBlock: ContactBlock = {
   sectionLabel: 'CONTACT US',
   heading: "Let's Talk About Your Project",
   paragraph:
-    'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    'Whether you have a project in mind or just want to explore possibilities — we\'re here to help.',
   contactItems: [
     {
       type: 'email',
-      value: 'corematrix123@gmail.com',
-      href: 'mailto:corematrix123@gmail.com',
+      value: siteConfig.email,
+      href: `mailto:${siteConfig.email}`,
     },
     {
       type: 'phone',
-      value: '+224 494 4994',
-      href: 'tel:+2244944994',
+      value: siteConfig.phone,
+      href: siteConfig.phoneTel,
     },
     {
       type: 'address',
-      value:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      value: 'Available globally · Remote-first',
     },
   ],
   submitButtonLabel: 'SUBMIT',

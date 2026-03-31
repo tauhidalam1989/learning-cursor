@@ -7,8 +7,8 @@ export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? '
 /** Default site name used in title template and Open Graph. */
 const siteName = 'Marketing Website';
 
-/** Default OG image when no page-specific image is provided. */
-const defaultOgImage = `${siteUrl}/og-default.png`;
+/** Default OG image when no page-specific image is provided. Falls back to logo if og-default.png is missing. */
+const defaultOgImage = `${siteUrl}/images/logo.png`;
 
 /**
  * Default metadata for the entire site. Used by the root layout.
@@ -25,6 +25,9 @@ export const defaultMetadata: Metadata = {
   keywords: ['marketing', 'strategy', 'growth', 'design', 'brand'],
   authors: [{ name: siteName, url: siteUrl }],
   creator: siteName,
+  icons: {
+    icon: '/images/logo.png',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',

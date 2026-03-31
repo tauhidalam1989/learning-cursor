@@ -1,6 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+export type ContactFormType = 'contact' | 'application' | 'newsletter' | 'feedback';
+
 type Body = {
+  formType?: ContactFormType;
   fullName?: string;
   email?: string;
   phoneCountry?: string;
@@ -50,6 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        formType: body.formType ?? 'contact',
         fullName: body.fullName,
         email: body.email,
         phoneCountry: body.phoneCountry,

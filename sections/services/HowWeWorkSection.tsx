@@ -1,48 +1,77 @@
 import { Container } from '@/components/ui/Container';
-import { SectionHeader } from '@/components/common/SectionHeader';
 
-const steps = [
-  { number: '01', title: 'Requirement & Business Analysis' },
-  { number: '02', title: 'Solution Architecture' },
-  { number: '03', title: 'Design & Development' },
-  { number: '04', title: 'Testing & Deployment' },
-  { number: '05', title: 'Ongoing Support & Scaling' },
+type ProcessStep = { num: string; title: string; body: string };
+
+const PROCESS_STEPS: ProcessStep[] = [
+  {
+    num: '01',
+    title: 'Discovery Sprint',
+    body: '2-week deep dive into goals, constraints, users, and technical landscape. Outputs a full spec and delivery roadmap.',
+  },
+  {
+    num: '02',
+    title: 'Architecture Design',
+    body: 'System design, database schema, API contracts, and UI wireframes — reviewed and approved before build starts.',
+  },
+  {
+    num: '03',
+    title: 'Agile Build Sprints',
+    body: '2-week sprints with daily standups, Friday demos, and a shared board visible to you at all times.',
+  },
+  {
+    num: '04',
+    title: 'AI Integration Layer',
+    body: 'AI capabilities woven in at the right stage — LLM features, automation flows, intelligent data pipelines.',
+  },
+  {
+    num: '05',
+    title: 'QA & Security Audit',
+    body: 'Automated test suite, manual QA, OWASP security scanning, and performance benchmarks before launch.',
+  },
+  {
+    num: '06',
+    title: 'Launch & Grow',
+    body: 'Zero-downtime deployment, monitoring setup, team handoff documentation, and ongoing support retainer.',
+  },
 ];
 
-/**
- * "How We Work" - 5-step process. Large faded numbers, titles below.
- * Dark theme. Centered heading and description.
- */
 export function HowWeWorkSection() {
   return (
-    <section id="how-we-work" aria-labelledby="how-we-work-heading" className="bg-transparent py-16 sm:py-20">
+    <section
+      id="how-we-work"
+      aria-labelledby="how-we-work-heading"
+      className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
+    >
       <Container>
-        <SectionHeader  title="How We Work" description="We follow agile methodologies to ensure transparency, efficiency and timely delivery at every stage." />
+        <div className="text-center">
+          <p className="section-label text-corematrix-green400">HOW WE WORK</p>
+          <h2
+            id="how-we-work-heading"
+            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
+          >
+            From Discovery to Delivery — A Process You&apos;ll Actually Enjoy
+          </h2>
+          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
+            Transparent, agile, and designed for your success. We keep you in the loop at every step.
+          </p>
+        </div>
 
-        <div className="mt-12 grid gap-8 sm:mt-16 sm:grid-cols-2 lg:mt-20 lg:grid-cols-5">
-          {steps.map((step) => (
-            <div key={step.number} className="relative flex items-center">
-              {/* Large faint number (background) for lg and up */}
-              <span
-                aria-hidden
-                className="hidden lg:block absolute left-0 -translate-y-2/4 text-[140px] font-bold text-[#149253] opacity-40 leading-none select-none"
-                style={{ top: '50%', transform: 'translateY(-50%)' }}
-              >
-                {step.number}
-              </span>
-
-              {/* Mobile/Tablet number (small, visible above title) */}
-              <span className="lg:hidden block text-4xl font-bold text-[#149253]/30 sm:text-5xl">
-                {step.number}
-              </span>
-
-              {/* Title */}
-              <h3
-                className="ml-0 lg:ml-[120px] text-base font-bold text-white sm:text-lg"
-                style={{ lineHeight: '136%' }}
-              >
+        <div className="relative mt-14 grid grid-cols-2 gap-0 sm:grid-cols-3 lg:grid-cols-6">
+          <div
+            className="absolute left-[calc(100%/12)] right-[calc(100%/12)] top-7 hidden h-px bg-gradient-to-r from-transparent via-corematrix-border2 via-corematrix-green700 to-transparent lg:block"
+            aria-hidden
+          />
+          {PROCESS_STEPS.map((step) => (
+            <div key={step.num} className="group flex flex-col items-center px-3 text-center">
+              <div className="relative z-10 mb-5 flex h-14 w-14 items-center justify-center rounded-full border-2 border-corematrix-border2 bg-corematrix-card2 font-display text-xs font-extrabold text-corematrix-green400 transition-all group-hover:border-corematrix-green500 group-hover:bg-corematrix-green700 group-hover:text-white group-hover:shadow-[0_0_24px_rgba(34,197,94,0.3)]">
+                {step.num}
+              </div>
+              <h3 className="mb-1.5 font-display text-xs font-bold text-corematrix-textPrimary">
                 {step.title}
               </h3>
+              <p className="text-[0.72rem] font-light leading-snug text-corematrix-textMuted">
+                {step.body}
+              </p>
             </div>
           ))}
         </div>

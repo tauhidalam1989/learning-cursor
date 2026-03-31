@@ -8,6 +8,16 @@ import { FormTextarea } from '@/components/ui/FormTextarea';
 import { FormCard } from '@/components/sections/FormCard';
 import type { ContactBlock, ContactItemType } from '@/types';
 
+const SERVICE_OPTIONS = [
+  'AI Product Development',
+  'Custom AI & Automation',
+  'Web Application Development',
+  'Mobile App Development',
+  'SaaS Platform Development',
+  'Dedicated Dev Team',
+  'Other',
+];
+
 /* Icons for contact items by type */
 function ContactIcon({ type }: { type: ContactItemType }) {
   const className = 'h-5 w-5 text-[#149253]';
@@ -57,6 +67,7 @@ export function ContactFormSection({
     phoneCountry: '+91',
     phoneNumber: '',
     company: '',
+    service: '',
     message: '',
   });
 
@@ -65,7 +76,7 @@ export function ContactFormSection({
     // validate all fields
     const newErrors: Record<string, string> = {};
     ['fullName', 'email', 'phoneNumber', 'message'].forEach((field) => {
-      const val = (formData as any)[field] || '';
+      const val = (formData as Record<string, string>)[field] || '';
       const err = validateField(field, val);
       if (err) newErrors[field] = err;
     });
@@ -78,7 +89,7 @@ export function ContactFormSection({
       const res = await fetch('/api/contact/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ formType: 'contact', ...formData }),
       });
       if (res.status === 201) {
         onSubmit?.(formData);
@@ -90,6 +101,7 @@ export function ContactFormSection({
           phoneCountry: '+91',
           phoneNumber: '',
           company: '',
+          service: '',
           message: '',
         });
         setErrors({});
@@ -322,6 +334,30 @@ export function ContactFormSection({
                     {errors.email}
                   </p>
                 )}
+
+                <div className="flex flex-col">
+                  <label
+                    htmlFor="service"
+                    className="mb-2 text-base font-medium text-white sm:text-lg"
+                  >
+                    Service
+                  </label>
+                  <select
+                    id="service"
+                    name="service"
+                    value={formData.service}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className="h-12 w-full rounded-lg bg-[#101A15] px-4 text-base text-white placeholder-[#A0A0A0] shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)] focus:outline-none focus:ring-2 focus:ring-[#149253]/30 focus:ring-offset-2 focus:ring-offset-[#142819]"
+                  >
+                    <option value="">Select a service</option>
+                    {SERVICE_OPTIONS.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="flex flex-col">

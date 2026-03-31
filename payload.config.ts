@@ -269,14 +269,19 @@ export default ({
 
   // Run a small seed on first init to ensure there's at least one blog post to
   // inspect in the admin UI during development.
-  onInit: async (payloadInstance) => {
+  onInit: async (
+    payloadInstance: {
+      find: (opts: { collection: string; limit: number }) => Promise<{ docs: unknown[] }>;
+      create: (opts: { collection: string; data: Record<string, unknown> }) => Promise<unknown>;
+    }
+  ) => {
     try {
       const result = await payloadInstance.find({
         collection: 'cms-blog',
         limit: 1,
       });
 
-      if (!result || (result as any).docs.length === 0) {
+      if (!result || result.docs.length === 0) {
         await payloadInstance.create({
           collection: 'cms-blog',
           data: {

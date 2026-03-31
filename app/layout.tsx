@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Poppins, Rajdhani } from 'next/font/google';
 import '@/styles/globals.css';
-import { MarketingLayout } from '@/layouts/MarketingLayout';
 import { defaultMetadata } from '@/lib/seo';
+import ScrollRevealInit from '@/components/common/ScrollRevealInit';
 
 /* -----------------------------------------------------------------------------
  * Fonts (next/font optimizes loading and reduces layout shift)
@@ -48,7 +48,8 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
-        <MarketingLayout>{children}</MarketingLayout>
+        <ScrollRevealInit />
+        {children}
       </body>
     </html>
   );
