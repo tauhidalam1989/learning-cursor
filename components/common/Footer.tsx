@@ -147,19 +147,19 @@ export function Footer() {
               <label htmlFor="newsletter-email" className="sr-only">
                 Enter your email address
               </label>
-              <div className="flex gap-3">
+              <div className="relative mt-4">
                 <input
                   type="email"
                   id="newsletter-email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter Your Email Address"
+                  placeholder="Enter your email address"
                   required
-                  className="flex-1 rounded-lg border border-white/10 bg-[#02140f]/40 px-4 py-2 text-sm text-white placeholder-white/50 backdrop-blur-sm transition-all focus:border-[#149253] focus:outline-none focus:ring-2 focus:ring-[#149253]/20"
+                  className="h-12 w-full rounded-xl border border-white/10 bg-[#02140f]/40 px-4 pr-16 text-sm text-white placeholder-white/50 backdrop-blur-sm transition-all focus:border-[#149253] focus:outline-none focus:ring-2 focus:ring-[#149253]/20"
                 />
                 <button
                   type="submit"
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-[#149253] text-white transition-all hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#149253] focus-visible:ring-offset-2 focus-visible:ring-offset-[#02140f]"
+                  className="absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl bg-[#149253] text-white transition-all hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#149253] focus-visible:ring-offset-2 focus-visible:ring-offset-[#02140f]"
                   aria-label="Subscribe to newsletter"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
@@ -170,7 +170,7 @@ export function Footer() {
               </div>
             </form>
             <p className="mt-4 text-sm leading-relaxed text-white/70">
-              Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+              Get product updates, engineering insights, and case studies—no spam. Unsubscribe anytime.
             </p>
           </div>
         </div>

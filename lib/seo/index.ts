@@ -26,7 +26,7 @@ export const defaultMetadata: Metadata = {
   authors: [{ name: siteName, url: siteUrl }],
   creator: siteName,
   icons: {
-    icon: '/images/logo.png',
+    icon: '/icon.png',
   },
   openGraph: {
     type: 'website',
