@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 
-type ServiceTile = { icon: string; title: string; tag: string };
+type ServiceTile = { icon: string; title: string; tag: string; href?: string };
 
 const SERVICE_TILES: ServiceTile[] = [
   { icon: '🧠', title: 'AI Development', tag: 'LLMs · Agents · ML' },
@@ -12,6 +12,12 @@ const SERVICE_TILES: ServiceTile[] = [
   { icon: '☁️', title: 'SaaS Platforms', tag: 'Multi-tenant · Cloud' },
   { icon: '⚙️', title: 'AI Automation', tag: 'RAG · Pipelines · Flows' },
   { icon: '👥', title: 'Dedicated Teams', tag: 'Staffing · Outsourcing' },
+  {
+    icon: '📜',
+    title: 'Adobe Licensing',
+    tag: 'VIP · ETLA · Compliance',
+    href: '/services/adobe-licensing',
+  },
 ];
 
 const NAV_PILLS = [
@@ -109,21 +115,32 @@ export function ServicesHeroSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2.5">
-          {SERVICE_TILES.map((tile) => (
-            <div
-              key={tile.title}
-              className="reveal cursor-default rounded-2xl border border-corematrix-border2 bg-corematrix-card2 p-5 transition-all hover:-translate-y-0.5 hover:border-corematrix-green400/20 hover:shadow-[0_0_24px_rgba(34,197,94,0.08)]"
-            >
-              <span className="text-2xl" aria-hidden>
-                {tile.icon}
-              </span>
-              <h3 className="mt-3 font-display text-sm font-bold text-corematrix-textPrimary">
-                {tile.title}
-              </h3>
-              <p className="mt-0.5 text-xs text-corematrix-textDim">{tile.tag}</p>
-            </div>
-          ))}
+        <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-3">
+          {SERVICE_TILES.map((tile) => {
+            const cardClass =
+              'reveal rounded-2xl border border-corematrix-border2 bg-corematrix-card2 p-5 transition-all hover:-translate-y-0.5 hover:border-corematrix-green400/20 hover:shadow-[0_0_24px_rgba(34,197,94,0.08)] ' +
+              (tile.href ? 'block cursor-pointer' : 'cursor-default');
+            const inner = (
+              <>
+                <span className="text-2xl" aria-hidden>
+                  {tile.icon}
+                </span>
+                <h3 className="mt-3 font-display text-sm font-bold text-corematrix-textPrimary">
+                  {tile.title}
+                </h3>
+                <p className="mt-0.5 text-xs text-corematrix-textDim">{tile.tag}</p>
+              </>
+            );
+            return tile.href ? (
+              <Link key={tile.title} href={tile.href} className={cardClass}>
+                {inner}
+              </Link>
+            ) : (
+              <div key={tile.title} className={cardClass}>
+                {inner}
+              </div>
+            );
+          })}
         </div>
       </Container>
     </section>

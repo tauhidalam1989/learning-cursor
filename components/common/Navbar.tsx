@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { navLinks, navCta } from './nav-config';
+import { ServicesNavItemDesktop, ServicesNavItemMobile } from './ServicesNavItem';
 
 /**
  * Reusable Navbar: logo, nav links, CTA. Responsive with accessible mobile menu.
@@ -55,7 +56,15 @@ export function Navbar() {
           <nav className="hidden lg:flex lg:items-center lg:gap-10" aria-label="Main navigation">
             <ul className="flex items-center gap-6" role="list">
               {navLinks.map(({ label, href }) => {
-                const isActive = pathname === href || (href !== '/' && pathname.startsWith(href));
+                if (href === '/services') {
+                  return (
+                    <li key={href}>
+                      <ServicesNavItemDesktop />
+                    </li>
+                  );
+                }
+                const isActive =
+                  pathname === href || (href !== '/' && pathname.startsWith(href));
                 return (
                   <li key={href}>
                 <Link
@@ -120,17 +129,21 @@ export function Navbar() {
       <div id="mobile-nav-menu" className="lg:hidden" aria-hidden={!menuOpen} hidden={!menuOpen}>
         <div className="border-t border-white/6 bg-gradient-to-b from-[#02140f] to-[#041f18] px-4 pb-6 pt-4">
           <ul className="flex flex-col gap-2" role="list">
-            {navLinks.map(({ label, href }) => (
-              <li key={href}>
-                <Link
-                  href={href}
-                  onClick={closeMenu}
-                  className="block rounded-md px-4 py-3 text-base font-medium text-white/90 transition-colors hover:bg-white/5"
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
+            {navLinks.map(({ label, href }) =>
+              href === '/services' ? (
+                <ServicesNavItemMobile key={href} onNavigate={closeMenu} />
+              ) : (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    onClick={closeMenu}
+                    className="block rounded-md px-4 py-3 text-base font-medium text-white/90 transition-colors hover:bg-white/5"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ),
+            )}
           </ul>
           <div className="mt-4 border-t border-white/6 pt-4">
             <Link

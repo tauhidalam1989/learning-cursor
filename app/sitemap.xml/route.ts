@@ -13,6 +13,7 @@ export async function GET() {
     { url: '/blog', priority: 0.9 },
     { url: '/about', priority: 0.7 },
     { url: '/services', priority: 0.7 },
+    { url: '/services/adobe-licensing', priority: 0.65 },
     { url: '/contact', priority: 0.7 },
     { url: '/careers', priority: 0.7 },
     { url: '/portfolio', priority: 0.8 },

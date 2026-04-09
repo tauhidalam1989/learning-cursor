@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { useFilterListener } from '@/hooks/usePortalFilter';
@@ -217,110 +217,6 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
   },
 ];
 
-function NeuralCanvas() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const width = 300;
-    const height = 280;
-    const connectDist = 110;
-
-    interface Node { x: number; y: number; vx: number; vy: number; r: number; phase: number }
-    const nodes: Node[] = Array.from({ length: 28 }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
-      r: 3,
-      phase: Math.random() * Math.PI * 2,
-    }));
-
-    let rafId: number;
-
-    const draw = () => {
-      ctx.clearRect(0, 0, width, height);
-
-      for (let i = 0; i < 8; i++) {
-        ctx.strokeStyle = 'rgba(26,53,37,0.3)';
-        ctx.beginPath();
-        ctx.moveTo(0, (i + 1) * (height / 9));
-        ctx.lineTo(width, (i + 1) * (height / 9));
-        ctx.stroke();
-      }
-      for (let i = 0; i < 8; i++) {
-        ctx.strokeStyle = 'rgba(26,53,37,0.3)';
-        ctx.beginPath();
-        ctx.moveTo((i + 1) * (width / 9), 0);
-        ctx.lineTo((i + 1) * (width / 9), height);
-        ctx.stroke();
-      }
-
-      nodes.forEach((n) => {
-        n.x += n.vx;
-        n.y += n.vy;
-        if (n.x < 0 || n.x > width) n.vx *= -1;
-        if (n.y < 0 || n.y > height) n.vy *= -1;
-      });
-
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const d = Math.sqrt(dx * dx + dy * dy);
-          if (d < connectDist) {
-            const t = performance.now() * 0.001;
-            const alpha = 0.12 * (1 - d / connectDist) * (0.5 + 0.5 * Math.sin(t + nodes[i].phase));
-            ctx.strokeStyle = `rgba(34, 197, 94, ${alpha})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      const t = performance.now() * 0.001;
-      nodes.forEach((n, i) => {
-        const glow = 0.4 + 0.3 * Math.sin(t + i * 0.5);
-        const color = i % 2 === 0 ? `rgba(74,222,128,${glow})` : `rgba(22,163,74,${glow})`;
-        const gradient = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, 10);
-        gradient.addColorStop(0, color);
-        gradient.addColorStop(0.5, 'rgba(34,197,94,0.15)');
-        gradient.addColorStop(1, 'transparent');
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, 10, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = 'rgba(34, 197, 94, 0.9)';
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
-      rafId = requestAnimationFrame(draw);
-    };
-
-    draw();
-    return () => cancelAnimationFrame(rafId);
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      width={300}
-      height={280}
-      className="rounded-lg border border-corematrix-border bg-corematrix-card/50"
-      aria-hidden
-    />
-  );
-}
-
 export function MainServicesSection() {
   const filter = useFilterListener('serviceFilter') as FilterId;
 
@@ -381,8 +277,15 @@ export function MainServicesSection() {
                       </Link>
                     </div>
                   </div>
-                  <div className="flex min-h-[360px] items-center justify-center overflow-hidden border-t border-corematrix-border bg-corematrix-bg2 p-10 lg:border-l lg:border-t-0">
-                    <NeuralCanvas />
+                  <div className="flex min-h-[280px] min-w-0 items-center justify-center overflow-hidden border-t border-corematrix-border bg-corematrix-bg2 p-6 sm:p-10 lg:min-h-[360px] lg:border-l lg:border-t-0">
+                    <Image
+                      src="/images/services-featured-ai.png"
+                      alt="Illustration of a smartphone with an AI robot, people working on laptops, and icons connected by data paths"
+                      width={1024}
+                      height={682}
+                      className="h-auto w-full max-w-xl rounded-lg border border-corematrix-border bg-black object-contain"
+                      sizes="(max-width: 1024px) 100vw, 42vw"
+                    />
                   </div>
                 </div>
               )}
