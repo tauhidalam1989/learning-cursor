@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { CULTURE_VALUES } from '@/data/careersData';
 
 const PERKS = [
@@ -20,13 +21,13 @@ export function CareersCultureSection() {
       <Container>
         <div className="grid grid-cols-1 items-center gap-20 lg:grid-cols-2">
           <div>
-            <p className="section-label text-corematrix-green400">OUR CULTURE</p>
-            <h2
-              id="careers-culture-heading"
-              className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-            >
-              A Culture Built Around Doing Great Work
-            </h2>
+            <MarketingSectionHeader
+              align="left"
+              descriptionMax="none"
+              label="OUR CULTURE"
+              title="A Culture Built Around Doing Great Work"
+              titleId="careers-culture-heading"
+            />
             <p className="mt-6 text-base leading-relaxed text-corematrix-textSecondary">
               We believe the best software comes from teams that have full context, minimal
               bureaucracy, and real ownership. Every engineer participates in architecture

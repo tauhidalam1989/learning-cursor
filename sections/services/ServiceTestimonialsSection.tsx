@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 type ServiceTestimonial = {
   stars: number;
@@ -47,18 +48,12 @@ export function ServiceTestimonialsSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">CLIENT STORIES</p>
-          <h2
-            id="service-testimonials-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Don&apos;t Take Our Word For It
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Hear from founders and technical leaders who&apos;ve shipped with us.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="CLIENT STORIES"
+          title="Don't Take Our Word For It"
+          titleId="service-testimonials-heading"
+          description="Hear from founders and technical leaders who've shipped with us."
+        />
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
           {TESTIMONIALS.map((t) => (

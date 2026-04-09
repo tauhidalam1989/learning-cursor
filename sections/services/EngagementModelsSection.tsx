@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 type EngagementModel = {
   icon: string;
@@ -70,19 +71,12 @@ export function EngagementModelsSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">ENGAGEMENT MODELS</p>
-          <h2
-            id="engagement-models-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Work With Us the Way That Fits Your Business
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Fixed scope, flexible retainer, or dedicated team — choose what works for your stage and
-            goals.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="ENGAGEMENT MODELS"
+          title="Work With Us the Way That Fits Your Business"
+          titleId="engagement-models-heading"
+          description="Fixed scope, flexible retainer, or dedicated team — choose what works for your stage and goals."
+        />
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
           {ENGAGEMENT_MODELS.map((model) => (

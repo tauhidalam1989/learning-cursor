@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 type Value = { num: string; title: string; body: string };
 
@@ -53,15 +54,11 @@ export function CoreValuesSection() {
       className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
     >
       <Container>
-      <div className="text-center">
-        <p className="section-label text-corematrix-green400">CORE VALUES</p>
-        <h2
-          id="core-values-heading"
-          className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-        >
-          What We Stand For
-        </h2>
-      </div>
+      <MarketingSectionHeader
+        label="CORE VALUES"
+        title="What We Stand For"
+        titleId="core-values-heading"
+      />
 
       <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {VALUES.map((v) => (

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { ARTICLE_SERIES } from '@/data/blogData';
 
 export function ArticleSeriesSection() {
@@ -10,18 +11,12 @@ export function ArticleSeriesSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">ARTICLE SERIES</p>
-          <h2
-            id="article-series-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Deep-Dive Series Worth Reading Start to Finish
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Multi-part guides that take you from fundamentals to production.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="ARTICLE SERIES"
+          title="Deep-Dive Series Worth Reading Start to Finish"
+          titleId="article-series-heading"
+          description="Multi-part guides that take you from fundamentals to production."
+        />
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
           {ARTICLE_SERIES.map((s) => (

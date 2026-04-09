@@ -1,6 +1,9 @@
 import Link from 'next/link';
-import { Container } from '@/components/ui/Container';
-import FaqAccordion, { type FaqItem } from '@/components/shared/FaqAccordion';
+import {
+  TwoColumnFaqSection,
+  FAQ_GRID_HOME,
+} from '@/components/shared/TwoColumnFaqSection';
+import type { FaqItem } from '@/types/shared';
 
 const FAQ_ITEMS: FaqItem[] = [
   {
@@ -31,37 +34,23 @@ const FAQ_ITEMS: FaqItem[] = [
 
 export function FaqSection() {
   return (
-    <section
-      id="faq"
-      aria-labelledby="faq-heading"
-      className="border-t border-corematrix-border bg-corematrix-bg0 py-16 lg:py-24"
-    >
-      <Container>
-        <div className="grid gap-12 lg:grid-cols-[1fr_2fr] lg:items-start lg:gap-20">
-          <div className="reveal">
-            <p className="section-label text-corematrix-green400">FAQ</p>
-            <h2
-              id="faq-heading"
-              className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-            >
-              You&apos;ve Got Questions.
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-corematrix-textSecondary">
-              We believe in radical transparency — no jargon, no vague answers.
-            </p>
-            <Link
-              href="/contact"
-              className="mt-6 inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
-            >
-              Talk to Us →
-            </Link>
-          </div>
-
-          <div className="reveal reveal-delay-2">
-            <FaqAccordion items={FAQ_ITEMS} variant="compact" />
-          </div>
-        </div>
-      </Container>
-    </section>
+    <TwoColumnFaqSection
+      sectionId="faq"
+      headingId="faq-heading"
+      title="You've Got Questions."
+      description="We believe in radical transparency — no jargon, no vague answers."
+      items={FAQ_ITEMS}
+      sectionClassName="border-t border-corematrix-border bg-corematrix-bg0 py-16 lg:py-24"
+      gridClassName={FAQ_GRID_HOME}
+      faqVariant="compact"
+      cta={
+        <Link
+          href="/contact"
+          className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
+        >
+          Talk to Us →
+        </Link>
+      }
+    />
   );
 }

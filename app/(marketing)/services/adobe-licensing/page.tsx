@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Container } from '@/components/ui/Container';
-import FaqAccordion from '@/components/shared/FaqAccordion';
+import { TwoColumnFaqSection } from '@/components/shared/TwoColumnFaqSection';
+import { MarketingCtaBand } from '@/components/shared/MarketingCtaBand';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://corematrix.com';
 
@@ -562,79 +563,50 @@ export default function AdobeLicensingPage() {
         </Container>
       </section>
 
-      {/* FAQ */}
-      <section
-        id="adobe-licensing-faq"
-        aria-labelledby="adobe-licensing-faq-heading"
-        className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
-      >
-        <Container>
-          <div className="grid grid-cols-1 items-start gap-20 lg:grid-cols-[1fr_1.8fr]">
-            <div className="reveal">
-              <p className="section-label text-corematrix-green400">FAQ</p>
-              <h2
-                id="adobe-licensing-faq-heading"
-                className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-              >
-                Frequently Asked Questions
-              </h2>
-              <p className="mt-4 text-base leading-relaxed text-corematrix-textSecondary">
-                Licensing models, migration, speed, IT integration, and ongoing support.
-              </p>
-              <Link
-                href="/contact"
-                className="mt-6 inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
-              >
-                Ask About Licensing →
-              </Link>
-            </div>
+      <TwoColumnFaqSection
+        sectionId="adobe-licensing-faq"
+        headingId="adobe-licensing-faq-heading"
+        title="Frequently Asked Questions"
+        description="Licensing models, migration, speed, IT integration, and ongoing support."
+        items={FAQ_ITEMS}
+        cta={
+          <Link
+            href="/contact"
+            className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
+          >
+            Ask About Licensing →
+          </Link>
+        }
+      />
 
-            <div className="reveal reveal-delay-2">
-              <FaqAccordion items={FAQ_ITEMS} />
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* CTA */}
-      <section
-        aria-labelledby="adobe-cta-heading"
-        className="relative overflow-hidden border-t border-corematrix-border bg-corematrix-bg2 py-28"
+      <MarketingCtaBand
+        headingId="adobe-cta-heading"
+        sectionClassName="bg-corematrix-bg2"
+        glow="adobe"
+        label="READY TO GET STARTED?"
+        title="Ready to Get the Right Adobe License?"
+        titleClassName="mx-auto mb-5 max-w-[700px] text-[clamp(2rem,4vw,3.2rem)] font-extrabold tracking-tight text-corematrix-textPrimary"
+        description={
+          <p className="mx-auto mb-8 max-w-[600px] text-base leading-relaxed text-corematrix-textSecondary">
+            Tell us about your teams and timelines — we&apos;ll recommend the right program and handle
+            provisioning with you.
+          </p>
+        }
+        actionsWrapperClassName="mt-10 flex flex-wrap items-center justify-center gap-4"
       >
-        <div
-          className="pointer-events-none absolute top-1/2 left-1/2 h-[480px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-corematrix-green700 opacity-[0.07] blur-[120px]"
-          aria-hidden
-        />
-        <Container>
-          <div className="relative z-10 text-center">
-            <p className="section-label text-corematrix-green400">READY TO GET STARTED?</p>
-            <h2
-              id="adobe-cta-heading"
-              className="mx-auto mb-5 max-w-[700px] text-[clamp(2rem,4vw,3.2rem)] font-extrabold tracking-tight text-corematrix-textPrimary"
-            >
-              Ready to Get the Right Adobe License?
-            </h2>
-            <p className="mx-auto mb-8 max-w-[600px] text-base leading-relaxed text-corematrix-textSecondary">
-              Tell us about your teams and timelines — we&apos;ll recommend the right program and
-              handle provisioning with you.
-            </p>
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-8 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
-              >
-                Get a Quote →
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center rounded-lg border border-corematrix-border2 px-8 py-3 text-sm font-semibold text-corematrix-textPrimary transition hover:border-corematrix-green700 hover:bg-corematrix-green900/20"
-              >
-                Talk to Us
-              </Link>
-            </div>
-          </div>
-        </Container>
-      </section>
+        <Link
+          href="/contact"
+          className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-8 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
+        >
+          Get a Quote →
+        </Link>
+        <Link
+          href="/contact"
+          className="inline-flex items-center justify-center rounded-lg border border-corematrix-border2 px-8 py-3 text-sm font-semibold text-corematrix-textPrimary transition hover:border-corematrix-green700 hover:bg-corematrix-green900/20"
+        >
+          Talk to Us
+        </Link>
+      </MarketingCtaBand>
     </>
   );
 }

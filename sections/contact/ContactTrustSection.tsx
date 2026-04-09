@@ -1,5 +1,6 @@
 import { Container } from '@/components/ui/Container';
 import StatCounter from '@/components/shared/StatCounter';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 export type TrustStat = {
   count: number;
@@ -33,18 +34,12 @@ export function ContactTrustSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">WHY TRUST US</p>
-          <h2
-            id="contact-trust-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Numbers That Speak For Themselves
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Trust built through consistent delivery and client success.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="WHY TRUST US"
+          title="Numbers That Speak For Themselves"
+          titleId="contact-trust-heading"
+          description="Trust built through consistent delivery and client success."
+        />
 
         <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-border lg:grid-cols-4">
           {TRUST_STATS.map((stat) => (

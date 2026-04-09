@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { TECH_CATEGORIES } from '@/data/portfolioData';
 
 export function PortfolioTechSection() {
@@ -8,18 +9,12 @@ export function PortfolioTechSection() {
       className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">TECHNOLOGY STACK</p>
-          <h2
-            id="tech-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            The Tools That Power Every Project We Ship
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Modern, production-ready technologies — no legacy lock-in.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="TECHNOLOGY STACK"
+          title="The Tools That Power Every Project We Ship"
+          titleId="tech-heading"
+          description="Modern, production-ready technologies — no legacy lock-in."
+        />
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
           {TECH_CATEGORIES.map((cat) => (
             <div

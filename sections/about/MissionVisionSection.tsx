@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 type MvvCard = { icon: string; title: string; body: string };
 
@@ -28,18 +29,12 @@ export function MissionVisionSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <Container>
-      <div className="text-center">
-        <p className="section-label text-corematrix-green400">WHAT DRIVES US</p>
-        <h2
-          id="mission-vision-heading"
-          className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-        >
-          Mission, Vision & Purpose
-        </h2>
-        <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-          Three pillars that guide every decision we make — from how we hire to how we build.
-        </p>
-      </div>
+      <MarketingSectionHeader
+        label="WHAT DRIVES US"
+        title="Mission, Vision & Purpose"
+        titleId="mission-vision-heading"
+        description="Three pillars that guide every decision we make — from how we hire to how we build."
+      />
 
       <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
         {MVV_CARDS.map((card) => (

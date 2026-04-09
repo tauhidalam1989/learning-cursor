@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { RoleCard } from '@/components/careers/RoleCard';
 import { OPEN_ROLES, DEPARTMENT_FILTERS } from '@/data/careersData';
 import type { Department } from '@/types/careers';
@@ -34,19 +35,12 @@ export function OpenRolesSection() {
       className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">OPEN ROLES</p>
-          <h2
-            id="open-roles-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Join Our Growing Team
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Find a role that matches your skills. Every position is remote-first and offers
-            real ownership from day one.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="OPEN ROLES"
+          title="Join Our Growing Team"
+          titleId="open-roles-heading"
+          description="Find a role that matches your skills. Every position is remote-first and offers real ownership from day one."
+        />
 
         <div className="mt-10 flex flex-wrap justify-center gap-2">
           {DEPARTMENT_FILTERS.map((f) => (

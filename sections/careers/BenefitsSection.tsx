@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { BENEFITS } from '@/data/careersData';
 
 export function BenefitsSection() {
@@ -9,18 +10,12 @@ export function BenefitsSection() {
       className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">BENEFITS & PERKS</p>
-          <h2
-            id="careers-benefits-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Built for People Who Do Serious Work
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Competitive compensation, real flexibility, and investments in your growth.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="BENEFITS & PERKS"
+          title="Built for People Who Do Serious Work"
+          titleId="careers-benefits-heading"
+          description="Competitive compensation, real flexibility, and investments in your growth."
+        />
 
         <div className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-border sm:grid-cols-4">
           {BENEFITS.map((b) => (

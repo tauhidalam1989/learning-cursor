@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 export type FitItem = { text: string };
 
@@ -47,17 +48,14 @@ export function RightFitSection() {
       <Container>
         <div className="grid grid-cols-1 items-start gap-20 lg:grid-cols-2">
           <div className="reveal">
-            <p className="section-label text-corematrix-green400">RIGHT FIT?</p>
-            <h2
-              id="right-fit-heading"
-              className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-            >
-              Who We Work Best With
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-corematrix-textSecondary">
-              We&apos;re selective about the projects we take on — not because we&apos;re precious,
-              but because we want every engagement to be a genuine success for both sides.
-            </p>
+            <MarketingSectionHeader
+              align="left"
+              descriptionMax="none"
+              label="RIGHT FIT?"
+              title="Who We Work Best With"
+              titleId="right-fit-heading"
+              description="We're selective about the projects we take on — not because we're precious, but because we want every engagement to be a genuine success for both sides."
+            />
             <Link
               href="/services"
               className="mt-6 inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"

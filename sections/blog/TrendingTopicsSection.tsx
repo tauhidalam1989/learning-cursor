@@ -1,5 +1,6 @@
 'use client';
 
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { TRENDING_TOPICS } from '@/data/blogData';
 
 export function TrendingTopicsSection() {
@@ -15,18 +16,12 @@ export function TrendingTopicsSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">TRENDING NOW</p>
-          <h2
-            id="trending-topics-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Topics Readers Are Exploring Most
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            See what&apos;s resonating with our audience this month.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="TRENDING NOW"
+          title="Topics Readers Are Exploring Most"
+          titleId="trending-topics-heading"
+          description="See what's resonating with our audience this month."
+        />
 
         <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-border sm:grid-cols-4">
           {TRENDING_TOPICS.map((topic) => (

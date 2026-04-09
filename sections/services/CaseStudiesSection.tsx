@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 type CaseStudy = {
   category: string;
@@ -56,18 +57,12 @@ export function CaseStudiesSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">RESULTS WE&apos;VE DELIVERED</p>
-          <h2
-            id="case-studies-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Real Projects. Measurable Outcomes.
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Here&apos;s a snapshot of what we&apos;ve built — and the impact it&apos;s creating.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="RESULTS WE'VE DELIVERED"
+          title="Real Projects. Measurable Outcomes."
+          titleId="case-studies-heading"
+          description="Here's a snapshot of what we've built — and the impact it's creating."
+        />
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
           {CASE_STUDIES.map((study) => (

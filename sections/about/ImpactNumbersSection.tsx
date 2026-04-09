@@ -1,5 +1,6 @@
 import { Container } from '@/components/ui/Container';
 import StatCounter from '@/components/shared/StatCounter';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 type Impact = { count: number; suffix: string; label: string; sub: string };
 
@@ -27,18 +28,12 @@ export function ImpactNumbersSection() {
       />
 
       <Container className="relative z-10">
-      <div className="text-center">
-        <p className="section-label text-corematrix-green400">IMPACT BY THE NUMBERS</p>
-        <h2
-          id="impact-numbers-heading"
-          className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-        >
-          Results That Speak for Themselves
-        </h2>
-        <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-          Measurable outcomes from the projects we&apos;ve delivered across the globe.
-        </p>
-      </div>
+      <MarketingSectionHeader
+        label="IMPACT BY THE NUMBERS"
+        title="Results That Speak for Themselves"
+        titleId="impact-numbers-heading"
+        description="Measurable outcomes from the projects we've delivered across the globe."
+      />
 
       <div className="relative z-10 mt-12 grid grid-cols-2 divide-x divide-y divide-corematrix-border overflow-hidden rounded-2xl border border-corematrix-border lg:grid-cols-4">
         {IMPACTS.map((imp) => (

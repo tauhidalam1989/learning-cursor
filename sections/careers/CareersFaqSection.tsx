@@ -1,6 +1,5 @@
-import { Container } from '@/components/ui/Container';
 import { siteConfig } from '@/config/site';
-import FaqAccordion from '@/components/shared/FaqAccordion';
+import { TwoColumnFaqSection } from '@/components/shared/TwoColumnFaqSection';
 
 const CAREERS_FAQ = [
   {
@@ -31,41 +30,20 @@ const CAREERS_FAQ = [
 
 export function CareersFaqSection() {
   return (
-    <section
-      id="careers-faq"
-      aria-labelledby="careers-faq-heading"
-      className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
-    >
-      <Container>
-        <div className="grid grid-cols-1 items-start gap-20 lg:grid-cols-[1fr_1.8fr]">
-          <div>
-            <p className="section-label text-corematrix-green400">CAREERS FAQ</p>
-            <h2
-              id="careers-faq-heading"
-              className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-            >
-              Your Questions, Answered Honestly
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-corematrix-textSecondary">
-              Everything you need to know about working at Corematrix. Still have questions?
-              Reach out — we respond to every email.
-            </p>
-            <a
-              href={`mailto:${siteConfig.careersEmail}`}
-              className="mt-6 inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
-            >
-              Email Our Hiring Team →
-            </a>
-          </div>
-
-          <div>
-            <FaqAccordion
-              items={CAREERS_FAQ}
-              wrapperClassName="overflow-hidden rounded-2xl border border-corematrix-border"
-            />
-          </div>
-        </div>
-      </Container>
-    </section>
+    <TwoColumnFaqSection
+      sectionId="careers-faq"
+      headingId="careers-faq-heading"
+      title="Your Questions, Answered Honestly"
+      description="Everything you need to know about working at Corematrix. Still have questions? Reach out — we respond to every email."
+      items={CAREERS_FAQ}
+      cta={
+        <a
+          href={`mailto:${siteConfig.careersEmail}`}
+          className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
+        >
+          Email Our Hiring Team →
+        </a>
+      }
+    />
   );
 }

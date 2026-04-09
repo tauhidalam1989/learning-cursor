@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 type CellType = 'yes' | 'partial' | 'no';
 
@@ -83,18 +84,12 @@ export function WhyChooseSection() {
       className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">WHY COREMATRIX</p>
-          <h2
-            id="why-choose-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            How We Compare to Other Development Options
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            See how Corematrix stacks up against freelancers, agencies, and in-house teams.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="WHY COREMATRIX"
+          title="How We Compare to Other Development Options"
+          titleId="why-choose-heading"
+          description="See how Corematrix stacks up against freelancers, agencies, and in-house teams."
+        />
 
         <div className="mt-12 overflow-x-auto">
           <table className="w-full min-w-[640px] border-collapse overflow-hidden rounded-2xl border border-corematrix-border">

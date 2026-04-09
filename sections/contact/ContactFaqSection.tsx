@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import { Container } from '@/components/ui/Container';
 import { siteConfig } from '@/config/site';
-import FaqAccordion from '@/components/shared/FaqAccordion';
+import { TwoColumnFaqSection } from '@/components/shared/TwoColumnFaqSection';
 
 const CONTACT_FAQ = [
   {
@@ -28,41 +27,24 @@ const CONTACT_FAQ = [
     q: "Can I contact you even if I'm not sure I have a project ready?",
     a: "Absolutely. Some of our best client relationships started with \"I'm not sure if this is even feasible.\" We enjoy exploratory conversations. If you have a vague idea, a technical question, or want a second opinion on an architecture decision — just reach out.",
   },
-];
+] as const;
 
 export function ContactFaqSection() {
   return (
-    <section
-      id="contact-faq"
-      aria-labelledby="contact-faq-heading"
-      className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
-    >
-      <Container>
-        <div className="grid grid-cols-1 items-start gap-20 lg:grid-cols-[1fr_1.8fr]">
-          <div className="reveal">
-            <p className="section-label text-corematrix-green400">FAQ</p>
-            <h2
-              id="contact-faq-heading"
-              className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-            >
-              Common Questions Before Reaching Out
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-corematrix-textSecondary">
-              Everything you need to know before you send us a message.
-            </p>
-            <Link
-              href="#contact-form"
-              className="mt-6 inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
-            >
-              Send Us a Message →
-            </Link>
-          </div>
-
-          <div className="reveal reveal-delay-2">
-            <FaqAccordion items={CONTACT_FAQ} />
-          </div>
-        </div>
-      </Container>
-    </section>
+    <TwoColumnFaqSection
+      sectionId="contact-faq"
+      headingId="contact-faq-heading"
+      title="Common Questions Before Reaching Out"
+      description="Everything you need to know before you send us a message."
+      items={CONTACT_FAQ}
+      cta={
+        <Link
+          href="#contact-form"
+          className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
+        >
+          Send Us a Message →
+        </Link>
+      }
+    />
   );
 }

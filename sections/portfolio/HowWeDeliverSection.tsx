@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { DELIVERY_STEPS } from '@/data/portfolioData';
 
 export function HowWeDeliverSection() {
@@ -8,18 +9,12 @@ export function HowWeDeliverSection() {
       className="relative border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">OUR PROCESS</p>
-          <h2
-            id="delivery-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            How Every Project in This Portfolio Was Built
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Consistent process. Predictable outcomes. No surprises.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="OUR PROCESS"
+          title="How Every Project in This Portfolio Was Built"
+          titleId="delivery-heading"
+          description="Consistent process. Predictable outcomes. No surprises."
+        />
         <div className="relative mt-14 grid grid-cols-1 gap-0 sm:grid-cols-2 lg:grid-cols-4">
           <div
             className="absolute top-7 left-[calc(100%/8)] right-[calc(100%/8)] hidden h-px bg-gradient-to-r from-transparent via-corematrix-border2 to-transparent lg:block"

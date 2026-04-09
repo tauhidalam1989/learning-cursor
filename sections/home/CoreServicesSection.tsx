@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 type Service = {
   icon: string;
@@ -60,18 +61,12 @@ export function CoreServicesSection() {
       className="border-t border-corematrix-border bg-corematrix-bg1 py-16 lg:py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">CORE SERVICES</p>
-          <h2
-            id="core-services-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Everything You Need to Win with Technology
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            From AI products to full-stack platforms — we engineer solutions that perform at scale.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="CORE SERVICES"
+          title="Everything You Need to Win with Technology"
+          titleId="core-services-heading"
+          description="From AI products to full-stack platforms — we engineer solutions that perform at scale."
+        />
 
         <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map((s) => (

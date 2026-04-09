@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 export type NextStep = {
   num: string;
@@ -47,18 +48,12 @@ export function WhatHappensNextSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">AFTER YOU SEND</p>
-          <h2
-            id="what-happens-next-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            What Happens After You Reach Out
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Transparent process from first message to signed proposal.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="AFTER YOU SEND"
+          title="What Happens After You Reach Out"
+          titleId="what-happens-next-heading"
+          description="Transparent process from first message to signed proposal."
+        />
 
         <div className="mt-14 grid grid-cols-1 divide-x divide-corematrix-border overflow-hidden rounded-2xl border border-corematrix-border sm:grid-cols-2 lg:grid-cols-4">
           {NEXT_STEPS.map((s) => (

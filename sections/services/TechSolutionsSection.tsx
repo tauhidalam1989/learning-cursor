@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 type TabId = 'ai' | 'frontend' | 'backend' | 'cloud' | 'data';
 
@@ -106,19 +107,12 @@ export function TechSolutionsSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">TECHNOLOGY SOLUTIONS</p>
-          <h2
-            id="tech-solutions-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Deep Expertise Across Every Layer of the Stack
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            From AI and frontend to backend, cloud, and data — we build with the tools that power
-            production systems worldwide.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="TECHNOLOGY SOLUTIONS"
+          title="Deep Expertise Across Every Layer of the Stack"
+          titleId="tech-solutions-heading"
+          description="From AI and frontend to backend, cloud, and data — we build with the tools that power production systems worldwide."
+        />
 
         <div className="mb-12 mt-12 flex overflow-hidden rounded-xl border border-corematrix-border bg-corematrix-bg0">
           {TABS.map((t) => (

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 type CultureItem = { icon: string; title: string; body: string };
 
@@ -36,17 +37,14 @@ export function CultureSection() {
       <Container>
       <div className="grid grid-cols-1 items-center gap-20 lg:grid-cols-2">
         <div>
-          <p className="section-label text-corematrix-green400">CULTURE & TEAM</p>
-          <h2
-            id="culture-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Where Great Engineers Do Their Best Work
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-corematrix-textSecondary">
-            We&apos;ve built a culture where curiosity is rewarded, ownership is expected, and every
-            team member has the context to make great decisions.
-          </p>
+          <MarketingSectionHeader
+            align="left"
+            descriptionMax="none"
+            label="CULTURE & TEAM"
+            title="Where Great Engineers Do Their Best Work"
+            titleId="culture-heading"
+            description="We've built a culture where curiosity is rewarded, ownership is expected, and every team member has the context to make great decisions."
+          />
           <div className="mt-8 grid grid-cols-2 gap-4">
             {CULTURE_ITEMS.map((item) => (
               <article

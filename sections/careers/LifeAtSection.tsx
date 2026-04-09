@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { LIFE_CELLS } from '@/data/careersData';
 
 export function LifeAtSection() {
@@ -9,13 +10,12 @@ export function LifeAtSection() {
       className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
     >
       <Container>
-        <p className="section-label text-corematrix-green400">LIFE AT COREMATRIX</p>
-        <h2
-          id="careers-life-heading"
-          className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-        >
-          The Way We Work, Day to Day
-        </h2>
+        <MarketingSectionHeader
+          align="left"
+          label="LIFE AT COREMATRIX"
+          title="The Way We Work, Day to Day"
+          titleId="careers-life-heading"
+        />
 
         <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
           {LIFE_CELLS.map((cell) => (

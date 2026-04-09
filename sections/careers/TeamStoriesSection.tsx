@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { TEAM_STORIES } from '@/data/careersData';
 
 export function TeamStoriesSection() {
@@ -9,18 +10,12 @@ export function TeamStoriesSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">TEAM STORIES</p>
-          <h2
-            id="careers-stories-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Hear It From the People Who Work Here
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Real experiences from engineers and leaders who chose to build at Corematrix.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="TEAM STORIES"
+          title="Hear It From the People Who Work Here"
+          titleId="careers-stories-heading"
+          description="Real experiences from engineers and leaders who chose to build at Corematrix."
+        />
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
           {TEAM_STORIES.map((story) => (

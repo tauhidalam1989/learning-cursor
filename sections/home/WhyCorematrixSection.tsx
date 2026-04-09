@@ -2,6 +2,7 @@
 
 import { Container } from '@/components/ui/Container';
 import { useCountUp } from '@/hooks/useCountUp';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 const FEATURES = [
   {
@@ -50,16 +51,14 @@ export function WhyCorematrixSection() {
       <Container>
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-20">
           <div className="reveal">
-            <p className="section-label text-corematrix-green400">WHY COREMATRIX</p>
-            <h2
-              id="why-corematrix-heading"
-              className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-            >
-              Your Trusted Long-Term Tech Partner
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-corematrix-textSecondary">
-              We&apos;re more than a service provider — we&apos;re your technical co-founder for the long haul.
-            </p>
+            <MarketingSectionHeader
+              align="left"
+              descriptionMax="none"
+              label="WHY COREMATRIX"
+              title="Your Trusted Long-Term Tech Partner"
+              titleId="why-corematrix-heading"
+              description="We're more than a service provider — we're your technical co-founder for the long haul."
+            />
             <div className="mt-8 space-y-6">
               {FEATURES.map((f) => (
                 <div key={f.title} className="flex items-start gap-3">

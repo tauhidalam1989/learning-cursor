@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 const AI_TILES = [
   {
@@ -30,18 +31,14 @@ export function AiSpotlightSection() {
       <Container>
         <div className="grid min-w-0 gap-8 sm:gap-10 md:gap-12 lg:grid-cols-2 lg:items-center lg:gap-20">
           <div className="reveal min-w-0">
-            <p className="section-label text-corematrix-green400">AI-FIRST COMPANY</p>
-            <h2
-              id="ai-spotlight-heading"
-              className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-            >
-              We Don&apos;t Just Talk AI — We Ship It
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-corematrix-textSecondary">
-              Every solution we deliver is designed with AI capabilities at its core. We help
-              businesses integrate large language models, build autonomous agents, and create
-              intelligent systems that learn and adapt.
-            </p>
+            <MarketingSectionHeader
+              align="left"
+              descriptionMax="none"
+              label="AI-FIRST COMPANY"
+              title="We Don't Just Talk AI — We Ship It"
+              titleId="ai-spotlight-heading"
+              description="Every solution we deliver is designed with AI capabilities at its core. We help businesses integrate large language models, build autonomous agents, and create intelligent systems that learn and adapt."
+            />
             <div className="mt-8 space-y-4">
               {AI_TILES.map((tile) => (
                 <div

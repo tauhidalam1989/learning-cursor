@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { INDUSTRIES } from '@/data/portfolioData';
 
 export function IndustriesServedSection() {
@@ -8,20 +9,12 @@ export function IndustriesServedSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">
-            INDUSTRIES WE&apos;VE SERVED
-          </p>
-          <h2
-            id="industries-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            We&apos;ve Built Software Across Every Major Sector
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            From healthcare to logistics — we understand sector-specific requirements.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="INDUSTRIES WE'VE SERVED"
+          title="We've Built Software Across Every Major Sector"
+          titleId="industries-heading"
+          description="From healthcare to logistics — we understand sector-specific requirements."
+        />
         <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-border sm:grid-cols-4">
           {INDUSTRIES.map((ind) => (
             <div

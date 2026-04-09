@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 const STEPS = [
   {
@@ -36,18 +37,12 @@ export function ProcessSection() {
       className="border-t border-corematrix-border bg-corematrix-bg0 py-16 lg:py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">OUR PROCESS</p>
-          <h2
-            id="process-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            From Idea to Intelligent Product — Fast
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            A proven, agile process with complete transparency at every stage.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="OUR PROCESS"
+          title="From Idea to Intelligent Product — Fast"
+          titleId="process-heading"
+          description="A proven, agile process with complete transparency at every stage."
+        />
 
         <div className="mt-16 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5">
           {STEPS.map((step, i) => {

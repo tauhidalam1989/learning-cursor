@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { PROCESS_STEPS } from '@/data/careersData';
 
 export function InterviewProcessSection() {
@@ -9,18 +10,12 @@ export function InterviewProcessSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">HIRING PROCESS</p>
-          <h2
-            id="careers-process-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            A Hiring Process That Respects Your Time
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            No endless rounds. No trick questions. We move fast and give honest feedback.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="HIRING PROCESS"
+          title="A Hiring Process That Respects Your Time"
+          titleId="careers-process-heading"
+          description="No endless rounds. No trick questions. We move fast and give honest feedback."
+        />
 
         <div className="mt-12 overflow-hidden rounded-2xl border border-corematrix-border">
           {PROCESS_STEPS.map((step) => (

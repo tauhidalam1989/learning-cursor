@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Container } from '@/components/ui/Container';
-import FaqAccordion, { type FaqItem } from '@/components/shared/FaqAccordion';
+import { TwoColumnFaqSection } from '@/components/shared/TwoColumnFaqSection';
+import type { FaqItem } from '@/types/shared';
 
 const FAQ_ITEMS: FaqItem[] = [
   {
@@ -31,37 +31,21 @@ const FAQ_ITEMS: FaqItem[] = [
 
 export function AboutFaqSection() {
   return (
-    <section
-      id="about-faq"
-      aria-labelledby="about-faq-heading"
-      className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
-    >
-      <Container>
-      <div className="grid grid-cols-1 items-start gap-20 lg:grid-cols-[1fr_1.8fr]">
-        <div className="reveal">
-          <p className="section-label text-corematrix-green400">FAQ</p>
-          <h2
-            id="about-faq-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Questions About Working With Us
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-corematrix-textSecondary">
-            Everything you need to know before reaching out. Still have questions? Just ask.
-          </p>
-          <Link
-            href="/contact"
-            className="mt-6 inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
-          >
-            Ask Us Anything →
-          </Link>
-        </div>
-
-        <div className="reveal reveal-delay-2">
-          <FaqAccordion items={FAQ_ITEMS} />
-        </div>
-      </div>
-      </Container>
-    </section>
+    <TwoColumnFaqSection
+      sectionId="about-faq"
+      headingId="about-faq-heading"
+      title="Questions About Working With Us"
+      description="Everything you need to know before reaching out. Still have questions? Just ask."
+      items={FAQ_ITEMS}
+      sectionClassName="border-t border-corematrix-border bg-corematrix-bg2 py-24"
+      cta={
+        <Link
+          href="/contact"
+          className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
+        >
+          Ask Us Anything →
+        </Link>
+      }
+    />
   );
 }

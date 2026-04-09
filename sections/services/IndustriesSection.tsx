@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 type Industry = { icon: string; name: string; description: string };
 
@@ -61,18 +62,12 @@ export function IndustriesSection() {
       className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">INDUSTRIES WE SERVE</p>
-          <h2
-            id="industries-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Built for the Sectors Where Technology Matters Most
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            From healthcare to fintech, we deliver solutions tailored to your industry’s unique needs.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="INDUSTRIES WE SERVE"
+          title="Built for the Sectors Where Technology Matters Most"
+          titleId="industries-heading"
+          description="From healthcare to fintech, we deliver solutions tailored to your industry's unique needs."
+        />
 
         <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-border sm:grid-cols-2 lg:grid-cols-4">
           {INDUSTRIES.map((industry) => (

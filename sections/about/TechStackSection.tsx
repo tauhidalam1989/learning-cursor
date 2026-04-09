@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 type TechCategory = { label: string; items: string[] };
 
@@ -64,18 +65,12 @@ export function TechStackSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <Container>
-      <div className="text-center">
-        <p className="section-label text-corematrix-green400">TECH STACK</p>
-        <h2
-          id="tech-stack-heading"
-          className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-        >
-          Technologies We Build With
-        </h2>
-        <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-          Modern, battle-tested tools that power production systems worldwide.
-        </p>
-      </div>
+      <MarketingSectionHeader
+        label="TECH STACK"
+        title="Technologies We Build With"
+        titleId="tech-stack-heading"
+        description="Modern, battle-tested tools that power production systems worldwide."
+      />
 
       <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
         {TECH_CATEGORIES.map((cat) => (

@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { TESTIMONIALS } from '@/data/portfolioData';
 
 export function PortfolioTestimonials() {
@@ -8,18 +9,12 @@ export function PortfolioTestimonials() {
       className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">CLIENT FEEDBACK</p>
-          <h2
-            id="testimonials-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            What Clients Say About the Work We Delivered
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Real quotes from real projects — no stock testimonials.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="CLIENT FEEDBACK"
+          title="What Clients Say About the Work We Delivered"
+          titleId="testimonials-heading"
+          description="Real quotes from real projects — no stock testimonials."
+        />
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
           {TESTIMONIALS.map((t) => (
             <blockquote

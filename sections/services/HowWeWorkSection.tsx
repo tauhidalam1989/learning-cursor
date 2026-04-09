@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 type ProcessStep = { num: string; title: string; body: string };
 
@@ -43,18 +44,12 @@ export function HowWeWorkSection() {
       className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">HOW WE WORK</p>
-          <h2
-            id="how-we-work-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            From Discovery to Delivery — A Process You&apos;ll Actually Enjoy
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Transparent, agile, and designed for your success. We keep you in the loop at every step.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="HOW WE WORK"
+          title="From Discovery to Delivery — A Process You'll Actually Enjoy"
+          titleId="how-we-work-heading"
+          description="Transparent, agile, and designed for your success. We keep you in the loop at every step."
+        />
 
         <div className="relative mt-14 grid grid-cols-2 gap-0 sm:grid-cols-3 lg:grid-cols-6">
           <div

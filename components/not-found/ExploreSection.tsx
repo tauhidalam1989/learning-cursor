@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { EXPLORE_CARDS } from '@/data/notFoundData';
 
 export function ExploreSection() {
@@ -9,18 +10,12 @@ export function ExploreSection() {
       className="border-t border-corematrix-border bg-corematrix-bg1 py-20"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">YOU MIGHT BE LOOKING FOR</p>
-          <h2
-            id="explore-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Explore What We Do Best
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Find what you need — from AI development to dedicated teams.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="YOU MIGHT BE LOOKING FOR"
+          title="Explore What We Do Best"
+          titleId="explore-heading"
+          description="Find what you need — from AI development to dedicated teams."
+        />
 
         <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {EXPLORE_CARDS.map((card) => (

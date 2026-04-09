@@ -1,4 +1,5 @@
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 type Testimonial = {
   quote: string;
@@ -39,18 +40,12 @@ export function TestimonialsSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-16 lg:py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">CLIENT STORIES</p>
-          <h2
-            id="testimonials-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            What Our Clients Say
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Trusted by startups, scale-ups, and enterprise teams worldwide.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="CLIENT STORIES"
+          title="What Our Clients Say"
+          titleId="testimonials-heading"
+          description="Trusted by startups, scale-ups, and enterprise teams worldwide."
+        />
 
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
           {TESTIMONIALS.map((t) => (

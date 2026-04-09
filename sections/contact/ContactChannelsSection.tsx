@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { siteConfig } from '@/config/site';
 
 export type Channel = {
@@ -53,20 +54,12 @@ export function ContactChannelsSection() {
       className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
     >
       <Container>
-        <div className="text-center">
-          <p className="section-label text-corematrix-green400">
-            OTHER WAYS TO REACH US
-          </p>
-          <h2
-            id="contact-channels-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            Prefer a Different Channel? We&apos;re Everywhere
-          </h2>
-          <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-            Choose the channel that works best for you.
-          </p>
-        </div>
+        <MarketingSectionHeader
+          label="OTHER WAYS TO REACH US"
+          title="Prefer a Different Channel? We're Everywhere"
+          titleId="contact-channels-heading"
+          description="Choose the channel that works best for you."
+        />
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
           {CHANNELS.map((ch) => (

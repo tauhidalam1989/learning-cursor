@@ -8,6 +8,7 @@ type TeamMember = {
 
 import { Container } from '@/components/ui/Container';
 import { siteConfig } from '@/config/site';
+import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 
 const TEAM: TeamMember[] = [
   {
@@ -48,18 +49,12 @@ export function TeamSection() {
       className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
     >
       <Container>
-      <div className="text-center">
-        <p className="section-label text-corematrix-green400">OUR TEAM</p>
-        <h2
-          id="team-heading"
-          className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-        >
-          Meet the People Behind Corematrix
-        </h2>
-        <p className="mx-auto mt-4 max-w-[680px] text-base leading-relaxed text-corematrix-textSecondary">
-          Engineers, AI specialists, and product thinkers who ship software that matters.
-        </p>
-      </div>
+      <MarketingSectionHeader
+        label="OUR TEAM"
+        title="Meet the People Behind Corematrix"
+        titleId="team-heading"
+        description="Engineers, AI specialists, and product thinkers who ship software that matters."
+      />
 
       <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {TEAM.map((member) => (
