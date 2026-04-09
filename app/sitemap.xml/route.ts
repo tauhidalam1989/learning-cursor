@@ -1,6 +1,7 @@
 import { siteUrl } from '@/lib/seo';
 import { getAllBlogPosts } from '@/lib/posts';
 import { PROJECTS, FEATURED_PROJECT } from '@/data/portfolioData';
+import { getAllServiceLandingSlugs } from '@/lib/service-seo-routes';
 
 /**
  * Dynamic sitemap.xml route for Next.js App Router.
@@ -27,6 +28,11 @@ export async function GET() {
     priority: 0.6,
   }));
 
+  const serviceLandingUrls = getAllServiceLandingSlugs().map((slug) => ({
+    url: `/services/${slug}`,
+    priority: 0.65,
+  }));
+
   // Fetch blog posts from the DB
   let posts: Awaited<ReturnType<typeof getAllBlogPosts>> = [];
   try {
@@ -47,6 +53,14 @@ export async function GET() {
 </url>`;
     }),
     ...portfolioSlugs.map((p) => {
+      return `<url>
+  <loc>${siteUrl}${p.url}</loc>
+  <lastmod>${now}</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>${p.priority}</priority>
+</url>`;
+    }),
+    ...serviceLandingUrls.map((p) => {
       return `<url>
   <loc>${siteUrl}${p.url}</loc>
   <lastmod>${now}</lastmod>

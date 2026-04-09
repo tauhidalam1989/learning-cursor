@@ -68,3 +68,12 @@ export type FilterOption = {
   id: ProjectCategory;
   label: string;
 };
+
+/** Long-form case study copy for `/portfolio/[slug]` (challenge → solution → results). */
+export type PortfolioCaseNarrative = {
+  challenge: string;
+  solution: string;
+  results: string;
+  /** ISO 8601 date (YYYY-MM-DD) for Article schema */
+  datePublished: string;
+};

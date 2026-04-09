@@ -142,6 +142,36 @@ export function serviceJsonLd() {
   } as const;
 }
 
+/** Case study / portfolio project detail — Article + optional breadcrumbs. */
+export function portfolioCaseStudyJsonLd(input: {
+  title: string;
+  description: string;
+  slug: string;
+  datePublished: string;
+}) {
+  const url = `${baseUrl}/portfolio/${input.slug}`;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: input.title,
+    description: input.description,
+    datePublished: input.datePublished,
+    dateModified: input.datePublished,
+    author: {
+      '@type': 'Organization' as const,
+      name: siteConfig.name,
+      url: baseUrl,
+    },
+    publisher: {
+      '@type': 'Organization' as const,
+      name: siteConfig.name,
+      url: baseUrl,
+    },
+    mainEntityOfPage: { '@type': 'WebPage' as const, '@id': url },
+    url,
+  } as const;
+}
+
 export function articleJsonLd(post: {
   title: string;
   slug: string;

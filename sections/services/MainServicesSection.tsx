@@ -13,6 +13,8 @@ export type ServiceCard = {
   tags: string[];
   linkLabel: string;
   category: 'ai' | 'web' | 'saas' | 'teams';
+  /** When set, links to `/services/[seoSlug]` inner landing */
+  detailSlug?: string;
 };
 
 export type FeaturedService = {
@@ -62,6 +64,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         tags: ['#RAG', '#Pipelines', '#n8n', '#LangChain'],
         linkLabel: 'Get a consultation',
         category: 'ai',
+        detailSlug: 'ai-automation-workflow-intelligence',
       },
       {
         icon: '🔬',
@@ -71,6 +74,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         tags: ['#PyTorch', '#TensorFlow', '#MLOps', '#Forecasting'],
         linkLabel: 'Explore ML services',
         category: 'ai',
+        detailSlug: 'machine-learning-predictive-analytics',
       },
       {
         icon: '🤖',
@@ -80,6 +84,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         tags: ['#LLM', '#LangChain', '#RAG', '#Embeddings'],
         linkLabel: 'Build your chatbot',
         category: 'ai',
+        detailSlug: 'conversational-ai-chatbots',
       },
     ],
   },
@@ -97,6 +102,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         tags: ['#Next.js', '#React', '#TypeScript', '#Node.js'],
         linkLabel: 'Start your web project',
         category: 'web',
+        detailSlug: 'custom-web-application-development',
       },
       {
         icon: '📱',
@@ -106,6 +112,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         tags: ['#ReactNative', '#Flutter', '#iOS', '#Android'],
         linkLabel: 'Build your mobile app',
         category: 'web',
+        detailSlug: 'mobile-app-development',
       },
       {
         icon: '🎨',
@@ -115,6 +122,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         tags: ['#Figma', '#DesignSystem', '#UXResearch', '#Accessibility'],
         linkLabel: 'See our design work',
         category: 'web',
+        detailSlug: 'ui-ux-product-design',
       },
       {
         icon: '🔗',
@@ -124,6 +132,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         tags: ['#REST', '#GraphQL', '#tRPC', '#Webhooks'],
         linkLabel: 'Discuss your integration',
         category: 'web',
+        detailSlug: 'api-development-system-integrations',
       },
       {
         icon: '🛒',
@@ -133,6 +142,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         tags: ['#Shopify', '#Stripe', '#Headless', '#Marketplace'],
         linkLabel: 'Launch your store',
         category: 'web',
+        detailSlug: 'ecommerce-marketplace-development',
       },
       {
         icon: '⚡',
@@ -142,6 +152,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         tags: ['#AWS', '#GCP', '#Docker', '#K8s'],
         linkLabel: 'Modernize your stack',
         category: 'web',
+        detailSlug: 'performance-engineering-cloud-migration',
       },
     ],
   },
@@ -159,6 +170,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         tags: ['#MultiTenant', '#Stripe', '#RBAC', '#Supabase'],
         linkLabel: 'Build your SaaS',
         category: 'saas',
+        detailSlug: 'saas-platform-development',
       },
       {
         icon: '🏢',
@@ -168,6 +180,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         tags: ['#Enterprise', '#ERP', '#CRM', '#SSO'],
         linkLabel: 'Talk enterprise',
         category: 'saas',
+        detailSlug: 'enterprise-software-development',
       },
       {
         icon: '🛡️',
@@ -177,6 +190,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         tags: ['#DevOps', '#Terraform', '#CI/CD', '#Security'],
         linkLabel: 'Secure your infrastructure',
         category: 'saas',
+        detailSlug: 'devops-security-infrastructure',
       },
     ],
   },
@@ -194,6 +208,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         tags: ['#DedicatedTeam', '#Embedded', '#Agile'],
         linkLabel: 'Build your team',
         category: 'teams',
+        detailSlug: 'dedicated-development-teams',
       },
       {
         icon: '🔍',
@@ -203,6 +218,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         tags: ['#Staffing', '#Augmentation', '#Specialists'],
         linkLabel: 'Find your specialist',
         category: 'teams',
+        detailSlug: 'staff-augmentation-specialists',
       },
       {
         icon: '🌐',
@@ -212,6 +228,7 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
         tags: ['#ODC', '#Offshore', '#Scale', '#CostEffective'],
         linkLabel: 'Explore ODC model',
         category: 'teams',
+        detailSlug: 'offshore-development-centre',
       },
     ],
   },
@@ -270,6 +287,12 @@ export function MainServicesSection() {
                         Get a consultation →
                       </Link>
                       <Link
+                        href="/services/ai-product-development"
+                        className="inline-flex items-center justify-center rounded-lg border border-corematrix-border2 px-5 py-2.5 text-sm font-semibold text-corematrix-textPrimary transition hover:border-corematrix-green700"
+                      >
+                        Service overview
+                      </Link>
+                      <Link
                         href="#case-studies"
                         className="inline-flex items-center justify-center rounded-lg border border-corematrix-border2 px-5 py-2.5 text-sm font-semibold text-corematrix-textPrimary transition hover:border-corematrix-green700"
                       >
@@ -316,12 +339,22 @@ export function MainServicesSection() {
                         </span>
                       ))}
                     </div>
-                    <Link
-                      href="/contact"
-                      className="mt-4 flex items-center gap-2 text-sm font-semibold text-corematrix-green400 transition-all hover:gap-3"
-                    >
-                      {card.linkLabel} →
-                    </Link>
+                    <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+                      {card.detailSlug && (
+                        <Link
+                          href={`/services/${card.detailSlug}`}
+                          className="text-sm font-semibold text-corematrix-textSecondary transition-colors hover:text-corematrix-green400"
+                        >
+                          Service overview →
+                        </Link>
+                      )}
+                      <Link
+                        href="/contact"
+                        className="flex items-center gap-2 text-sm font-semibold text-corematrix-green400 transition-all hover:gap-3"
+                      >
+                        {card.linkLabel} →
+                      </Link>
+                    </div>
                   </article>
                 ))}
               </div>

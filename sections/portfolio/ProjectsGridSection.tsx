@@ -20,13 +20,13 @@ export function ProjectsGridSection() {
   return (
     <section
       aria-labelledby="projects-grid-heading"
-      className="bg-corematrix-bg0 px-4 pb-20 pt-0 sm:px-6 lg:px-8"
+      className="bg-corematrix-bg0 px-4 pb-20 pt-8 sm:px-6 lg:px-8"
     >
       <Container>
         <h2 id="projects-grid-heading" className="sr-only">
           All projects
         </h2>
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}

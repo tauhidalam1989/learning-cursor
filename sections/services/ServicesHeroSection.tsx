@@ -6,12 +6,42 @@ import { Container } from '@/components/ui/Container';
 type ServiceTile = { icon: string; title: string; tag: string; href?: string };
 
 const SERVICE_TILES: ServiceTile[] = [
-  { icon: '🧠', title: 'AI Development', tag: 'LLMs · Agents · ML' },
-  { icon: '💻', title: 'Web Applications', tag: 'Next.js · React · Node' },
-  { icon: '📱', title: 'Mobile Apps', tag: 'iOS · Android · RN' },
-  { icon: '☁️', title: 'SaaS Platforms', tag: 'Multi-tenant · Cloud' },
-  { icon: '⚙️', title: 'AI Automation', tag: 'RAG · Pipelines · Flows' },
-  { icon: '👥', title: 'Dedicated Teams', tag: 'Staffing · Outsourcing' },
+  {
+    icon: '🧠',
+    title: 'AI Development',
+    tag: 'LLMs · Agents · ML',
+    href: '/services/ai-product-development',
+  },
+  {
+    icon: '💻',
+    title: 'Web Applications',
+    tag: 'Next.js · React · Node',
+    href: '/services/custom-web-application-development',
+  },
+  {
+    icon: '📱',
+    title: 'Mobile Apps',
+    tag: 'iOS · Android · RN',
+    href: '/services/mobile-app-development',
+  },
+  {
+    icon: '☁️',
+    title: 'SaaS Platforms',
+    tag: 'Multi-tenant · Cloud',
+    href: '/services/saas-platform-development',
+  },
+  {
+    icon: '⚙️',
+    title: 'AI Automation',
+    tag: 'RAG · Pipelines · Flows',
+    href: '/services/ai-product-development',
+  },
+  {
+    icon: '👥',
+    title: 'Dedicated Teams',
+    tag: 'Staffing · Outsourcing',
+    href: '/services/dedicated-development-teams',
+  },
   {
     icon: '📜',
     title: 'Adobe Licensing',

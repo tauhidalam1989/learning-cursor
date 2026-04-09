@@ -15,7 +15,7 @@ export function MarketingLayout({ children }: MarketingLayoutProps) {
       <Navbar />
       <main
         id="main-content"
-        className="flex-1"
+        className="flex-1 bg-corematrix-bg0"
         role="main"
         tabIndex={-1}
         aria-label="Main content"
