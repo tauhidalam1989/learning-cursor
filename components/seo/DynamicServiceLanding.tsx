@@ -147,7 +147,7 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
-    return `http://localhost:5000${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+    return `${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
   };
 
   // Render icons beautifully (supports FontAwesome classnames & standard emojis)

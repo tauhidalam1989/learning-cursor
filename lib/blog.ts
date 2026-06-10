@@ -1,11 +1,10 @@
 import type { BlogPost } from '@/types/blog';
+import { apiEndpoint } from '@/lib/apiBase';
 
-// Use the Next.js proxy route so both server-side and browser fetches work
-// without CORS issues. The proxy at /api/blogs forwards to the backend.
 const API_BASE =
   typeof window === 'undefined'
-    ? 'http://127.0.0.1:5000/api/blogs'   // server-side: direct backend call
-    : '/api/blogs';                         // client-side: same-origin proxy
+    ? apiEndpoint('/api/blogs')
+    : '/api/blogs';
 
 export interface BlogDetail {
   id: string;
@@ -66,19 +65,12 @@ export function mapDbPostToBlogPost(dbPost: any, language: 'en' | 'ar'): BlogPos
 
 export async function getPostBySlug(slug: string): Promise<BlogDetail | null> {
   const url = `${API_BASE}/${slug}`;
-  console.log('getPostBySlug: fetching URL:', url);
   try {
     const res = await fetch(url, { cache: 'no-store' });
-    console.log('getPostBySlug: response status is:', res.status, res.ok);
-    if (!res.ok) {
-      console.log('getPostBySlug: response not OK');
-      return null;
-    }
-    const data = await res.json();
-    console.log('getPostBySlug: data retrieved successfully:', !!data);
-    return data;
+    if (!res.ok) return null;
+    return await res.json();
   } catch (err) {
-    console.error('getPostBySlug: ERROR fetching from dynamic DB API:', err);
+    console.error('getPostBySlug: failed to fetch blog post:', err);
     return null;
   }
 }

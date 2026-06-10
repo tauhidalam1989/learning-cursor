@@ -347,7 +347,7 @@ export default function AdminPortal() {
   const fetchUsers = async () => {
     if (!token) return;
     try {
-      const res = await fetch('http://localhost:5000/api/auth/users', {
+      const res = await fetch('/api/auth/users', {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
@@ -377,12 +377,12 @@ export default function AdminPortal() {
       const headers = { Authorization: `Bearer ${token}` };
 
       const [servicesRes, blogsRes, careersRes, applicationsRes, categoriesRes, newslettersRes] = await Promise.all([
-        fetch('http://localhost:5000/api/services', { headers }),
-        fetch('http://localhost:5000/api/blogs', { headers }),
-        fetch('http://localhost:5000/api/careers', { headers }),
-        fetch('http://localhost:5000/api/applications', { headers }),
-        fetch('http://localhost:5000/api/service-categories', { headers }),
-        fetch('http://localhost:5000/api/newsletters', { headers }),
+        fetch('/api/services', { headers }),
+        fetch('/api/blogs', { headers }),
+        fetch('/api/careers', { headers }),
+        fetch('/api/applications', { headers }),
+        fetch('/api/service-categories', { headers }),
+        fetch('/api/newsletters', { headers }),
       ]);
 
       if (servicesRes.ok && blogsRes.ok && careersRes.ok && applicationsRes.ok && categoriesRes.ok) {
@@ -426,7 +426,7 @@ export default function AdminPortal() {
     setAuthLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/auth/login', {
+      const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -458,7 +458,7 @@ export default function AdminPortal() {
   // Applications status modifications
   const updateApplicationStatus = async (id: string, status: string) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/applications/${id}/status`, {
+      const res = await fetch(`/api/applications/${id}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -481,7 +481,7 @@ export default function AdminPortal() {
       'Are you sure you want to delete this job application?',
       async () => {
         try {
-          const res = await fetch(`http://localhost:5000/api/applications/${id}`, {
+          const res = await fetch(`/api/applications/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
           });
@@ -510,8 +510,8 @@ export default function AdminPortal() {
     setFormSuccess(null);
 
     const endpoint = editingId
-      ? `http://localhost:5000/api/services/${editingId}`
-      : 'http://localhost:5000/api/services';
+      ? `/api/services/${editingId}`
+      : '/api/services';
 
     const method = editingId ? 'PUT' : 'POST';
 
@@ -568,7 +568,7 @@ export default function AdminPortal() {
       'Are you sure you want to delete this service card?',
       async () => {
         try {
-          const res = await fetch(`http://localhost:5000/api/services/${id}`, {
+          const res = await fetch(`/api/services/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
           });
@@ -597,8 +597,8 @@ export default function AdminPortal() {
     }
 
     const endpoint = editingId
-      ? `http://localhost:5000/api/blogs/${editingId}`
-      : 'http://localhost:5000/api/blogs';
+      ? `/api/blogs/${editingId}`
+      : '/api/blogs';
 
     const method = editingId ? 'PUT' : 'POST';
 
@@ -631,7 +631,7 @@ export default function AdminPortal() {
       'Are you sure you want to delete this blog post?',
       async () => {
         try {
-          const res = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+          const res = await fetch(`/api/blogs/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
           });
@@ -652,8 +652,8 @@ export default function AdminPortal() {
     setFormSuccess(null);
 
     const endpoint = editingId
-      ? `http://localhost:5000/api/careers/${editingId}`
-      : 'http://localhost:5000/api/careers';
+      ? `/api/careers/${editingId}`
+      : '/api/careers';
 
     const method = editingId ? 'PUT' : 'POST';
 
@@ -695,7 +695,7 @@ export default function AdminPortal() {
       'Are you sure you want to delete this career post?',
       async () => {
         try {
-          const res = await fetch(`http://localhost:5000/api/careers/${id}`, {
+          const res = await fetch(`/api/careers/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
           });
@@ -716,8 +716,8 @@ export default function AdminPortal() {
     setFormSuccess(null);
 
     const endpoint = editingId
-      ? `http://localhost:5000/api/service-categories/${editingId}`
-      : 'http://localhost:5000/api/service-categories';
+      ? `/api/service-categories/${editingId}`
+      : '/api/service-categories';
 
     const method = editingId ? 'PUT' : 'POST';
 
@@ -750,7 +750,7 @@ export default function AdminPortal() {
       'Are you sure you want to delete this service category?',
       async () => {
         try {
-          const res = await fetch(`http://localhost:5000/api/service-categories/${id}`, {
+          const res = await fetch(`/api/service-categories/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
           });
@@ -784,7 +784,7 @@ export default function AdminPortal() {
 
     setSettingsLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/auth/change-password', {
+      const res = await fetch('/api/auth/change-password', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -828,8 +828,8 @@ export default function AdminPortal() {
     setUserFormLoading(true);
     const isEdit = !!userForm.id;
     const endpoint = isEdit
-      ? `http://localhost:5000/api/auth/users/${userForm.id}`
-      : 'http://localhost:5000/api/auth/users';
+      ? `/api/auth/users/${userForm.id}`
+      : '/api/auth/users';
     const method = isEdit ? 'PUT' : 'POST';
 
     const payload: any = {
@@ -885,7 +885,7 @@ export default function AdminPortal() {
       'Are you sure you want to delete this user? This action is permanent.',
       async () => {
         try {
-          const res = await fetch(`http://localhost:5000/api/auth/users/${id}`, {
+          const res = await fetch(`/api/auth/users/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
           });
@@ -1535,7 +1535,7 @@ export default function AdminPortal() {
                 <div key={b.id} className="rounded-2xl border border-corematrix-border bg-corematrix-card p-6 flex items-start gap-6 hover:border-corematrix-border2 transition">
                   <div className="relative w-28 h-20 bg-corematrix-card2 rounded-lg border border-corematrix-border overflow-hidden shrink-0">
                     {b.coverImage ? (
-                      <img src={`http://localhost:5000${b.coverImage}`} alt={b.title_en} className="absolute inset-0 w-full h-full object-cover" />
+                      <img src={`${b.coverImage}`} alt={b.title_en} className="absolute inset-0 w-full h-full object-cover" />
                     ) : (
                       <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl">📝</span>
                     )}
@@ -1799,7 +1799,7 @@ export default function AdminPortal() {
                     <div className="mb-6 flex items-center gap-2">
                       <span className="text-lg">📄</span>
                       <a
-                        href={`http://localhost:5000${app.resumePath}`}
+                        href={`${app.resumePath}`}
                         target="_blank"
                         rel="noreferrer"
                         className="text-xs text-corematrix-green400 hover:text-corematrix-green300 font-semibold underline"
@@ -3616,7 +3616,7 @@ export default function AdminPortal() {
                                 onClick={async () => {
                                   const newStatus = nl.status === 'Pending' ? 'Contacted' : 'Pending';
                                   try {
-                                    const res = await fetch(`http://localhost:5000/api/newsletters/${nl.id}/status`, {
+                                    const res = await fetch(`/api/newsletters/${nl.id}/status`, {
                                       method: 'PUT',
                                       headers: {
                                         'Content-Type': 'application/json',
@@ -3646,7 +3646,7 @@ export default function AdminPortal() {
                                     `Delete subscription for "${nl.email}"? This cannot be undone.`,
                                     async () => {
                                       try {
-                                        const res = await fetch(`http://localhost:5000/api/newsletters/${nl.id}`, {
+                                        const res = await fetch(`/api/newsletters/${nl.id}`, {
                                           method: 'DELETE',
                                           headers: { Authorization: `Bearer ${token}` },
                                         });

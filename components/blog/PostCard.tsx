@@ -8,7 +8,7 @@ type PostCardProps = {
 
 export function PostCard({ post }: PostCardProps) {
   const imageUrl = post.coverImage 
-    ? (post.coverImage.startsWith('http') ? post.coverImage : `http://localhost:5000${post.coverImage}`)
+    ? (post.coverImage.startsWith('http') ? post.coverImage : `${post.coverImage}`)
     : null;
 
   return (

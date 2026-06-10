@@ -23,7 +23,7 @@ export function DynamicBlogDetailClient({ post }: DynamicBlogDetailProps) {
   const authorRole = language === 'ar' ? (post.authorRole_ar || post.authorRole_en) : post.authorRole_en;
 
   const imageUrl = post.coverImage
-    ? (post.coverImage.startsWith('http') ? post.coverImage : `http://localhost:5000${post.coverImage}`)
+    ? (post.coverImage.startsWith('http') ? post.coverImage : `${post.coverImage}`)
     : null;
 
   useEffect(() => {
@@ -287,7 +287,7 @@ export function DynamicBlogDetailClient({ post }: DynamicBlogDetailProps) {
                   <div className="h-44 relative overflow-hidden bg-corematrix-bg2">
                     {rp.coverImage ? (
                       <img
-                        src={rp.coverImage.startsWith('http') ? rp.coverImage : `http://localhost:5000${rp.coverImage}`}
+                        src={rp.coverImage.startsWith('http') ? rp.coverImage : `${rp.coverImage}`}
                         alt={rp.title}
                         className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition duration-500"
                       />

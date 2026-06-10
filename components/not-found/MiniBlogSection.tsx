@@ -46,7 +46,7 @@ export function MiniBlogSection() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {posts.map((post) => {
             const imageUrl = post.coverImage 
-              ? (post.coverImage.startsWith('http') ? post.coverImage : `http://localhost:5000${post.coverImage}`)
+              ? (post.coverImage.startsWith('http') ? post.coverImage : `${post.coverImage}`)
               : null;
             return (
               <Link

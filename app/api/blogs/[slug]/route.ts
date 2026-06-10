@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
+import { apiEndpoint } from '@/lib/apiBase';
 
-const BACKEND = 'http://127.0.0.1:5000/api/blogs';
+const BACKEND = apiEndpoint('/api/blogs');
 
 export async function GET(
   _req: Request,

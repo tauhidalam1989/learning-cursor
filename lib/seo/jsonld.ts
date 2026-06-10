@@ -219,7 +219,7 @@ export function dynamicServiceJsonLd(service: {
 }) {
   const url = `${baseUrl}/services/${service.detailSlug}`;
   const image = service.heroImage
-    ? (service.heroImage.startsWith('http') ? service.heroImage : `http://localhost:5000${service.heroImage.startsWith('/') ? '' : '/'}${service.heroImage}`)
+    ? (service.heroImage.startsWith('http') ? service.heroImage : `${service.heroImage.startsWith('/') ? '' : '/'}${service.heroImage}`)
     : `${baseUrl}/images/logo.png`;
 
   return {
@@ -250,7 +250,7 @@ export function dynamicArticleJsonLd(post: {
 }) {
   const url = `${baseUrl}/blog/${post.slug}`;
   const image = post.coverImage
-    ? (post.coverImage.startsWith('http') ? post.coverImage : `http://localhost:5000${post.coverImage.startsWith('/') ? '' : '/'}${post.coverImage}`)
+    ? (post.coverImage.startsWith('http') ? post.coverImage : `${post.coverImage.startsWith('/') ? '' : '/'}${post.coverImage}`)
     : `${baseUrl}/images/logo.png`;
 
   const datePub = post.publishedAt ? new Date(post.publishedAt).toISOString() : new Date().toISOString();

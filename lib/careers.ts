@@ -1,6 +1,7 @@
 import type { OpenRole } from '@/types/careers';
+import { apiEndpoint } from '@/lib/apiBase';
 
-const API_BASE = 'http://127.0.0.1:5000/api/careers';
+const API_BASE = apiEndpoint('/api/careers');
 
 export interface DbCareer {
   id: string;

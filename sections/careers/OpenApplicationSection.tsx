@@ -124,7 +124,7 @@ export function OpenApplicationSection() {
         data.append('resume', selectedFile);
       }
 
-      const res = await fetch('http://localhost:5000/api/applications/submit', {
+      const res = await fetch('/api/applications/submit', {
         method: 'POST',
         body: data,
       });

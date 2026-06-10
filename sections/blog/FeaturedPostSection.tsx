@@ -27,7 +27,7 @@ export function FeaturedPostSection() {
   if (!post) return null;
 
   const imageUrl = post.coverImage 
-    ? (post.coverImage.startsWith('http') ? post.coverImage : `http://localhost:5000${post.coverImage}`)
+    ? (post.coverImage.startsWith('http') ? post.coverImage : `${post.coverImage}`)
     : null;
 
   return (

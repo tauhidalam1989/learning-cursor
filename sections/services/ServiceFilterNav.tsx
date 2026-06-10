@@ -15,7 +15,7 @@ export function ServiceFilterNav() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await fetch('http://localhost:5000/api/service-categories');
+        const res = await fetch('/api/service-categories');
         if (!res.ok) throw new Error('API offline');
         const data = await res.json();
         

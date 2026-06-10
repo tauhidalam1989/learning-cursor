@@ -1,6 +1,7 @@
 import { siteUrl } from '@/lib/seo';
 import { PROJECTS, FEATURED_PROJECT } from '@/data/portfolioData';
 import { getAllServiceLandingSlugs } from '@/lib/service-seo-routes';
+import { apiEndpoint } from '@/lib/apiBase';
 
 /**
  * Dynamic, high-performance sitemap.xml route for Next.js App Router.
@@ -52,7 +53,7 @@ export async function GET() {
   // 4. Fetch Dynamic Published Blogs from Database REST API
   let dynamicBlogs: any[] = [];
   try {
-    const res = await fetch('http://127.0.0.1:5000/api/blogs', { cache: 'no-store' });
+    const res = await fetch(apiEndpoint('/api/blogs'), { cache: 'no-store' });
     if (res.ok) {
       const posts = await res.json();
       dynamicBlogs = posts
@@ -73,7 +74,7 @@ export async function GET() {
   // 5. Fetch Dynamic Active Careers from Database REST API
   let dynamicCareers: any[] = [];
   try {
-    const res = await fetch('http://127.0.0.1:5000/api/careers', { cache: 'no-store' });
+    const res = await fetch(apiEndpoint('/api/careers'), { cache: 'no-store' });
     if (res.ok) {
       const careers = await res.json();
       dynamicCareers = careers.map((career: any) => ({
@@ -92,7 +93,7 @@ export async function GET() {
   // 6. Fetch Dynamic Published Services from Database REST API
   let dynamicServices: any[] = [];
   try {
-    const res = await fetch('http://127.0.0.1:5000/api/services', { cache: 'no-store' });
+    const res = await fetch(apiEndpoint('/api/services'), { cache: 'no-store' });
     if (res.ok) {
       const services = await res.json();
       dynamicServices = services

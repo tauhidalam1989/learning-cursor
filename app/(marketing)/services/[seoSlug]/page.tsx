@@ -6,6 +6,7 @@ import { DynamicServiceLanding } from '@/components/seo/DynamicServiceLanding';
 import { createPageMetadata, siteUrl } from '@/lib/seo';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { breadcrumbJsonLd, dynamicServiceJsonLd, faqPageJsonLd } from '@/lib/seo/jsonld';
+import { apiEndpoint } from '@/lib/apiBase';
 
 type Props = { params: Promise<{ seoSlug: string }> };
 
@@ -15,7 +16,7 @@ export const dynamicParams = true;
 
 async function getDbService(slug: string) {
   try {
-    const res = await fetch(`http://127.0.0.1:5000/api/services/${slug}`, {
+    const res = await fetch(apiEndpoint(`/api/services/${slug}`), {
       next: { revalidate: 60 },
     });
     if (!res.ok) return null;

@@ -44,8 +44,8 @@ export function MainServicesSection() {
     async function fetchDbServicesAndCategories() {
       try {
         const [catsRes, servicesRes] = await Promise.all([
-          fetch('http://localhost:5000/api/service-categories'),
-          fetch('http://localhost:5000/api/services')
+          fetch('/api/service-categories'),
+          fetch('/api/services')
         ]);
         if (!catsRes.ok || !servicesRes.ok) throw new Error('API offline');
         
