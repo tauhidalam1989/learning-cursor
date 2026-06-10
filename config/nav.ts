@@ -11,7 +11,6 @@ export const NAV_LINKS: NavLink[] = [
   { label: 'SERVICE', href: '/services' },
   { label: 'BLOG', href: '/blog' },
   { label: 'CAREERS', href: '/careers' },
-  { label: 'PORTFOLIO', href: '/portfolio' },
 ];
 
 /** CTA for Navbar */
@@ -23,7 +22,7 @@ export const FOOTER_QUICK_LINKS: NavLink[] = [
   { label: 'About us', href: '/about' },
   { label: 'Service', href: '/services' },
   { label: 'Blog', href: '/blog' },
-  { label: 'Portfolio', href: '/portfolio' },
+  // { label: 'Portfolio', href: '/portfolio' },
 ];
 
 /** Service nav dropdown (desktop + mobile submenus) */

@@ -3,38 +3,64 @@
 import { Container } from '@/components/ui/Container';
 import { useCountUp } from '@/hooks/useCountUp';
 import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 
-const FEATURES = [
+type Feature = {
+  title_en: string;
+  title_ar: string;
+  body_en: string;
+  body_ar: string;
+};
+
+const FEATURES: Feature[] = [
   {
-    title: 'AI-First Engineering',
-    body: 'Every project built with intelligent capabilities in mind from day one.',
+    title_en: 'AI-First Engineering',
+    title_ar: 'الهندسة المرتكزة على الذكاء الاصطناعي',
+    body_en: 'Every project built with intelligent capabilities in mind from day one.',
+    body_ar: 'كل مشروع يتم بناؤه مع وضع القدرات الذكية في الاعتبار منذ اليوم الأول.',
   },
   {
-    title: "Next.js & Modern Stack",
-    body: "We use the same tech stack the world's best products run on — Next.js, TypeScript, Python.",
+    title_en: "Next.js & Modern Stack",
+    title_ar: "بنية Next.js والتقنيات الحديثة",
+    body_en: "We use the same tech stack the world's best products run on — Next.js, TypeScript, Python.",
+    body_ar: "نحن نستخدم نفس حزمة التقنيات التي تعمل عليها أفضل المنتجات في العالم — Next.js و TypeScript و Python.",
   },
   {
-    title: 'Business-Outcome Focused',
-    body: 'We measure success by your growth metrics, not just code delivery milestones.',
+    title_en: 'Business-Outcome Focused',
+    title_ar: 'التركيز على نتائج الأعمال',
+    body_en: 'We measure success by your growth metrics, not just code delivery milestones.',
+    body_ar: 'نحن نقيس النجاح بمقاييس نموك، وليس فقط بمراحل تسليم الكود.',
   },
   {
-    title: 'Transparent & Agile',
-    body: 'Weekly sprint demos, shared dashboards, no black-box development ever.',
+    title_en: 'Transparent & Agile',
+    title_ar: 'الشفافية والمرونة',
+    body_en: 'Weekly sprint demos, shared dashboards, no black-box development ever.',
+    body_ar: 'عروض أسبوعية لنتائج العمل، لوحات معلومات مشتركة، لا يوجد تطوير غامض على الإطلاق.',
   },
   {
-    title: 'End-to-End Delivery',
-    body: 'Strategy → Design → Development → Launch → Ongoing Support. We own it all.',
+    title_en: 'End-to-End Delivery',
+    title_ar: 'التسليم من البداية إلى النهاية',
+    body_en: 'Strategy → Design → Development → Launch → Ongoing Support. We own it all.',
+    body_ar: 'الاستراتيجية ← التصميم ← التطوير ← الإطلاق ← الدعم المستمر. نحن نتولى كل شيء.',
   },
 ];
 
-const STATS = [
-  { count: 50, suffix: '+', label: 'Projects\nDelivered' },
-  { count: 30, suffix: '+', label: 'Happy Clients\nWorldwide' },
-  { count: 5, suffix: '+', label: 'Years of\nExcellence' },
-  { count: 98, suffix: '%', label: 'Client\nRetention Rate' },
+type Stat = {
+  count: number;
+  suffix: string;
+  label_en: string;
+  label_ar: string;
+};
+
+const STATS: Stat[] = [
+  { count: 50, suffix: '+', label_en: 'Projects\nDelivered', label_ar: 'مشروعاً\nتم تسليمه' },
+  { count: 30, suffix: '+', label_en: 'Happy Clients\nWorldwide', label_ar: 'عميلاً سعيداً\nحول العالم' },
+  { count: 5, suffix: '+', label_en: 'Years of\nExcellence', label_ar: 'سنوات من\nالتميز' },
+  { count: 98, suffix: '%', label_en: 'Client\nRetention Rate', label_ar: 'معدل\nالاحتفاظ بالعملاء' },
 ];
 
 export function WhyCorematrixSection() {
+  const { language, t } = useLanguage();
   const ref50 = useCountUp(50, '+');
   const ref30 = useCountUp(30, '+');
   const ref5 = useCountUp(5, '+');
@@ -54,14 +80,17 @@ export function WhyCorematrixSection() {
             <MarketingSectionHeader
               align="left"
               descriptionMax="none"
-              label="WHY COREMATRIX"
-              title="Your Trusted Long-Term Tech Partner"
+              label={t("WHY COREMATRIX", "لماذا كورماتريكس")}
+              title={t("Your Trusted Long-Term Tech Partner", "شريكك التقني الموثوق على المدى الطويل")}
               titleId="why-corematrix-heading"
-              description="We're more than a service provider — we're your technical co-founder for the long haul."
+              description={t(
+                "We're more than a service provider — we're your technical co-founder for the long haul.",
+                "نحن أكثر من مجرد مزود خدمة — نحن شريكك التقني المؤسس على المدى الطويل."
+              )}
             />
             <div className="mt-8 space-y-6">
               {FEATURES.map((f) => (
-                <div key={f.title} className="flex items-start gap-3">
+                <div key={f.title_en} className="flex items-start gap-3">
                   <div
                     className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-corematrix-green700/30"
                     aria-hidden
@@ -78,10 +107,10 @@ export function WhyCorematrixSection() {
                   </div>
                   <div>
                     <h3 className="font-display font-semibold text-corematrix-textPrimary">
-                      {f.title}
+                      {language === 'ar' ? f.title_ar : f.title_en}
                     </h3>
                     <p className="mt-0.5 text-sm leading-relaxed text-corematrix-textSecondary">
-                      {f.body}
+                      {language === 'ar' ? f.body_ar : f.body_en}
                     </p>
                   </div>
                 </div>
@@ -92,13 +121,13 @@ export function WhyCorematrixSection() {
           <div className="reveal reveal-delay-2">
             <div className="grid grid-cols-2 gap-8 rounded-2xl border border-corematrix-border2 bg-corematrix-card2 p-10">
               {STATS.map((stat, i) => (
-                <div key={stat.label}>
+                <div key={stat.label_en}>
                   <span
                     ref={refs[i]}
                     className="block text-5xl font-extrabold tracking-tight text-corematrix-green400"
                   />
                   <p className="mt-2 whitespace-pre-line text-sm leading-snug text-corematrix-textMuted">
-                    {stat.label}
+                    {language === 'ar' ? stat.label_ar : stat.label_en}
                   </p>
                 </div>
               ))}
@@ -109,3 +138,4 @@ export function WhyCorematrixSection() {
     </section>
   );
 }
+

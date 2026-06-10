@@ -1,7 +1,10 @@
+'use client';
+
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { siteConfig } from '@/config/site';
+import { useLanguage } from '@/context/LanguageContext';
 
 export type Channel = {
   icon: string;
@@ -13,40 +16,48 @@ export type Channel = {
   actionHref: string;
 };
 
-const CHANNELS: Channel[] = [
-  {
-    icon: '📧',
-    statusLabel: 'Monitored daily',
-    title: 'Email',
-    subtitle: 'Best for formal inquiries',
-    description:
-      'Send us a detailed project brief, RFP, or just a quick hello. We read every email personally and respond with substance — never with a template or automated reply.',
-    actionLabel: siteConfig.email,
-    actionHref: `mailto:${siteConfig.email}`,
-  },
-  {
-    icon: '📞',
-    statusLabel: 'WhatsApp enabled',
-    title: 'Phone & WhatsApp',
-    subtitle: 'Best for urgent conversations',
-    description:
-      'Need to talk to someone right now? Call or WhatsApp us directly. Available Monday to Friday, 9am–6pm GMT. Saturday mornings by appointment.',
-    actionLabel: siteConfig.phone,
-    actionHref: siteConfig.phoneTel,
-  },
-  {
-    icon: '💼',
-    statusLabel: 'Active daily',
-    title: 'LinkedIn',
-    subtitle: 'Best for professional networking',
-    description:
-      'Connect with our team or follow our company page for engineering insights, team updates, and deep-dives on AI and modern software architecture.',
-    actionLabel: 'View our LinkedIn',
-    actionHref: siteConfig.linkedin,
-  },
-];
-
 export function ContactChannelsSection() {
+  const { t } = useLanguage();
+
+  const CHANNELS: Channel[] = [
+    {
+      icon: 'fas fa-envelope',
+      statusLabel: t('Monitored daily', 'متابع يومياً'),
+      title: t('Email', 'البريد الإلكتروني'),
+      subtitle: t('Best for formal inquiries', 'الأفضل للاستفسارات الرسمية'),
+      description: t(
+        'Send us a detailed project brief, RFP, or just a quick hello. We read every email personally and respond with substance — never with a template or automated reply.',
+        'أرسل لنا ملخصاً تفصيلياً عن المشروع، أو طلب تقديم عروض (RFP)، أو مجرد تحية سريعة. نحن نقرأ كل بريد إلكتروني شخصياً ونرد بشكل جوهري وواقعي — لا نستخدم أبداً قوالب جاهزة أو ردوداً تلقائية.'
+      ),
+      actionLabel: siteConfig.email,
+      actionHref: `mailto:${siteConfig.email}`,
+    },
+    {
+      icon: 'fas fa-phone-alt',
+      statusLabel: t('WhatsApp enabled', 'متاح عبر الواتساب'),
+      title: t('Phone & WhatsApp', 'الهاتف والواتساب'),
+      subtitle: t('Best for urgent conversations', 'الأفضل للمحادثات العاجلة'),
+      description: t(
+        'Need to talk to someone right now? Call or WhatsApp us directly. Available Monday to Friday, 9am–6pm GMT. Saturday mornings by appointment.',
+        'هل تحتاج إلى التحدث مع شخص ما في هذه اللحظة؟ اتصل بنا أو راسلنا عبر الواتساب مباشرة. متاحون من الاثنين إلى الجمعة، من الساعة 9 صباحاً حتى 6 مساءً بتوقيت غرينتش. وصباح السبت بموعد مسبق.'
+      ),
+      actionLabel: siteConfig.phone,
+      actionHref: siteConfig.phoneTel,
+    },
+    {
+      icon: 'fab fa-linkedin',
+      statusLabel: t('Active daily', 'نشط يومياً'),
+      title: t('LinkedIn', 'لينكد إن'),
+      subtitle: t('Best for professional networking', 'الأفضل للتواصل المهني'),
+      description: t(
+        'Connect with our team or follow our company page for engineering insights, team updates, and deep-dives on AI and modern software architecture.',
+        'تواصل مع فريقنا أو تابع صفحة شركتنا للحصول على رؤى هندسية دقيقة، وتحديثات الفريق، والدراسات العميقة حول الذكاء الاصطناعي وهندسة البرمجيات الحديثة.'
+      ),
+      actionLabel: t('View our LinkedIn', 'شاهد صفحتنا على لينكد إن'),
+      actionHref: siteConfig.linkedin,
+    },
+  ];
+
   return (
     <section
       id="contact-channels"
@@ -55,10 +66,10 @@ export function ContactChannelsSection() {
     >
       <Container>
         <MarketingSectionHeader
-          label="OTHER WAYS TO REACH US"
-          title="Prefer a Different Channel? We're Everywhere"
+          label={t("OTHER WAYS TO REACH US", "طرق أخرى للتواصل معنا")}
+          title={t("Prefer a Different Channel? We're Everywhere", "هل تفضل قناة أخرى؟ نحن متواجدون في كل مكان")}
           titleId="contact-channels-heading"
-          description="Choose the channel that works best for you."
+          description={t("Choose the channel that works best for you.", "اختر القناة والوسيلة الأكثر ملاءمة وسهولة بالنسبة لك.")}
         />
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -71,8 +82,8 @@ export function ContactChannelsSection() {
                 className="absolute left-0 right-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-corematrix-green700 to-transparent opacity-0 transition-opacity group-hover:opacity-100"
                 aria-hidden
               />
-              <span className="mb-4 block text-5xl" aria-hidden>
-                {ch.icon}
+              <span className="mb-4 block text-4xl text-corematrix-green400" aria-hidden>
+                <i className={ch.icon} aria-hidden="true" />
               </span>
               <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-corematrix-green700/20 bg-corematrix-green900/20 px-3 py-1 font-mono text-[0.65rem] font-semibold text-corematrix-green700">
                 {ch.statusLabel}
@@ -90,7 +101,7 @@ export function ContactChannelsSection() {
                 href={ch.actionHref}
                 className="inline-flex items-center gap-2 text-sm font-semibold text-corematrix-green400 transition-all hover:gap-3"
               >
-                {ch.actionLabel} →
+                {ch.actionLabel} {t('→', '←')}
               </Link>
             </div>
           ))}

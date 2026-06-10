@@ -194,3 +194,163 @@ export function articleJsonLd(post: {
     },
   } as const;
 }
+
+/** Global WebSite Schema Builder */
+export function websiteJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteConfig.name,
+    url: baseUrl,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${baseUrl}/search?q={search_term_string}`,
+      'query-input': 'required name=search_term_string',
+    },
+  } as const;
+}
+
+/** Dynamic Service Page Schema Builder */
+export function dynamicServiceJsonLd(service: {
+  title_en: string;
+  description_en: string;
+  detailSlug: string;
+  heroImage?: string | null;
+}) {
+  const url = `${baseUrl}/services/${service.detailSlug}`;
+  const image = service.heroImage
+    ? (service.heroImage.startsWith('http') ? service.heroImage : `http://localhost:5000${service.heroImage.startsWith('/') ? '' : '/'}${service.heroImage}`)
+    : `${baseUrl}/images/logo.png`;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.title_en,
+    description: service.description_en,
+    url,
+    image,
+    provider: {
+      '@type': 'Organization',
+      name: siteConfig.name,
+      url: baseUrl,
+      logo: `${baseUrl}/images/logo.png`,
+    },
+  } as const;
+}
+
+/** Dynamic Article Schema Builder */
+export function dynamicArticleJsonLd(post: {
+  title_en: string;
+  excerpt_en?: string | null;
+  slug: string;
+  coverImage?: string | null;
+  publishedAt: string;
+  updatedAt?: string | null;
+  authorName_en?: string;
+}) {
+  const url = `${baseUrl}/blog/${post.slug}`;
+  const image = post.coverImage
+    ? (post.coverImage.startsWith('http') ? post.coverImage : `http://localhost:5000${post.coverImage.startsWith('/') ? '' : '/'}${post.coverImage}`)
+    : `${baseUrl}/images/logo.png`;
+
+  const datePub = post.publishedAt ? new Date(post.publishedAt).toISOString() : new Date().toISOString();
+  const dateMod = post.updatedAt ? new Date(post.updatedAt).toISOString() : datePub;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title_en,
+    description: post.excerpt_en ?? '',
+    url,
+    image,
+    datePublished: datePub,
+    dateModified: dateMod,
+    author: {
+      '@type': 'Person',
+      name: post.authorName_en || 'Admin',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: siteConfig.name,
+      url: baseUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/images/logo.png`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': url,
+    },
+  } as const;
+}
+
+/** Dynamic JobPosting Schema Builder */
+export function jobPostingJsonLd(job: {
+  id: string;
+  title_en: string;
+  description_en: string;
+  employmentType_en: string;
+  createdAt: string;
+  updatedAt?: string;
+  salaryRange: string;
+  location_en: string;
+}) {
+  const url = `${baseUrl}/careers/${job.id}`;
+  const datePosted = job.createdAt ? new Date(job.createdAt).toISOString() : new Date().toISOString();
+  // Valid for 6 months
+  const validThrough = new Date(new Date(datePosted).getTime() + 180 * 24 * 60 * 60 * 1000).toISOString();
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'JobPosting',
+    title: job.title_en,
+    description: job.description_en,
+    datePosted,
+    validThrough,
+    employmentType: job.employmentType_en || 'FULL_TIME',
+    hiringOrganization: {
+      '@type': 'Organization',
+      name: siteConfig.name,
+      url: baseUrl,
+      logo: `${baseUrl}/images/logo.png`,
+    },
+    jobLocation: {
+      '@type': 'Place',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: job.location_en || 'Remote',
+        addressCountry: 'US',
+      },
+    },
+    url,
+    ...(job.salaryRange ? {
+      baseSalary: {
+        '@type': 'MonetaryAmount',
+        currency: 'USD',
+        value: {
+          '@type': 'QuantitativeValue',
+          value: job.salaryRange,
+          unitText: 'YEAR',
+        },
+      },
+    } : {}),
+  } as const;
+}
+
+/** Dynamic FAQ Page Schema Builder */
+export function faqPageJsonLd(faqs: { q: string; a: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.a,
+      },
+    })),
+  } as const;
+}
+

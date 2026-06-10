@@ -1,6 +1,9 @@
+'use client';
+
 import { Container } from '@/components/ui/Container';
 import StatCounter from '@/components/shared/StatCounter';
 import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 
 export type TrustStat = {
   count: number;
@@ -9,24 +12,36 @@ export type TrustStat = {
   sub: string;
 };
 
-const TRUST_STATS: TrustStat[] = [
-  {
-    count: 50,
-    suffix: '+',
-    label: 'Projects Delivered',
-    sub: 'Across 12+ countries',
-  },
-  { count: 98, suffix: '%', label: 'Client Retention', sub: 'They keep coming back' },
-  {
-    count: 24,
-    suffix: 'h',
-    label: 'Response Time',
-    sub: 'Max on business days',
-  },
-  { count: 5, suffix: '+', label: 'Years Building', sub: 'AI-first since 2022' },
-];
-
 export function ContactTrustSection() {
+  const { t } = useLanguage();
+
+  const TRUST_STATS: TrustStat[] = [
+    {
+      count: 50,
+      suffix: '+',
+      label: t('Projects Delivered', 'مشاريع تم تسليمها'),
+      sub: t('Across 12+ countries', 'عبر أكثر من 12 دولة'),
+    },
+    {
+      count: 98,
+      suffix: '%',
+      label: t('Client Retention', 'معدل استمرار العملاء'),
+      sub: t('They keep coming back', 'يعودون دائماً للعمل معنا'),
+    },
+    {
+      count: 24,
+      suffix: 'h',
+      label: t('Response Time', 'وقت الاستجابة'),
+      sub: t('Max on business days', 'الحد الأقصى في أيام العمل'),
+    },
+    {
+      count: 5,
+      suffix: '+',
+      label: t('Years Building', 'سنوات من التطوير'),
+      sub: t('AI-first since 2022', 'التركيز على الذكاء الاصطناعي منذ 2022'),
+    },
+  ];
+
   return (
     <section
       id="contact-trust"
@@ -35,10 +50,10 @@ export function ContactTrustSection() {
     >
       <Container>
         <MarketingSectionHeader
-          label="WHY TRUST US"
-          title="Numbers That Speak For Themselves"
+          label={t("WHY TRUST US", "لماذا تثق بنا")}
+          title={t("Numbers That Speak For Themselves", "أرقام وحقائق تتحدث عن نفسها")}
           titleId="contact-trust-heading"
-          description="Trust built through consistent delivery and client success."
+          description={t("Trust built through consistent delivery and client success.", "ثقة بنيناها عبر الالتزام الدائم بالتسليم المستمر ونجاح عملائنا.")}
         />
 
         <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-border lg:grid-cols-4">

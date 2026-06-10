@@ -255,34 +255,24 @@ export function ContactFormSection({
                     <a
                       href={item.href}
                       className="text-base leading-relaxed hover:text-[#149253] transition-colors"
-                      style={
-                        item.type === 'email'
-                          ? {
-                              fontFamily: 'var(--font-sans)',
-                              fontWeight: 400,
-                              fontSize: 22,
-                              lineHeight: '106%',
-                              color: '#FFFFFF',
-                            }
-                          : { color: '#FFFFFF' }
-                      }
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontWeight: 400,
+                        fontSize: 18,
+                        color: '#FFFFFF',
+                      }}
                     >
                       {item.value}
                     </a>
                   ) : (
                     <p
                       className="leading-relaxed"
-                      style={
-                        item.type === 'email'
-                          ? {
-                              fontFamily: 'var(--font-sans)',
-                              fontWeight: 400,
-                              fontSize: 22,
-                              lineHeight: '106%',
-                              color: '#FFFFFF',
-                            }
-                          : { color: '#FFFFFF' }
-                      }
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontWeight: 400,
+                        fontSize: 18,
+                        color: '#FFFFFF',
+                      }}
                     >
                       {item.value}
                     </p>

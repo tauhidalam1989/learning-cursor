@@ -1,44 +1,78 @@
+'use client';
+
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 
 export type FitItem = { text: string };
 
-const GOOD_FIT: FitItem[] = [
-  {
-    text: 'Need AI capabilities built into your product — not bolted on later',
-  },
-  {
-    text: 'Want a long-term technical partner, not a one-off vendor',
-  },
-  {
-    text: 'Value transparency, honest communication, and weekly progress updates',
-  },
-  {
-    text: 'Have a budget of $15k+ for project work or 2-month+ retainer budget',
-  },
-  {
-    text: 'Are building with Next.js, React, Python, or want to migrate to modern stack',
-  },
-  {
-    text: 'Need to scale your engineering team with senior specialists quickly',
-  },
-];
-
-const BAD_FIT: FitItem[] = [
-  {
-    text: 'Need .NET/C# development, WordPress themes, or low-code customizations',
-  },
-  {
-    text: 'Want the cheapest possible option without regard for quality or process',
-  },
-  { text: 'Have a project budget under $5k' },
-  {
-    text: 'Need someone to just follow a spec without any strategic input',
-  },
-];
-
 export function RightFitSection() {
+  const { t } = useLanguage();
+
+  const GOOD_FIT: FitItem[] = [
+    {
+      text: t(
+        'Need AI capabilities built into your product — not bolted on later',
+        'تحتاج إلى بناء ميزات ذكاء اصطناعي أصيلة في صميم منتجك — لا إضافتها لاحقاً كعنصر خارجي'
+      ),
+    },
+    {
+      text: t(
+        'Want a long-term technical partner, not a one-off vendor',
+        'تبحث عن شريك تقني طويل الأجل، وليس مجرد منفذ لمرة واحدة'
+      ),
+    },
+    {
+      text: t(
+        'Value transparency, honest communication, and weekly progress updates',
+        'تقدر الشفافية، والتواصل الصادق، وتحديثات التقدم الأسبوعية المنتظمة'
+      ),
+    },
+    {
+      text: t(
+        'Have a budget of $15k+ for project work or 2-month+ retainer budget',
+        'لديك ميزانية قدرها 15 ألف دولار فما فوق للمشروع أو ميزانية تغطي شهرين فأكثر من الاحتفاظ بالخدمات'
+      ),
+    },
+    {
+      text: t(
+        'Are building with Next.js, React, Python, or want to migrate to modern stack',
+        'تقوم بالتطوير باستخدام Next.js أو React أو Python، أو ترغب في الانتقال إلى بنية برمجية حديثة'
+      ),
+    },
+    {
+      text: t(
+        'Need to scale your engineering team with senior specialists quickly',
+        'ترغب في توسيع نطاق فريقك الهندسي بمتخصصين ومهندسين كبار بسرعة'
+      ),
+    },
+  ];
+
+  const BAD_FIT: FitItem[] = [
+    {
+      text: t(
+        'Need .NET/C# development, WordPress themes, or low-code customizations',
+        'تحتاج إلى تطوير .NET/C#، أو قوالب ووردبريس، أو تخصيصات منخفضة الكود (low-code)'
+      ),
+    },
+    {
+      text: t(
+        'Want the cheapest possible option without regard for quality or process',
+        'تريد الخيار الأرخص سعراً بغض النظر عن الجودة أو كفاءة سير العمل'
+      ),
+    },
+    {
+      text: t('Have a project budget under $5k', 'لديك ميزانية مشروع تقل عن 5 آلاف دولار'),
+    },
+    {
+      text: t(
+        'Need someone to just follow a spec without any strategic input',
+        'تبحث عن شخص يتبع المواصفات المكتوبة بشكل أعمى ودون أي مدخلات أو آراء إستراتيجية'
+      ),
+    },
+  ];
+
   return (
     <section
       id="right-fit"
@@ -51,31 +85,34 @@ export function RightFitSection() {
             <MarketingSectionHeader
               align="left"
               descriptionMax="none"
-              label="RIGHT FIT?"
-              title="Who We Work Best With"
+              label={t("RIGHT FIT?", "التوافق الأنسب؟")}
+              title={t("Who We Work Best With", "من هم الشركاء الذين نعمل معهم بشكل أفضل")}
               titleId="right-fit-heading"
-              description="We're selective about the projects we take on — not because we're precious, but because we want every engagement to be a genuine success for both sides."
+              description={t(
+                "We're selective about the projects we take on — not because we're precious, but because we want every engagement to be a genuine success for both sides.",
+                "نحن ننتقي المشاريع التي نقبلها — ليس لأننا متصنعون، ولكن لأننا نريد أن يكون كل تعاون وتعاقد نجاحاً حقيقياً وملموساً لكلا الطرفين."
+              )}
             />
             <Link
               href="/services"
               className="mt-6 inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
             >
-              See All Our Services →
+              {t("See All Our Services →", "شاهد جميع خدماتنا ←")}
             </Link>
           </div>
 
           <div className="reveal reveal-delay-2 space-y-5">
             <div className="overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-green900/[0.04]">
               <div className="flex items-start gap-3 border-b border-corematrix-border bg-corematrix-green900/[0.06] p-5">
-                <span className="text-2xl" aria-hidden>
-                  ✅
+                <span className="text-xl text-corematrix-green400" aria-hidden>
+                  <i className="fas fa-check-circle" />
                 </span>
                 <div>
                   <h3 className="font-display text-sm font-bold text-corematrix-textPrimary">
-                    We&apos;re a great fit if you...
+                    {t("We're a great fit if you...", "نحن نتوافق معك بشكل رائع إذا كنت...")}
                   </h3>
                   <p className="mt-1 text-xs text-corematrix-textMuted">
-                    These are the clients we do our best work with
+                    {t("These are the clients we do our best work with", "هؤلاء هم العملاء الذين نقدم معهم أفضل أعمالنا")}
                   </p>
                 </div>
               </div>
@@ -93,15 +130,15 @@ export function RightFitSection() {
 
             <div className="overflow-hidden rounded-2xl border border-corematrix-border bg-[rgba(239,68,68,0.04)]">
               <div className="flex items-start gap-3 border-b border-corematrix-border bg-[rgba(239,68,68,0.06)] p-5">
-                <span className="text-2xl" aria-hidden>
-                  ⚠️
+                <span className="text-xl text-red-400" aria-hidden>
+                  <i className="fas fa-exclamation-triangle" />
                 </span>
                 <div>
                   <h3 className="font-display text-sm font-bold text-corematrix-textPrimary">
-                    Probably not a fit if...
+                    {t("Probably not a fit if...", "ربما لا نكون الشريك المناسب إذا...")}
                   </h3>
                   <p className="mt-1 text-xs text-corematrix-textMuted">
-                    We&apos;re honest so you don&apos;t waste time
+                    {t("We're honest so you don't waste time", "نحن صادقون وصريحون حتى لا تضيع وقتك الثمين")}
                   </p>
                 </div>
               </div>

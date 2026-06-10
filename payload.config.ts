@@ -19,13 +19,18 @@
  */
 import path from 'path';
 import { postgresAdapter } from '@payloadcms/db-postgres';
+import { inMemoryKVAdapter, buildConfig } from 'payload';
+import { slateEditor } from '@payloadcms/richtext-slate';
 // Note: rich text editor (Slate) can be enabled by installing
 // `@payloadcms/richtext-slate` and importing `slateEditor`. We intentionally
 // avoid adding the import here so the frontend React version stays untouched.
 
-export default ({
+export default buildConfig({
   // Public facing URL (used in some admin links). Override in production.
   serverURL: process.env.PAYLOAD_SERVER_URL || 'http://localhost:3000',
+
+  // Secret key used to secure Payload session tokens and cookies
+  secret: process.env.PAYLOAD_SECRET || '35c6e838d21b4a1b8c2c77dcfde9b8ef421b8f1c8a14b51c8a1e8c1d1a1b1c1d',
 
   // Admin configuration: point to the collection that stores admin users.
   admin: {
@@ -60,12 +65,7 @@ export default ({
           required: true,
           unique: true,
         },
-        {
-          name: 'password',
-          label: 'Password',
-          type: 'password',
-          required: true,
-        },
+
         {
           name: 'name',
           label: 'Full name',
@@ -88,6 +88,7 @@ export default ({
       upload: {
         staticDir: path.resolve(process.cwd(), 'public', 'uploads'),
       },
+      fields: [],
     },
 
     // Blog collection for CMS-managed blog posts. Draft/publish workflow is
@@ -131,9 +132,7 @@ export default ({
           name: 'content',
           label: 'Content',
           type: 'richText',
-          // To enable the full Slate editor in the admin UI, install
-          // `@payloadcms/richtext-slate` and configure `editor: slateEditor({})`
-          // at the top of this file.
+          editor: slateEditor({}),
         },
         {
           name: 'coverImage',
@@ -252,6 +251,12 @@ export default ({
     },
   ],
 
+  // Custom blocks used in rich text or layout fields (empty by default)
+  blocks: [],
+
+  // Key-Value adapter configuration
+  kv: inMemoryKVAdapter(),
+
   // Database adapter: use official Postgres adapter and connect via the same
   // DATABASE_URL that Prisma uses. Payload will manage its own tables/schema.
   db: postgresAdapter({
@@ -262,19 +267,11 @@ export default ({
     },
   }),
 
-  // Local file uploads. Stores files under /public/uploads. Change for S3/etc.
-  uploads: {
-    staticDir: path.resolve(process.cwd(), 'public', 'uploads'),
-  },
+
 
   // Run a small seed on first init to ensure there's at least one blog post to
   // inspect in the admin UI during development.
-  onInit: async (
-    payloadInstance: {
-      find: (opts: { collection: string; limit: number }) => Promise<{ docs: unknown[] }>;
-      create: (opts: { collection: string; data: Record<string, unknown> }) => Promise<unknown>;
-    }
-  ) => {
+  onInit: async (payloadInstance: any) => {
     try {
       const result = await payloadInstance.find({
         collection: 'cms-blog',

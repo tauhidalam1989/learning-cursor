@@ -1,21 +1,82 @@
+'use client';
+
 import { Container } from '@/components/ui/Container';
 import StatCounter from '@/components/shared/StatCounter';
 import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 
-type Impact = { count: number; suffix: string; label: string; sub: string };
+type Impact = { count: number; suffix: string; label_en: string; label_ar: string; sub_en: string; sub_ar: string };
 
 const IMPACTS: Impact[] = [
-  { count: 50, suffix: '+', label: 'Projects Delivered', sub: 'Across 12+ countries' },
-  { count: 98, suffix: '%', label: 'Client Retention Rate', sub: 'Industry avg is 67%' },
-  { count: 3, suffix: 'x', label: 'Avg ROI for Clients', sub: 'Within 6 months of launch' },
-  { count: 60, suffix: '%', label: 'Cost Reduction', sub: 'Via AI automation avg' },
-  { count: 30, suffix: '+', label: 'Happy Clients', sub: 'Startups to enterprises' },
-  { count: 5, suffix: '+', label: 'Years of Excellence', sub: 'Growing every quarter' },
-  { count: 25, suffix: '+', label: 'Engineers On Staff', sub: 'AI, web, mobile, DevOps' },
-  { count: 12, suffix: '+', label: 'AI Systems Shipped', sub: 'LLMs, agents, ML models' },
+  {
+    count: 50,
+    suffix: '+',
+    label_en: 'Projects Delivered',
+    label_ar: 'مشروعاً تم تسليمها',
+    sub_en: 'Across 12+ countries',
+    sub_ar: 'في أكثر من 12 دولة'
+  },
+  {
+    count: 98,
+    suffix: '%',
+    label_en: 'Client Retention Rate',
+    label_ar: 'معدل الاحتفاظ بالعملاء',
+    sub_en: 'Industry avg is 67%',
+    sub_ar: 'متوسط الصناعة هو 67%'
+  },
+  {
+    count: 3,
+    suffix: 'x',
+    label_en: 'Avg ROI for Clients',
+    label_ar: 'متوسط عائد الاستثمار لعملائنا',
+    sub_en: 'Within 6 months of launch',
+    sub_ar: 'في غضون 6 أشهر من الإطلاق'
+  },
+  {
+    count: 60,
+    suffix: '%',
+    label_en: 'Cost Reduction',
+    label_ar: 'خفض التكاليف لعملائنا',
+    sub_en: 'Via AI automation avg',
+    sub_ar: 'عبر أتمتة الذكاء الاصطناعي في المتوسط'
+  },
+  {
+    count: 30,
+    suffix: '+',
+    label_en: 'Happy Clients',
+    label_ar: 'عميل سعيد بنجاحنا',
+    sub_en: 'Startups to enterprises',
+    sub_ar: 'من الشركات الناشئة إلى المؤسسات الكبرى'
+  },
+  {
+    count: 5,
+    suffix: '+',
+    label_en: 'Years of Excellence',
+    label_ar: 'سنوات من التميز الرقمي',
+    sub_en: 'Growing every quarter',
+    sub_ar: 'ننمو ونزدهر في كل ربع سنوي'
+  },
+  {
+    count: 25,
+    suffix: '+',
+    label_en: 'Engineers On Staff',
+    label_ar: 'مهندساً ضمن فريقنا',
+    sub_en: 'AI, web, mobile, DevOps',
+    sub_ar: 'الذكاء الاصطناعي، الويب، المحمول، السحابة'
+  },
+  {
+    count: 12,
+    suffix: '+',
+    label_en: 'AI Systems Shipped',
+    label_ar: 'أنظمة ذكاء اصطناعي مشحونة',
+    sub_en: 'LLMs, agents, ML models',
+    sub_ar: 'النماذج الكبيرة، الوكلاء، نماذج الآلة'
+  },
 ];
 
 export function ImpactNumbersSection() {
+  const { t, language } = useLanguage();
+
   return (
     <section
       id="impact-numbers"
@@ -28,29 +89,29 @@ export function ImpactNumbersSection() {
       />
 
       <Container className="relative z-10">
-      <MarketingSectionHeader
-        label="IMPACT BY THE NUMBERS"
-        title="Results That Speak for Themselves"
-        titleId="impact-numbers-heading"
-        description="Measurable outcomes from the projects we've delivered across the globe."
-      />
+        <MarketingSectionHeader
+          label={t("IMPACT BY THE NUMBERS", "الأرقام تتحدث")}
+          title={t("Results That Speak for Themselves", "نتائج ملموسة تتحدث عن نفسها")}
+          titleId="impact-numbers-heading"
+          description={t("Measurable outcomes from the projects we've delivered across the globe.", "مخرجات قابلة للقياس من المشاريع التي قمنا بتسليمها في جميع أنحاء العالم.")}
+        />
 
-      <div className="relative z-10 mt-12 grid grid-cols-2 divide-x divide-y divide-corematrix-border overflow-hidden rounded-2xl border border-corematrix-border lg:grid-cols-4">
-        {IMPACTS.map((imp) => (
-          <div
-            key={imp.label}
-            className="flex flex-col items-center bg-corematrix-card p-10 text-center transition-colors hover:bg-corematrix-card2"
-          >
-            <StatCounter
-              count={imp.count}
-              suffix={imp.suffix}
-              label={imp.label}
-              sub={imp.sub}
-              labelClassName="text-xs leading-snug text-corematrix-textMuted"
-            />
-          </div>
-        ))}
-      </div>
+        <div className="relative z-10 mt-12 grid grid-cols-2 divide-x divide-y divide-corematrix-border overflow-hidden rounded-2xl border border-corematrix-border lg:grid-cols-4">
+          {IMPACTS.map((imp) => (
+            <div
+              key={imp.label_en}
+              className="flex flex-col items-center bg-corematrix-card p-10 text-center transition-colors hover:bg-corematrix-card2"
+            >
+              <StatCounter
+                count={imp.count}
+                suffix={imp.suffix}
+                label={language === 'ar' ? imp.label_ar : imp.label_en}
+                sub={language === 'ar' ? imp.sub_ar : imp.sub_en}
+                labelClassName="text-xs leading-snug text-corematrix-textMuted"
+              />
+            </div>
+          ))}
+        </div>
       </Container>
     </section>
   );

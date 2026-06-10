@@ -39,6 +39,9 @@ export const metadata = {
     siteName: 'Corematrix',
     type: 'website' as const,
   },
+  alternates: {
+    canonical: careersUrl,
+  },
 };
 
 const jsonLd = webPageJsonLd(

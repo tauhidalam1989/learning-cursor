@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { siteUrl } from '@/lib/seo';
 import { HeroSection } from '@/sections/home/HeroSection';
 import { TechStackMarquee } from '@/sections/home/TechStackMarquee';
 import { CoreServicesSection } from '@/sections/home/CoreServicesSection';
@@ -36,6 +37,9 @@ export const metadata: Metadata = {
     siteName: 'Corematrix',
     type: 'website',
   },
+  alternates: {
+    canonical: siteUrl,
+  },
 };
 
 export default function HomePage() {
@@ -51,7 +55,7 @@ export default function HomePage() {
       <TestimonialsSection />
       <FaqSection />
       <CtaBannerSection />
-      <ContactFormSection block={defaultContactBlock} id="contact-form" />
+      {/* <ContactFormSection block={defaultContactBlock} id="contact-form" /> */}
     </div>
   );
 }

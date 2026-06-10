@@ -1,29 +1,34 @@
+'use client';
+
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { siteConfig } from '@/config/site';
+import { useLanguage } from '@/context/LanguageContext';
 
 export type ContactMethod = { icon: string; title: string; value: string };
 
-const RESPONSE_BADGES = [
-  { icon: '⚡', value: '24h', label: 'response time' },
-  { icon: '🌍', value: 'Global', label: 'availability' },
-  { icon: '🔒', value: 'NDA', label: 'signed upfront' },
-  { icon: '🆓', value: 'Free', label: 'discovery call' },
-] as const;
-
-const CONTACT_METHODS: ContactMethod[] = [
-  { icon: '📧', title: 'Email Us', value: siteConfig.email },
-  { icon: '📞', title: 'Call or WhatsApp', value: siteConfig.phone },
-  { icon: '💼', title: 'LinkedIn', value: siteConfig.linkedinDisplay },
-  { icon: '🐙', title: 'GitHub', value: siteConfig.githubDisplay },
-];
-
 export function ContactHeroSection() {
+  const { t } = useLanguage();
+
+  const RESPONSE_BADGES = [
+    { icon: 'fas fa-bolt', value: t('24h', '24 ساعة'), label: t('response time', 'وقت الاستجابة') },
+    { icon: 'fas fa-globe', value: t('Global', 'عالمي'), label: t('availability', 'الجهوزية والتوفر') },
+    { icon: 'fas fa-lock', value: t('NDA', 'اتفاقية عدم الإفصاح'), label: t('signed upfront', 'توقع مسبقاً') },
+    { icon: 'fas fa-gift', value: t('Free', 'مجاناً'), label: t('discovery call', 'مكالمة استكشافية') },
+  ];
+
+  const CONTACT_METHODS: ContactMethod[] = [
+    { icon: 'fas fa-envelope', title: t('Email Us', 'راسلنا عبر البريد'), value: siteConfig.email },
+    { icon: 'fas fa-phone-alt', title: t('Call or WhatsApp', 'الهاتف والواتساب'), value: siteConfig.phone },
+    { icon: 'fab fa-linkedin', title: t('LinkedIn', 'لينكد إن'), value: siteConfig.linkedinDisplay },
+    { icon: 'fab fa-github', title: t('GitHub', 'جيتهاب'), value: siteConfig.githubDisplay },
+  ];
+
   return (
     <section
       id="contact-hero"
       aria-labelledby="contact-hero-heading"
-      className="relative flex min-h-[72vh] items-center overflow-hidden bg-corematrix-bg1 pt-36 pb-20"
+      className="relative flex min-h-[72vh] items-center overflow-hidden bg-corematrix-bg1 pt-12 pb-20"
     >
       <div
         className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.15]"
@@ -51,30 +56,31 @@ export function ContactHeroSection() {
         <div>
           <div className="mb-6 flex items-center gap-2 text-xs font-medium text-corematrix-textDim">
             <Link href="/" className="hover:text-corematrix-textMuted">
-              Home
+              {t('Home', 'الرئيسية')}
             </Link>
             <span aria-hidden>›</span>
-            <span className="text-corematrix-green400">Contact Us</span>
+            <span className="text-corematrix-green400">{t('Contact Us', 'اتصل بنا')}</span>
           </div>
 
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-corematrix-green700 bg-corematrix-green900/30 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-corematrix-green400">
             <span className="h-1.5 w-1.5 rounded-full bg-corematrix-green400 dot-pulse" />
-            We Respond Within 24 Hours
+            {t('We Respond Within 24 Hours', 'نقوم بالرد في غضون 24 ساعة')}
           </div>
 
           <h1
             id="contact-hero-heading"
             className="font-display text-[clamp(2.5rem,4.5vw,4rem)] font-extrabold leading-[1.06] tracking-tight text-corematrix-textPrimary"
           >
-            Let&apos;s Build Something
+            {t("Let's Build Something", "لنقم ببناء شيء")}
             <br />
-            <span className="not-italic text-corematrix-green400">Extraordinary</span> Together
+            <span className="not-italic text-corematrix-green400">{t('Extraordinary', 'استثنائي وفائق')}</span> {t('Together', 'معاً')}
           </h1>
 
           <p className="mt-6 max-w-[560px] text-base font-light leading-relaxed text-corematrix-textSecondary">
-            Have a project in mind? A problem to solve? Or just want to explore whether we&apos;d be
-            a good fit? We&apos;d love to hear from you. No sales pitch — just a real technical
-            conversation.
+            {t(
+              "Have a project in mind? A problem to solve? Or just want to explore whether we'd be a good fit? We'd love to hear from you. No sales pitch — just a real technical conversation.",
+              "هل لديك مشروع تفكر فيه؟ أو مشكلة ترغب في حلها؟ أو فقط تريد استكشاف ما إذا كنا الشريك المناسب لك؟ يسعدنا جداً السماع منك وتلقي استفسارك. لا توجد عروض بيع مبالغ فيها — بل حوار تقني واقعي وجاد."
+            )}
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -83,7 +89,9 @@ export function ContactHeroSection() {
                 key={badge.label}
                 className="flex items-center gap-2 rounded-xl border border-corematrix-border bg-corematrix-card px-4 py-2 text-sm"
               >
-                <span aria-hidden>{badge.icon}</span>
+                <span className="text-corematrix-green400" aria-hidden>
+                  <i className={badge.icon} />
+                </span>
                 <span className="font-bold text-corematrix-green400">{badge.value}</span>
                 <span className="text-corematrix-textMuted">{badge.label}</span>
               </div>
@@ -98,7 +106,7 @@ export function ContactHeroSection() {
               aria-hidden
             />
             <p className="mb-6 font-display text-[0.68rem] font-bold uppercase tracking-[0.12em] text-corematrix-green400">
-              REACH US DIRECTLY
+              {t('REACH US DIRECTLY', 'تواصل معنا مباشرة')}
             </p>
             <div className="space-y-3">
               {CONTACT_METHODS.map((method) => (
@@ -106,8 +114,8 @@ export function ContactHeroSection() {
                   key={method.title}
                   className="flex cursor-default items-center gap-4 rounded-xl border border-corematrix-border bg-corematrix-card p-4 transition-all hover:translate-x-1 hover:border-corematrix-border2"
                 >
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-corematrix-green700/20 bg-corematrix-green900/40 text-base">
-                    {method.icon}
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-corematrix-green700/20 bg-corematrix-green900/40 text-base text-corematrix-green400">
+                    <i className={method.icon} aria-hidden="true" />
                   </div>
                   <div>
                     <p className="font-display text-xs font-bold text-corematrix-textPrimary">
@@ -127,10 +135,10 @@ export function ContactHeroSection() {
               <span className="h-2 w-2 rounded-full bg-corematrix-green400 dot-pulse" />
               <div>
                 <p className="font-display text-sm font-bold text-corematrix-textPrimary">
-                  Currently accepting new projects
+                  {t('Currently accepting new projects', 'نقبل حالياً مشاريع جديدة')}
                 </p>
                 <p className="text-xs text-corematrix-textDim">
-                  Next availability: This week
+                  {t('Next availability: This week', 'الجهوزية القادمة: هذا الأسبوع')}
                 </p>
               </div>
             </div>

@@ -1,32 +1,76 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Container } from '@/components/ui/Container';
 import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { RoleCard } from '@/components/careers/RoleCard';
-import { OPEN_ROLES, DEPARTMENT_FILTERS } from '@/data/careersData';
-import type { Department } from '@/types/careers';
+import { getAllDbCareers } from '@/lib/careers';
+import { useLanguage } from '@/context/LanguageContext';
+import type { OpenRole } from '@/types/careers';
 
 export function OpenRolesSection() {
+  const { language, t } = useLanguage();
   const [activeDept, setActiveDept] = useState<string>('all');
+  const [roles, setRoles] = useState<OpenRole[]>([]);
+
+  useEffect(() => {
+    async function loadJobs() {
+      const dbJobs = await getAllDbCareers(language);
+      setRoles(dbJobs);
+    }
+    loadJobs();
+  }, [language]);
+
+  const DEPT_LABELS: Record<string, { en: string; ar: string }> = {
+    engineering: { en: 'Engineering', ar: 'الهندسة' },
+    design: { en: 'Design', ar: 'التصميم' },
+    product: { en: 'Product', ar: 'إدارة المنتجات' },
+    devops: { en: 'DevOps', ar: 'العمليات والتطوير' },
+  };
 
   const grouped = useMemo(() => {
-    const groups: Record<Exclude<Department, 'all'>, typeof OPEN_ROLES> = {
-      engineering: [],
-      design: [],
-      product: [],
-      devops: [],
-    };
-    for (const role of OPEN_ROLES) {
-      groups[role.department].push(role);
+    const groups: Record<string, OpenRole[]> = {};
+    for (const role of roles) {
+      if (role.department) {
+        if (!groups[role.department]) {
+          groups[role.department] = [];
+        }
+        groups[role.department].push(role);
+      }
     }
     return groups;
-  }, []);
+  }, [roles]);
 
-  const deptsToShow: (Exclude<Department, 'all'>)[] =
-    activeDept === 'all'
-      ? ['engineering', 'design', 'product', 'devops']
-      : [activeDept as Exclude<Department, 'all'>];
+  const departmentFilters = useMemo(() => {
+    const depts = Object.keys(grouped);
+    const filters = depts.map(deptId => {
+      const labelObj = DEPT_LABELS[deptId] || {
+        en: deptId.charAt(0).toUpperCase() + deptId.slice(1),
+        ar: deptId
+      };
+      return {
+        id: deptId,
+        label: language === 'ar' ? labelObj.ar : labelObj.en,
+        count: grouped[deptId].length
+      };
+    });
+
+    return [
+      {
+        id: 'all',
+        label: language === 'ar' ? 'كل الوظائف' : 'All Roles',
+        count: roles.length
+      },
+      ...filters
+    ];
+  }, [grouped, roles, language]);
+
+  const deptsToShow = useMemo(() => {
+    if (activeDept === 'all') {
+      return Object.keys(grouped);
+    }
+    return grouped[activeDept] ? [activeDept] : [];
+  }, [activeDept, grouped]);
 
   return (
     <section
@@ -36,14 +80,17 @@ export function OpenRolesSection() {
     >
       <Container>
         <MarketingSectionHeader
-          label="OPEN ROLES"
-          title="Join Our Growing Team"
+          label={t('OPEN ROLES', 'الوظائف الشاغرة')}
+          title={t('Join Our Growing Team', 'انضم إلى فريقنا المتنامي')}
           titleId="open-roles-heading"
-          description="Find a role that matches your skills. Every position is remote-first and offers real ownership from day one."
+          description={t(
+            'Find a role that matches your skills. Every position is remote-first and offers real ownership from day one.',
+            'ابحث عن دور يطابق مهاراتك. كل وظيفة لدينا هي عن بعد وتوفر لك ملكية حقيقية لنتائج عملك من اليوم الأول.'
+          )}
         />
 
         <div className="mt-10 flex flex-wrap justify-center gap-2">
-          {DEPARTMENT_FILTERS.map((f) => (
+          {departmentFilters.map((f) => (
             <button
               key={f.id}
               type="button"
@@ -63,13 +110,11 @@ export function OpenRolesSection() {
           {deptsToShow.map((dept) => {
             const roles = grouped[dept];
             if (roles.length === 0) return null;
-            const labels: Record<Exclude<Department, 'all'>, string> = {
-              engineering: 'Engineering',
-              design: 'Design',
-              product: 'Product',
-              devops: 'DevOps',
+            const labelObj = DEPT_LABELS[dept] || {
+              en: dept.charAt(0).toUpperCase() + dept.slice(1),
+              ar: dept
             };
-            const label = labels[dept];
+            const label = language === 'ar' ? labelObj.ar : labelObj.en;
             return (
               <div key={dept}>
                 <div className="mb-4 flex items-center gap-4">

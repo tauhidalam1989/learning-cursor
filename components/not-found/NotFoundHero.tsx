@@ -3,12 +3,15 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { TERMINAL_LINES } from '@/data/notFoundData';
+import { useLanguage } from '@/context/LanguageContext';
 
 type Particle = { x: number; y: number; vx: number; vy: number; r: number; phase: number };
 
 export function NotFoundHero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [visibleLines, setVisibleLines] = useState(1);
+  const { language, t } = useLanguage();
+  const isAr = language === 'ar';
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -131,7 +134,7 @@ export function NotFoundHero() {
       <div className="relative z-10">
         <div className="mb-8 inline-flex items-center gap-2.5 rounded-lg border border-corematrix-green400/20 bg-corematrix-green900/20 px-4 py-2 font-mono text-sm text-corematrix-green400">
           <span className="h-1.5 w-1.5 rounded-full bg-corematrix-green400 dot-pulse" />
-          ERROR_CODE: 404 · PAGE_NOT_FOUND
+          {t('ERROR_CODE: 404 · PAGE_NOT_FOUND', 'رمز الخطأ: 404 · لم يتم العثور على الصفحة')}
         </div>
 
         <div className="relative mb-8 select-none">
@@ -158,14 +161,15 @@ export function NotFoundHero() {
           id="not-found-heading"
           className="mx-auto mb-6 max-w-[680px] font-display text-[clamp(1.6rem,3.5vw,2.8rem)] font-extrabold leading-[1.15] tracking-tight text-corematrix-textPrimary"
         >
-          Our AI Searched the{' '}
-          <span className="not-italic text-corematrix-green400">Entire Internet</span>
-          {' '}— Nothing Found.
+          {t('Our AI Searched the ', 'قام نظام الذكاء الاصطناعي لدينا بالبحث في ')}
+          <span className="not-italic text-corematrix-green400">
+            {t('Entire Internet', 'الإنترنت بأكمله')}
+          </span>
+          {t(' — Nothing Found.', ' — ولم يجد شيئاً.')}
         </h1>
 
-        <p className="mx-auto mb-10 max-w-[560px] font-light text-corematrix-textMuted">
-          The page you&apos;re looking for doesn&apos;t exist or may have been moved. Use the
-          links below to get back on track.
+        <p className="mx-auto mb-10 max-w-[560px] font-light text-corematrix-textMuted leading-relaxed">
+          {t("The page you're looking for doesn't exist or may have been moved. Use the links below to get back on track.", 'الصفحة التي تبحث عنها غير موجودة أو ربما تم نقلها. استخدم الروابط أدناه للعودة للمسار الصحيح.')}
         </p>
 
         <div className="mb-10 flex flex-wrap justify-center gap-4">
@@ -173,19 +177,19 @@ export function NotFoundHero() {
             href="/"
             className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
           >
-            Go Back Home
+            {t('Go Back Home', 'العودة للرئيسية')}
           </Link>
           <Link
             href="/services"
             className="inline-flex items-center justify-center rounded-lg border border-corematrix-border px-6 py-3 text-sm font-semibold text-corematrix-textPrimary transition hover:border-corematrix-green400/30 hover:text-corematrix-green400"
           >
-            Explore Services
+            {t('Explore Services', 'استكشف الخدمات')}
           </Link>
           <Link
             href="/contact"
             className="inline-flex items-center justify-center rounded-lg border border-corematrix-border px-6 py-3 text-sm font-semibold text-corematrix-textPrimary transition hover:border-corematrix-green400/30 hover:text-corematrix-green400"
           >
-            Contact Us
+            {t('Contact Us', 'اتصل بنا')}
           </Link>
         </div>
 
@@ -199,15 +203,17 @@ export function NotFoundHero() {
               <span className="h-3 w-3 rounded-full bg-amber-500/80" />
               <span className="h-3 w-3 rounded-full bg-green-500/80" />
             </span>
-            <span className="font-mono text-xs text-corematrix-textDim">corematrix.ai search</span>
+            <span className="font-mono text-xs text-corematrix-textDim">{t('corematrix.ai search', 'بحث كوري ماتريكس')}</span>
           </div>
           <div className="space-y-1 font-mono text-sm">
             {visibleTerminalLines.map((line) => {
+              const text = isAr ? line.text_ar : line.text_en;
+              const highlight = isAr ? line.highlight_ar : line.highlight_en;
               if (line.prefix === 'command') {
                 return (
                   <div key={line.id}>
                     <span className="font-medium text-corematrix-green400">$ </span>
-                    <span className="text-corematrix-textMuted">{line.text}</span>
+                    <span className="text-corematrix-textMuted">{text}</span>
                   </div>
                 );
               }
@@ -215,9 +221,9 @@ export function NotFoundHero() {
                 return (
                   <div key={line.id} className="text-corematrix-textMuted">
                     <span className="text-red-400">✗ </span>
-                    {line.text}
-                    {line.highlight && (
-                      <span className="text-amber-400"> {line.highlight}</span>
+                    {text}
+                    {highlight && (
+                      <span className="text-amber-400"> {highlight}</span>
                     )}
                   </div>
                 );
@@ -226,13 +232,13 @@ export function NotFoundHero() {
                 return (
                   <div key={line.id}>
                     <span className="text-corematrix-green400">→ </span>
-                    <span className="text-corematrix-textMuted">{line.text}</span>
-                    {line.highlight && (
+                    <span className="text-corematrix-textMuted">{text}</span>
+                    {highlight && (
                       <Link
                         href="/"
                         className="font-medium text-corematrix-green400 hover:underline"
                       >
-                        {line.highlight}
+                        {highlight}
                       </Link>
                     )}
                   </div>

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import type { BlogPost } from '@/types/blog';
 
@@ -6,19 +7,29 @@ type PostCardProps = {
 };
 
 export function PostCard({ post }: PostCardProps) {
+  const imageUrl = post.coverImage 
+    ? (post.coverImage.startsWith('http') ? post.coverImage : `http://localhost:5000${post.coverImage}`)
+    : null;
+
   return (
     <Link
       href={`/blog/${post.slug}`}
       className="group flex flex-col overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-card transition-all duration-300 card-glow hover:-translate-y-1"
     >
       <div className="relative h-40 flex-shrink-0 overflow-hidden border-b border-corematrix-border bg-corematrix-bg0">
-        {/* TODO: Replace with <Image src={post.coverImage} alt={post.title} fill className="object-cover" /> once Payload media is wired */}
-        <div className="absolute inset-0 bg-gradient-to-br from-corematrix-green900 to-corematrix-card2 opacity-80" />
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={post.title}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <>
+            <i className="fas fa-newspaper text-3xl text-corematrix-green400/60 absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2" aria-hidden />
+          </>
+        )}
         <span className="absolute top-3 left-3 z-10 rounded-full border border-corematrix-green700/30 bg-corematrix-green900/40 px-2.5 py-1 text-[0.62rem] font-bold uppercase tracking-wider text-corematrix-green400">
           {post.categoryLabel}
-        </span>
-        <span className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-4xl">
-          {post.emoji}
         </span>
         <div
           className="absolute left-0 right-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-corematrix-green700 to-transparent opacity-0 transition-opacity group-hover:opacity-100"

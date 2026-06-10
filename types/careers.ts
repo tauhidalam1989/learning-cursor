@@ -1,23 +1,18 @@
-export type Department =
-  | 'engineering'
-  | 'design'
-  | 'product'
-  | 'devops'
-  | 'all';
+export type Department = string;
 
-export type EmploymentType = 'full-time' | 'contract' | 'part-time';
+export type EmploymentType = string;
 
-export type RoleBadge = 'hot' | 'new' | 'open';
+export type RoleBadge = string;
 
 export type OpenRole = {
   id: string;
   icon: string;
   title: string;
-  department: Exclude<Department, 'all'>;
+  department: string;
   location: string;
   salaryRange: string;
-  employmentType: EmploymentType;
-  badge?: RoleBadge;
+  employmentType: string;
+  badge?: string;
 };
 
 export type WhyCard = {

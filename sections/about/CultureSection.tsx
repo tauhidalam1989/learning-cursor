@@ -1,33 +1,46 @@
+'use client';
+
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 
-type CultureItem = { icon: string; title: string; body: string };
+type CultureItem = { icon: string; title_en: string; title_ar: string; body_en: string; body_ar: string };
 
 const CULTURE_ITEMS: CultureItem[] = [
   {
-    icon: '🧠',
-    title: 'Learning Budget',
-    body: 'Every engineer gets a personal learning budget for courses, conferences, and experiments.',
+    icon: 'fas fa-brain',
+    title_en: 'Learning Budget',
+    title_ar: 'ميزانية التعلم والتدريب',
+    body_en: 'Every engineer gets a personal learning budget for courses, conferences, and experiments.',
+    body_ar: 'يحصل كل مهندس لدينا على ميزانية تعلم شخصية مخصصة للدورات والمؤتمرات والتجارب التقنية.',
   },
   {
-    icon: '🌍',
-    title: 'Remote-First',
-    body: 'Fully remote with async-first communication. Work from anywhere, overlap where it matters.',
+    icon: 'fas fa-globe',
+    title_en: 'Remote-First',
+    title_ar: 'العمل عن بعد أولاً',
+    body_en: 'Fully remote with async-first communication. Work from anywhere, overlap where it matters.',
+    body_ar: 'بيئة عمل تعتمد تماماً عن بعد مع اتصالات غير متزامنة. اعمل من أي مكان وتواجد حيثما يلزم.',
   },
   {
-    icon: '🚀',
-    title: 'Ownership Culture',
-    body: 'Engineers own features end to end — from architecture decisions to production monitoring.',
+    icon: 'fas fa-rocket',
+    title_en: 'Ownership Culture',
+    title_ar: 'ثقافة المسؤولية والملكّية',
+    body_en: 'Engineers own features end to end — from architecture decisions to production monitoring.',
+    body_ar: 'يمتلك مهندسونا الميزات من البداية إلى النهاية — بدءاً من قرارات البنية الهندسية إلى مراقبة الأنظمة الإنتاجية.',
   },
   {
-    icon: '📊',
-    title: 'Transparent by Default',
-    body: 'Company metrics, client feedback, and engineering decisions are shared openly across the team.',
+    icon: 'fas fa-chart-line',
+    title_en: 'Transparent by Default',
+    title_ar: 'الشفافية هي الأصل',
+    body_en: 'Company metrics, client feedback, and engineering decisions are shared openly across the team.',
+    body_ar: 'تتم مشاركة مؤشرات الشركة، وآراء وملاحظات العملاء، والقرارات الهندسية بشكل علني عبر كامل الفريق.',
   },
 ];
 
 export function CultureSection() {
+  const { t, language } = useLanguage();
+
   return (
     <section
       id="culture"
@@ -35,69 +48,66 @@ export function CultureSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
     >
       <Container>
-      <div className="grid grid-cols-1 items-center gap-20 lg:grid-cols-2">
-        <div>
-          <MarketingSectionHeader
-            align="left"
-            descriptionMax="none"
-            label="CULTURE & TEAM"
-            title="Where Great Engineers Do Their Best Work"
-            titleId="culture-heading"
-            description="We've built a culture where curiosity is rewarded, ownership is expected, and every team member has the context to make great decisions."
-          />
-          <div className="mt-8 grid grid-cols-2 gap-4">
-            {CULTURE_ITEMS.map((item) => (
-              <article
-                key={item.title}
-                className="reveal rounded-2xl border border-corematrix-border bg-corematrix-card p-6 transition-all hover:-translate-y-0.5 hover:border-corematrix-border2"
-              >
-                <span className="text-2xl" aria-hidden>
-                  {item.icon}
-                </span>
-                <h3 className="mt-3 font-display font-semibold text-corematrix-textPrimary">
-                  {item.title}
-                </h3>
-                <p className="mt-1 text-sm leading-relaxed text-corematrix-textSecondary">
-                  {item.body}
-                </p>
-              </article>
-            ))}
-          </div>
-        </div>
-
-        <article className="reveal reveal-delay-2 rounded-2xl border border-corematrix-border2 bg-corematrix-card2 p-10 lg:sticky lg:top-24">
-          <h3 className="font-display text-2xl font-extrabold leading-snug text-corematrix-textPrimary">
-            We&apos;re Building Something Worth Joining
-          </h3>
-          <p className="mt-4 font-light leading-relaxed text-corematrix-textMuted">
-            Our team grows when we find people who share our values — technical excellence, radical
-            transparency, and a genuine desire to build software that matters.
-          </p>
-          <p className="mt-3 font-light leading-relaxed text-corematrix-textMuted">
-            We offer competitive compensation, meaningful equity for early joiners, flexible hours,
-            and a learning budget that actually gets used.
-          </p>
-          <p className="mt-3 font-light leading-relaxed text-corematrix-textMuted">
-            If you&apos;re an engineer, designer, or product thinker who wants to work on hard
-            problems with a team that cares — we&apos;d love to hear from you.
-          </p>
-          <div className="mt-6 flex items-center gap-3 rounded-xl border border-corematrix-green400/20 bg-corematrix-green900/20 p-4">
-            <span
-              className="h-2 w-2 flex-shrink-0 rounded-full bg-corematrix-green400 dot-pulse"
-              aria-hidden
+        <div className="grid grid-cols-1 items-center gap-20 lg:grid-cols-2">
+          <div>
+            <MarketingSectionHeader
+              align="left"
+              descriptionMax="none"
+              label={t("CULTURE & TEAM", "ثقافتنا وفريقنا")}
+              title={t("Where Great Engineers Do Their Best Work", "البيئة الحاضنة لأفضل إنجازات المهندسين")}
+              titleId="culture-heading"
+              description={t("We've built a culture where curiosity is rewarded, ownership is expected, and every team member has the context to make great decisions.", "لقد بنينا ثقافة يُكافأ فيها الفضول المعرفي، وتُتوقع فيها تحمل المسؤولية الكاملة، ويتمتع كل عضو في الفريق بالخلفية اللازمة لاتخاذ قرارات ممتازة.")}
             />
-            <span className="text-sm text-corematrix-textSecondary">
-              We&apos;re actively hiring —{' '}
-              <Link
-                href="/careers"
-                className="font-semibold text-corematrix-green400 hover:underline"
-              >
-                View open roles →
-              </Link>
-            </span>
+            <div className="mt-8 grid grid-cols-2 gap-4">
+              {CULTURE_ITEMS.map((item) => (
+                <article
+                  key={item.title_en}
+                  className="reveal rounded-2xl border border-corematrix-border bg-corematrix-card p-6 transition-all hover:-translate-y-0.5 hover:border-corematrix-border2"
+                >
+                  <span className="shrink-0 flex h-9 w-9 items-center justify-center rounded-lg border border-corematrix-green700/20 bg-corematrix-green900/40 text-base text-corematrix-green400" aria-hidden="true">
+                    <i className={item.icon} />
+                  </span>
+                  <h3 className="mt-3 font-display font-semibold text-corematrix-textPrimary">
+                    {language === 'ar' ? item.title_ar : item.title_en}
+                  </h3>
+                  <p className="mt-1 text-sm leading-relaxed text-corematrix-textSecondary">
+                    {language === 'ar' ? item.body_ar : item.body_en}
+                  </p>
+                </article>
+              ))}
+            </div>
           </div>
-        </article>
-      </div>
+
+          <article className="reveal reveal-delay-2 rounded-2xl border border-corematrix-border2 bg-corematrix-card2 p-10 lg:sticky lg:top-24">
+            <h3 className="font-display text-2xl font-extrabold leading-snug text-corematrix-textPrimary">
+              {t("We're Building Something Worth Joining", "نحن نبني شيئاً يستحق الانضمام إليه")}
+            </h3>
+            <p className="mt-4 font-light leading-relaxed text-corematrix-textMuted">
+              {t("Our team grows when we find people who share our values — technical excellence, radical transparency, and a genuine desire to build software that matters.", "ينمو فريقنا عندما نجد أشخاصاً يشاركوننا قيمنا — التميز التقني، الشفافية المطلقة، والرغبة الصادقة في بناء برمجيات تصنع فرقاً حقيقياً.")}
+            </p>
+            <p className="mt-3 font-light leading-relaxed text-corematrix-textMuted">
+              {t("We offer competitive compensation, meaningful equity for early joiners, flexible hours, and a learning budget that actually gets used.", "نحن نقدم حوافز ومكافآت تنافسية، وحصص ملكية ذات مغزى للمنضمين الأوائل، وساعات عمل مرنة، وميزانية تعلم تُستخدم بالفعل للاستفادة القصوى منها.")}
+            </p>
+            <p className="mt-3 font-light leading-relaxed text-corematrix-textMuted">
+              {t("If you're an engineer, designer, or product thinker who wants to work on hard problems with a team that cares — we'd love to hear from you.", "إذا كنت مهندساً أو مصمماً أو مفكراً في المنتجات ترغب في العمل على حل المشكلات المعقدة مع فريق يهتم حقاً — يسعدنا جداً أن نسمع منك.")}
+            </p>
+            <div className="mt-6 flex items-center gap-3 rounded-xl border border-corematrix-green400/20 bg-corematrix-green900/20 p-4">
+              <span
+                className="h-2 w-2 flex-shrink-0 rounded-full bg-corematrix-green400 dot-pulse"
+                aria-hidden
+              />
+              <span className="text-sm text-corematrix-textSecondary">
+                {t("We're actively hiring — ", "نحن نوظف بنشاط حالياً — ")}{' '}
+                <Link
+                  href="/careers"
+                  className="font-semibold text-corematrix-green400 hover:underline"
+                >
+                  {t("View open roles →", "عرض الوظائف الشاغرة ←")}
+                </Link>
+              </span>
+            </div>
+          </article>
+        </div>
       </Container>
     </section>
   );

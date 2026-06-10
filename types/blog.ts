@@ -26,6 +26,7 @@ export type BlogPost = {
   readTime: number; // minutes
   emoji: string;
   featured?: boolean;
+  coverImage?: string | null;
 };
 
 export type ArticleSeries = {

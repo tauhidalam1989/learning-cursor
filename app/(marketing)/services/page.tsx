@@ -1,4 +1,5 @@
 import { serviceJsonLd } from '@/lib/seo/jsonld';
+import { siteUrl } from '@/lib/seo';
 import { ServicesHeroSection } from '@/sections/services/ServicesHeroSection';
 import { ServiceFilterNav } from '@/sections/services/ServiceFilterNav';
 import { MainServicesSection } from '@/sections/services/MainServicesSection';
@@ -38,6 +39,9 @@ export const metadata = {
     url: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://corematrix.com'}/services`,
     siteName: 'Corematrix',
     type: 'website' as const,
+  },
+  alternates: {
+    canonical: `${siteUrl}/services`,
   },
 };
 

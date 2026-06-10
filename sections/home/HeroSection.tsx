@@ -1,7 +1,12 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function HeroSection() {
+  const { t } = useLanguage();
+
   return (
     <section
       id="hero"
@@ -26,7 +31,7 @@ export function HeroSection() {
               style={{ animationDelay: '0s', animationFillMode: 'both' }}
             >
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-corematrix-green400" />
-              AI-First Technology Company
+              {t("AI-First Technology Company", "شركة تقنية ترتكز على الذكاء الاصطناعي")}
             </div>
 
             <h1
@@ -34,17 +39,22 @@ export function HeroSection() {
               className="animate-fade-up-in font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-corematrix-textPrimary md:text-5xl lg:text-6xl"
               style={{ animationDelay: '0.1s', animationFillMode: 'both' }}
             >
-              Build Smarter with
+              {t("Build Smarter with", "ابنِ بذكاء أكبر مع")}
               <br />
-              <em className="not-italic text-corematrix-green400">AI-Powered</em> Digital Solutions
+              <em className="not-italic text-corematrix-green400">
+                {t("AI-Powered", "حلول رقمية مبتكرة")}
+              </em>{" "}
+              {t("Digital Solutions", "تعمل بالذكاء الاصطناعي")}
             </h1>
 
             <p
               className="animate-fade-up-in max-w-[560px] text-base text-corematrix-textSecondary sm:text-lg"
               style={{ animationDelay: '0.2s', animationFillMode: 'both' }}
             >
-              We design, build, and deploy intelligent software — from custom AI products
-              and full-stack web apps to enterprise systems that drive real, measurable growth.
+              {t(
+                "We design, build, and deploy intelligent software — from custom AI products and full-stack web apps to enterprise systems that drive real, measurable growth.",
+                "نحن نصمم ونبني وننشر برمجيات ذكية — من منتجات الذكاء الاصطناعي المخصصة وتطبيقات الويب المتكاملة إلى أنظمة المؤسسات التي تدفع نمواً حقيقياً وقابلاً للقياس."
+              )}
             </p>
 
             <div
@@ -55,35 +65,35 @@ export function HeroSection() {
                 href="/services"
                 className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
               >
-                Explore AI Services →
+                {t("Explore AI Services →", "استكشف خدمات الذكاء الاصطناعي ←")}
               </Link>
               <Link
                 href="/contact"
                 className="inline-flex items-center justify-center rounded-lg border border-corematrix-border2 bg-transparent px-6 py-3 text-sm font-semibold text-corematrix-textPrimary transition hover:border-corematrix-green700 hover:bg-corematrix-green900/20"
               >
-                Start Your Project
+                {t("Start Your Project", "ابدأ مشروعك")}
               </Link>
             </div>
 
             <div
-              className="animate-fade-up-in flex flex-wrap gap-6 text-sm font-medium text-corematrix-textMuted"
+              className="animate-fade-up-in flex flex-wrap gap-6 text-sm font-medium"
               style={{ animationDelay: '0.4s', animationFillMode: 'both' }}
             >
-              <span className="flex items-center gap-2">
-                <span aria-hidden>⚡</span>
-                50+ Projects Delivered
+              <span className="flex items-center gap-2 text-amber-200/90">
+                <i className="fas fa-bolt text-amber-400" aria-hidden="true" />
+                {t("50+ Projects Delivered", "توصيل أكثر من 50 مشروعاً")}
               </span>
-              <span className="flex items-center gap-2">
-                <span aria-hidden>🤖</span>
-                AI-First Approach
+              <span className="flex items-center gap-2 text-purple-200/90">
+                <i className="fas fa-robot text-purple-400" aria-hidden="true" />
+                {t("AI-First Approach", "نهج يرتكز على الذكاء الاصطناعي")}
               </span>
-              <span className="flex items-center gap-2">
-                <span aria-hidden>🌍</span>
-                Global Clients
+              <span className="flex items-center gap-2 text-cyan-200/90">
+                <i className="fas fa-globe text-cyan-400" aria-hidden="true" />
+                {t("Global Clients", "عملاء عالميون")}
               </span>
-              <span className="flex items-center gap-2">
-                <span aria-hidden>⭐</span>
-                98% Satisfaction
+              <span className="flex items-center gap-2 text-rose-200/90">
+                <i className="fas fa-star text-rose-400" aria-hidden="true" />
+                {t("98% Satisfaction", "نسبة رضا 98%")}
               </span>
             </div>
           </div>
@@ -101,7 +111,9 @@ export function HeroSection() {
               />
               <div className="absolute -bottom-4 left-4 rounded-xl border border-corematrix-border2 bg-corematrix-card2 px-4 py-3 shadow-lg">
                 <span className="text-corematrix-textSecondary">
-                  AI systems <span className="text-corematrix-green400">online</span> & running
+                  {t("AI systems", "أنظمة الذكاء الاصطناعي")}{" "}
+                  <span className="text-corematrix-green400">{t("online", "نشطة")}</span>{" "}
+                  {t("& running", "وتعمل")}
                 </span>
                 <span className="ml-2 inline-block h-2 w-2 animate-pulse rounded-full bg-corematrix-green400" />
               </div>
@@ -112,3 +124,4 @@ export function HeroSection() {
     </section>
   );
 }
+

@@ -20,12 +20,12 @@ export function RoleCard({ role }: RoleCardProps) {
 
   return (
     <Link
-      href="#open-application"
+      href={`/careers/${role.id}`}
       className="flex flex-wrap items-center justify-between gap-6 rounded-2xl border border-corematrix-border bg-corematrix-card p-5 transition-all hover:translate-x-1 hover:border-corematrix-border2 hover:bg-corematrix-card2"
     >
       <div className="flex items-center gap-4">
-        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-corematrix-green700/20 bg-corematrix-green900/40 text-xl">
-          {role.icon}
+        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-corematrix-green700/20 bg-corematrix-green900/40 text-lg text-corematrix-green400">
+          <i className={role.icon} />
         </div>
         <div>
           <h3 className="font-display text-base font-bold text-corematrix-textPrimary">
@@ -40,7 +40,7 @@ export function RoleCard({ role }: RoleCardProps) {
           </div>
         </div>
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 !text-white">
         {role.badge && <span className={badgeClass}>{role.badge}</span>}
         <span className={employmentClass}>
           {role.employmentType.replace('-', ' ')}

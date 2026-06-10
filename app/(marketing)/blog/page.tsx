@@ -1,9 +1,9 @@
 import { blogJsonLd } from '@/lib/seo/jsonld';
+import { siteUrl } from '@/lib/seo';
 import { BlogHeroSection } from '@/sections/blog/BlogHeroSection';
 import { BlogCategoryNav } from '@/sections/blog/BlogCategoryNav';
 import { FeaturedPostSection } from '@/sections/blog/FeaturedPostSection';
 import { BlogPostsSection } from '@/sections/blog/BlogPostsSection';
-import { ArticleSeriesSection } from '@/sections/blog/ArticleSeriesSection';
 import { BlogNewsletterSection } from '@/sections/blog/BlogNewsletterSection';
 import { TrendingTopicsSection } from '@/sections/blog/TrendingTopicsSection';
 import { LatestPostsSection } from '@/sections/blog/LatestPostsSection';
@@ -33,6 +33,9 @@ export const metadata = {
     siteName: 'Corematrix',
     type: 'website' as const,
   },
+  alternates: {
+    canonical: `${siteUrl}/blog`,
+  },
 };
 
 const jsonLd = blogJsonLd();
@@ -50,7 +53,6 @@ export default function BlogPage() {
       <BlogCategoryNav />
       <FeaturedPostSection />
       <BlogPostsSection />
-      <ArticleSeriesSection />
       <BlogNewsletterSection />
       <TrendingTopicsSection />
       <LatestPostsSection />

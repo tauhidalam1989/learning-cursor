@@ -1,102 +1,98 @@
-/**
- * Blog detail helpers — migrated to read from Payload CMS instead of Prisma.
- *
- * Notes:
- * - Returns content as an HTML string (the existing frontend uses
- *   dangerouslySetInnerHTML to render `content`).
- * - This file preserves the `BlogDetail` contract used by the detail page.
- */
-import { siteUrl } from '@/lib/seo';
+import type { BlogPost } from '@/types/blog';
 
-const BASE =
-  process.env.PAYLOAD_SERVER_URL ||
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  'http://localhost:3000';
+// Use the Next.js proxy route so both server-side and browser fetches work
+// without CORS issues. The proxy at /api/blogs forwards to the backend.
+const API_BASE =
+  typeof window === 'undefined'
+    ? 'http://127.0.0.1:5000/api/blogs'   // server-side: direct backend call
+    : '/api/blogs';                         // client-side: same-origin proxy
 
 export interface BlogDetail {
   id: string;
   slug: string;
-  title: string;
-  excerpt?: string | null;
-  content: string; // HTML
+  category: string;
   coverImage?: string | null;
-  seoTitle?: string | null;
-  seoDescription?: string | null;
-  publishedAt?: string | null;
-  createdAt: string;
-  updatedAt: string;
+  tags: string[];
+  title_en: string;
+  title_ar: string;
+  excerpt_en?: string | null;
+  excerpt_ar?: string | null;
+  content_en: string; // HTML string
+  content_ar: string; // HTML string
+  authorName_en: string;
+  authorName_ar: string;
+  authorRole_en: string;
+  authorRole_ar: string;
+  authorInitials: string;
+  publishedAt: string;
+  status: string;
+  // SEO
+  metaTitle_en?: string | null;
+  metaTitle_ar?: string | null;
+  metaDescription_en?: string | null;
+  metaDescription_ar?: string | null;
 }
 
-function slateNodesToHtml(nodes: any[]): string {
-  if (!Array.isArray(nodes)) return String(nodes ?? '');
-  // Very small converter: handle paragraphs and plain text children.
-  return nodes
-    .map((node) => {
-      if (node.type === 'p') {
-        const text = Array.isArray(node.children)
-          ? node.children.map((c: any) => c.text ?? '').join('')
-          : '';
-        return `<p>${escapeHtml(text)}</p>`;
-      }
-      // Fallback: stringify text children
-      if (node.children && Array.isArray(node.children)) {
-        return `<div>${node.children.map((c: any) => escapeHtml(c.text ?? '')).join('')}</div>`;
-      }
-      return `<div>${escapeHtml(String(node.text ?? ''))}</div>`;
-    })
-    .join('');
-}
-
-function escapeHtml(str: string) {
-  return str.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c] as string));
-}
-
-async function fetchCollection(path: string, params?: Record<string, string>) {
-  const url = new URL(path, BASE);
-  if (params) {
-    Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
-  }
-  const res = await fetch(url.toString(), { cache: 'no-store' });
-  if (!res.ok) {
-    throw new Error(`Payload request failed: ${res.status} ${res.statusText}`);
-  }
-  return res.json();
+// Convert DB post format to expected frontend BlogPost structure dynamically
+export function mapDbPostToBlogPost(dbPost: any, language: 'en' | 'ar'): BlogPost {
+  const isAr = language === 'ar';
+  return {
+    slug: dbPost.slug,
+    title: isAr ? (dbPost.title_ar || dbPost.title_en) : dbPost.title_en,
+    excerpt: isAr ? (dbPost.excerpt_ar || dbPost.excerpt_en || '') : (dbPost.excerpt_en || ''),
+    category: dbPost.category,
+    categoryLabel: dbPost.category === 'ai' ? (isAr ? 'تطوير الذكاء الاصطناعي' : 'AI Dev') : 
+                   dbPost.category === 'nextjs' ? 'Next.js' : 
+                   dbPost.category === 'saas' ? 'SaaS' : 
+                   dbPost.category === 'devops' ? 'DevOps' : 
+                   dbPost.category === 'mobile' ? (isAr ? 'تطوير الجوال' : 'Mobile Dev') : (isAr ? 'تعليمي' : 'Tutorial'),
+    tags: dbPost.tags || [],
+    author: {
+      initials: dbPost.authorInitials || 'AD',
+      name: isAr ? (dbPost.authorName_ar || dbPost.authorName_en) : dbPost.authorName_en,
+      role: isAr ? (dbPost.authorRole_ar || dbPost.authorRole_en) : dbPost.authorRole_en,
+    },
+    publishedAt: new Date(dbPost.publishedAt).toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    }),
+    readTime: Math.max(3, Math.ceil((dbPost.content_en || '').split(/\s+/).length / 200)), // dynamic read time
+    emoji: '📝',
+    coverImage: dbPost.coverImage,
+    featured: dbPost.status === 'PUBLISHED',
+  };
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogDetail | null> {
+  const url = `${API_BASE}/${slug}`;
+  console.log('getPostBySlug: fetching URL:', url);
   try {
-    const json = await fetchCollection('/api/payload/api/cms-blog', {
-      'where[slug][equals]': String(slug),
-      limit: '1',
-    });
-    const docs = json?.docs ?? json?.results ?? [];
-    const p = docs[0];
-    if (!p) return null;
-
-    const contentHtml = p.content ? slateNodesToHtml(p.content) : '';
-    const rawCover = p.coverImage?.url ?? p.coverImage ?? null;
-    const cover =
-      typeof rawCover === 'string' && rawCover.startsWith('/')
-        ? `${siteUrl}${rawCover}`
-        : rawCover;
-
-    return {
-      id: String(p.id),
-      slug: p.slug,
-      title: p.title,
-      excerpt: p.excerpt ?? null,
-      content: contentHtml,
-      coverImage: cover,
-      seoTitle: p.seoTitle ?? null,
-      seoDescription: p.seoDescription ?? null,
-      publishedAt: p.publishedAt ? new Date(p.publishedAt).toISOString() : null,
-      createdAt: p.createdAt ? new Date(p.createdAt).toISOString() : new Date().toISOString(),
-      updatedAt: p.updatedAt ? new Date(p.updatedAt).toISOString() : new Date().toISOString(),
-    };
+    const res = await fetch(url, { cache: 'no-store' });
+    console.log('getPostBySlug: response status is:', res.status, res.ok);
+    if (!res.ok) {
+      console.log('getPostBySlug: response not OK');
+      return null;
+    }
+    const data = await res.json();
+    console.log('getPostBySlug: data retrieved successfully:', !!data);
+    return data;
   } catch (err) {
-    // eslint-disable-next-line no-console
-    console.warn('getPostBySlug: failed to fetch from Payload', (err as any)?.message ?? err);
+    console.error('getPostBySlug: ERROR fetching from dynamic DB API:', err);
     return null;
   }
 }
 
+export async function getAllDbPosts(language: 'en' | 'ar'): Promise<BlogPost[]> {
+  try {
+    const res = await fetch(API_BASE, { cache: 'no-store' });
+    if (!res.ok) throw new Error('API down');
+    const dbPosts = await res.json();
+    // Only return published blogs
+    const published = dbPosts.filter((p: any) => p.status === 'PUBLISHED');
+    return published.map((p: any) => mapDbPostToBlogPost(p, language));
+  } catch (err) {
+    console.warn('getAllDbPosts: failed to fetch from dynamic DB API', err);
+    return [];
+  }
+}

@@ -1,10 +1,34 @@
-import Link from 'next/link';
-import { Container } from '@/components/ui/Container';
-import { FEATURED_POST } from '@/data/blogData';
+'use client';
 
-// TODO: Replace FEATURED_POST with CMS fetch: const featured = await getFeaturedPost()
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Container } from '@/components/ui/Container';
+import { getAllDbPosts } from '@/lib/blog';
+import { useLanguage } from '@/context/LanguageContext';
+import type { BlogPost } from '@/types/blog';
+
 export function FeaturedPostSection() {
-  const post = FEATURED_POST;
+  const { language } = useLanguage();
+  const [post, setPost] = useState<BlogPost | null>(null);
+
+  useEffect(() => {
+    async function loadFeatured() {
+      const posts = await getAllDbPosts(language);
+      if (posts && posts.length > 0) {
+        setPost(posts[0]);
+      } else {
+        setPost(null);
+      }
+    }
+    loadFeatured();
+  }, [language]);
+
+  if (!post) return null;
+
+  const imageUrl = post.coverImage 
+    ? (post.coverImage.startsWith('http') ? post.coverImage : `http://localhost:5000${post.coverImage}`)
+    : null;
 
   return (
     <section
@@ -19,21 +43,28 @@ export function FeaturedPostSection() {
             aria-hidden
           />
           <div className="relative flex min-h-[360px] items-center justify-center overflow-hidden bg-corematrix-bg2">
-            <div
-              className="pointer-events-none absolute inset-0 bg-gradient-to-br from-corematrix-green900/60 to-corematrix-card2"
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute top-1/2 left-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-corematrix-green700 opacity-[0.12] blur-[80px]"
-              aria-hidden
-            />
+            {imageUrl ? (
+              <img 
+                src={imageUrl} 
+                alt={post.title} 
+                className="absolute inset-0 w-full h-full object-cover" 
+              />
+            ) : (
+              <>
+                <div
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-br from-corematrix-green900/60 to-corematrix-card2"
+                  aria-hidden
+                />
+                <div
+                  className="pointer-events-none absolute top-1/2 left-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-corematrix-green700 opacity-[0.12] blur-[80px]"
+                  aria-hidden
+                />
+                <i className="fas fa-newspaper text-7xl text-corematrix-green400/60 relative z-10" aria-hidden />
+              </>
+            )}
             <span className="absolute top-4 left-4 z-10 rounded-full border border-corematrix-green700/30 bg-corematrix-green900/40 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-corematrix-green400">
               Featured
             </span>
-            <span className="relative z-10 text-8xl" aria-hidden>
-              {post.emoji}
-            </span>
-            {/* TODO: Replace emoji placeholder with <Image src={post.coverImage} alt={post.title} fill className="object-cover" /> */}
           </div>
           <div className="p-8 lg:p-11">
             <p className="font-display text-[0.68rem] font-bold uppercase tracking-[0.12em] text-corematrix-green400">

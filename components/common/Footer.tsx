@@ -10,6 +10,7 @@ import {
   FOOTER_ADDITIONAL_LINKS,
   FOOTER_LEGAL_LINKS,
 } from '@/config/nav';
+import { useLanguage } from '@/context/LanguageContext';
 
 /**
  * Footer component: Multi-column layout with brand, links, services, and newsletter.
@@ -17,19 +18,50 @@ import {
  */
 export function Footer() {
   const [email, setEmail] = useState('');
+  const [nlLoading, setNlLoading] = useState(false);
+  const [nlSubmitted, setNlSubmitted] = useState(false);
+  const [nlError, setNlError] = useState<string | null>(null);
+  const { t, language, setLanguage } = useLanguage();
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle newsletter subscription
-    console.log('Newsletter subscription:', email);
-    setEmail('');
+    if (!email.trim()) return;
+    setNlLoading(true);
+    setNlError(null);
+    try {
+      const res = await fetch('http://localhost:5000/api/newsletters', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+
+      if (res.status === 409) {
+        setNlError(t('This email is already subscribed!', 'هذا البريد الإلكتروني مشترك بالفعل!'));
+        setNlLoading(false);
+        return;
+      }
+
+      if (!res.ok) {
+        const data = await res.json();
+        setNlError(data.message || t('Something went wrong.', 'حدث خطأ ما.'));
+        setNlLoading(false);
+        return;
+      }
+
+      setNlSubmitted(true);
+      setEmail('');
+    } catch {
+      setNlError(t('Network error. Please try again.', 'خطأ في الشبكة. يرجى المحاولة مرة أخرى.'));
+    } finally {
+      setNlLoading(false);
+    }
   };
 
   return (
     <footer
       className="bg-gradient-to-r from-[#02140f] via-[#032916] to-[#02140f] py-14 text-white sm:py-16 lg:py-20"
       role="contentinfo"
-      aria-label="Site footer"
+      aria-label={t('Site footer', 'تذييل الموقع')}
       style={{
         borderTopWidth: 2,
         borderTopStyle: 'solid',
@@ -42,35 +74,27 @@ export function Footer() {
           {/* Column 1: Brand/About */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-3">
-              <Image src="/images/logo.png" alt="Corematrix" width={160} height={36} priority />
+              <Image src="/images/logo.png" alt={t('Corematrix logo', 'شعار كورماتريكس')} width={160} height={36} priority />
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-white/70 max-w-[240px]">
-              COREMATRIX is a technology-driven IT services company focused on building intelligent, secure, and scalable solutions.
+              {t('COREMATRIX is a technology-driven IT services company focused on building intelligent, secure, and scalable solutions.', 'كورماتريكس هي شركة خدمات تقنية متطورة تركز على بناء حلول ذكية وآمنة وقابلة للتطوير.')}
             </p>
             <p className="mt-6 text-sm font-semibold uppercase tracking-wider text-white" style={{ letterSpacing: '0.12em' }}>
-              FOLLOW US
+              {t('FOLLOW US', 'تابعنا')}
             </p>
             <div className="mt-4 flex gap-3">
-              {/* Social icons: SVGs with white circular background */}
-              <a href={siteConfig.twitter} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#02140f] hover:brightness-95" aria-label="Twitter">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                  <path d="M22 5.92c-.63.28-1.3.48-2 .57a3.47 3.47 0 0 0-6 2v.28A9.86 9.86 0 0 1 3 4.87a3.47 3.47 0 0 0 1.07 4.63 3.39 3.39 0 0 1-1.57-.43v.04a3.47 3.47 0 0 0 2.78 3.4 3.5 3.5 0 0 1-1.56.06 3.47 3.47 0 0 0 3.24 2.41A6.95 6.95 0 0 1 2 18.58a9.82 9.82 0 0 0 5.31 1.56c6.38 0 9.87-5.28 9.87-9.86v-.45A7.06 7.06 0 0 0 22 5.92z" />
-                </svg>
+              {/* Social icons: FontAwesome with white circular background */}
+              <a href={siteConfig.twitter} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#02140f] hover:brightness-95 hover:scale-110 transition-transform" aria-label="Twitter">
+                <i className="fab fa-twitter text-sm" />
               </a>
-              <a href={siteConfig.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#02140f] hover:brightness-95" aria-label="Facebook">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                  <path d="M22 12a10 10 0 1 0-11.5 9.88v-6.99H8.9v-2.9h1.6V9.4c0-1.58.94-2.46 2.38-2.46.69 0 1.42.12 1.42.12v1.56h-.8c-.79 0-1.05.5-1.05 1.02v1.23h1.78l-.28 2.9h-1.5v6.99A10 10 0 0 0 22 12z" />
-                </svg>
+              <a href={siteConfig.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#02140f] hover:brightness-95 hover:scale-110 transition-transform" aria-label="Facebook">
+                <i className="fab fa-facebook-f text-sm" />
               </a>
-              <a href={siteConfig.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#02140f] hover:brightness-95" aria-label="Instagram">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                  <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 6.5A4.5 4.5 0 1 0 16.5 13 4.5 4.5 0 0 0 12 8.5zm5.5-3a1 1 0 1 0 1 1 1 1 0 0 0-1-1z" />
-                </svg>
+              <a href={siteConfig.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#02140f] hover:brightness-95 hover:scale-110 transition-transform" aria-label="Instagram">
+                <i className="fab fa-instagram text-sm" />
               </a>
-              <a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#02140f] hover:brightness-95" aria-label="LinkedIn">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                  <path d="M19 3A2 2 0 0 1 21 5v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 17.34V10.9H5.67v6.44h2.67zM7 9.58a1.55 1.55 0 1 0 0-3.1 1.55 1.55 0 0 0 0 3.1zM18.33 17.34V13c0-2.1-1.12-3.07-2.62-3.07-1.2 0-1.73.66-2.03 1.12v6.29h2.67v-3.5c0-.93.18-1.83 1.33-1.83 1.12 0 1.12 1.05 1.12 1.95v3.18h2.66z" />
-                </svg>
+              <a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#02140f] hover:brightness-95 hover:scale-110 transition-transform" aria-label="LinkedIn">
+                <i className="fab fa-linkedin-in text-sm" />
               </a>
             </div>
           </div>
@@ -78,9 +102,9 @@ export function Footer() {
           {/* Column 2: Quick Links */}
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white" style={{ fontFamily: 'var(--font-display)' }}>
-              QUICK LINKS
+              {t('QUICK LINKS', 'روابط سريعة')}
             </h3>
-            <nav className="mt-4" aria-label="Footer quick links">
+            <nav className="mt-4" aria-label={t('Footer quick links', 'روابط سريعة في التذييل')}>
               <ul className="space-y-3" role="list">
                 {FOOTER_QUICK_LINKS.map(({ label, href }) => (
                   <li key={href}>
@@ -88,7 +112,7 @@ export function Footer() {
                       href={href}
                       className="text-sm text-white/70 transition-colors hover:text-[#149253] focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#149253] focus-visible:ring-offset-2 focus-visible:ring-offset-[#02140f]"
                     >
-                      {label}
+                      {t(label)}
                     </Link>
                   </li>
                 ))}
@@ -99,9 +123,9 @@ export function Footer() {
           {/* Column 3: Services */}
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white" style={{ fontFamily: 'var(--font-display)' }}>
-              SERVICES
+              {t('SERVICES', 'خدماتنا')}
             </h3>
-            <nav className="mt-4" aria-label="Footer services">
+            <nav className="mt-4" aria-label={t('Footer services', 'الخدمات في التذييل')}>
               <ul className="space-y-3" role="list">
                 {FOOTER_SERVICES_LINKS.map(({ label, href }) => (
                   <li key={href}>
@@ -109,7 +133,7 @@ export function Footer() {
                       href={href}
                       className="text-sm text-white/70 transition-colors hover:text-[#149253] focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#149253] focus-visible:ring-offset-2 focus-visible:ring-offset-[#02140f]"
                     >
-                      {label}
+                      {t(label)}
                     </Link>
                   </li>
                 ))}
@@ -120,9 +144,9 @@ export function Footer() {
           {/* Column 4: Additional Links */}
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white" style={{ fontFamily: 'var(--font-display)' }}>
-              QUICK LINKS
+              {t('QUICK LINKS', 'روابط سريعة')}
             </h3>
-            <nav className="mt-4" aria-label="Footer additional links">
+            <nav className="mt-4" aria-label={t('Footer additional links', 'روابط إضافية')}>
               <ul className="space-y-3" role="list">
                 {FOOTER_ADDITIONAL_LINKS.map(({ label, href }) => (
                   <li key={href}>
@@ -130,7 +154,7 @@ export function Footer() {
                       href={href}
                       className="text-sm text-white/70 transition-colors hover:text-[#149253] focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#149253] focus-visible:ring-offset-2 focus-visible:ring-offset-[#02140f]"
                     >
-                      {label}
+                      {t(label)}
                     </Link>
                   </li>
                 ))}
@@ -141,36 +165,53 @@ export function Footer() {
           {/* Column 5: Newsletter */}
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white" style={{ fontFamily: 'var(--font-display)' }}>
-              NEWSLETTER
+              {t('NEWSLETTER', 'النشرة البريدية')}
             </h3>
-            <form onSubmit={handleNewsletterSubmit} className="mt-4">
-              <label htmlFor="newsletter-email" className="sr-only">
-                Enter your email address
-              </label>
-              <div className="relative mt-4">
-                <input
-                  type="email"
-                  id="newsletter-email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email address"
-                  required
-                  className="h-12 w-full rounded-xl border border-white/10 bg-[#02140f]/40 px-4 pr-16 text-sm text-white placeholder-white/50 backdrop-blur-sm transition-all focus:border-[#149253] focus:outline-none focus:ring-2 focus:ring-[#149253]/20"
-                />
-                <button
-                  type="submit"
-                  className="absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl bg-[#149253] text-white transition-all hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#149253] focus-visible:ring-offset-2 focus-visible:ring-offset-[#02140f]"
-                  aria-label="Subscribe to newsletter"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-                    <path d="M22 2L11 13" />
-                    <path d="M22 2l-7 20-4-9-9-4 20-7z" />
-                  </svg>
-                </button>
-              </div>
-            </form>
+            {nlSubmitted ? (
+              <p className="mt-4 text-sm font-semibold text-[#149253]">
+                {t("✓ You're subscribed! Check your inbox.", '✓ تم الاشتراك بنجاح! تحقق من بريدك الوارد.')}
+              </p>
+            ) : (
+              <form onSubmit={handleNewsletterSubmit} className="mt-4">
+                <label htmlFor="newsletter-email" className="sr-only">
+                  {t('Enter your email address', 'أدخل عنوان بريدك الإلكتروني')}
+                </label>
+                <div className="relative mt-4">
+                  <input
+                    type="email"
+                    id="newsletter-email"
+                    value={email}
+                    onChange={(e) => { setEmail(e.target.value); setNlError(null); }}
+                    placeholder={t('Enter your email address', 'أدخل عنوان بريدك الإلكتروني')}
+                    required
+                    className="h-12 w-full rounded-xl border border-white/10 bg-[#02140f]/40 px-4 pr-16 text-sm text-white placeholder-white/50 backdrop-blur-sm transition-all focus:border-[#149253] focus:outline-none focus:ring-2 focus:ring-[#149253]/20"
+                  />
+                  <button
+                    type="submit"
+                    disabled={nlLoading}
+                    className="absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl bg-[#149253] text-white transition-all hover:brightness-105 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#149253] focus-visible:ring-offset-2 focus-visible:ring-offset-[#02140f] cursor-pointer"
+                    aria-label={t('Subscribe to newsletter', 'الاشتراك في النشرة البريدية')}
+                  >
+                    {nlLoading ? (
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    ) : (
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+                        <path d="M22 2L11 13" />
+                        <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+                {nlError && (
+                  <p className="mt-2 text-xs font-medium text-amber-400">
+                    <i className="fas fa-exclamation-circle mr-1" />
+                    {nlError}
+                  </p>
+                )}
+              </form>
+            )}
             <p className="mt-4 text-sm leading-relaxed text-white/70">
-              Get product updates, engineering insights, and case studies—no spam. Unsubscribe anytime.
+              {t('Get product updates, engineering insights, and case studies—no spam. Unsubscribe anytime.', 'احصل على تحديثات المنتجات، الرؤى الهندسية، ودراسات الحالة — بدون بريد مزعج. يمكنك إلغاء الاشتراك في أي وقت.')}
             </p>
           </div>
         </div>
@@ -178,7 +219,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 border-t border-white/6 pt-8">
           <p className="text-sm text-white/60">
-            © {siteConfig.currentYear} {siteConfig.name}. All rights reserved.
+            © {siteConfig.currentYear} {language === 'ar' ? 'كورماتريكس' : siteConfig.name}. {t('All rights reserved.', 'جميع الحقوق محفوظة.')}
           </p>
           {FOOTER_LEGAL_LINKS.map(({ label, href }) => (
             <Link
@@ -186,7 +227,7 @@ export function Footer() {
               href={href}
               className="text-sm text-white/60 transition-colors hover:text-[#149253] focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#149253] focus-visible:ring-offset-2 focus-visible:ring-offset-[#02140f]"
             >
-              {label}
+              {t(label)}
             </Link>
           ))}
         </div>

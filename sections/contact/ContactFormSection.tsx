@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { siteConfig } from '@/config/site';
+import { useLanguage } from '@/context/LanguageContext';
 
 export type FormStep = 1 | 2 | 3 | 4;
 
@@ -11,6 +12,7 @@ export interface FormData {
   firstName: string;
   lastName: string;
   email: string;
+  phoneCountry: string;
   phone: string;
   company: string;
   role: string;
@@ -26,79 +28,6 @@ export interface FormData {
 
 export type ContactDetail = { icon: string; label: string; value: string; href?: string };
 
-const CONTACT_DETAILS: ContactDetail[] = [
-  {
-    icon: '📧',
-    label: 'Email',
-    value: siteConfig.email,
-    href: `mailto:${siteConfig.email}`,
-  },
-  {
-    icon: '📞',
-    label: 'Phone & WhatsApp',
-    value: siteConfig.phone,
-    href: siteConfig.phoneTel,
-  },
-  { icon: '🌍', label: 'Location', value: siteConfig.location },
-  { icon: '⏰', label: 'Response Time', value: 'Within 24 hours on business days' },
-];
-
-export type AvailSlot = { day: string; time: string; status: 'available' | 'limited' | 'closed' };
-
-const AVAILABILITY: AvailSlot[] = [
-  { day: 'Monday – Friday', time: '9am – 6pm GMT', status: 'available' },
-  { day: 'Saturday', time: '10am – 2pm GMT', status: 'limited' },
-  { day: 'Sunday', time: 'Closed', status: 'closed' },
-];
-
-const ROLES = [
-  'Founder / CEO',
-  'CTO / Tech Lead',
-  'Product Manager',
-  'Engineering Manager',
-  'Developer',
-  'Designer',
-  'Other',
-] as const;
-
-const SERVICES = [
-  '🧠 AI Development',
-  '⚙️ AI Automation',
-  '💻 Web Application',
-  '📱 Mobile App',
-  '☁️ SaaS Platform',
-  '🏢 Enterprise Software',
-  '👥 Dedicated Team',
-  '🛡️ DevOps / Cloud',
-  '🎨 UI/UX Design',
-  '📊 Data & Analytics',
-] as const;
-
-const TIMELINES = [
-  { emoji: '⚡', label: 'ASAP', sub: 'Start within 2 wks' },
-  { emoji: '📅', label: '1–3 Months', sub: 'Planning stage' },
-  { emoji: '🗓️', label: '3–6 Months', sub: 'Future planning' },
-  { emoji: '💭', label: 'Exploring', sub: 'Just researching' },
-] as const;
-
-const CODEBASE_OPTIONS = [
-  'No — starting from scratch',
-  'Yes — needs new features',
-  'Yes — needs redesign/refactor',
-  'Yes — needs AI integration',
-  'Unsure',
-] as const;
-
-const SOURCE_OPTIONS = [
-  'Google Search',
-  'LinkedIn',
-  'Twitter/X',
-  'Referral',
-  'GitHub',
-  'Blog',
-  'Other',
-] as const;
-
 const BUDGET_MIN = 5000;
 const BUDGET_MAX = 500000;
 const BUDGET_STEP = 5000;
@@ -107,6 +36,7 @@ const INITIAL_FORM_DATA: FormData = {
   firstName: '',
   lastName: '',
   email: '',
+  phoneCountry: '+966',
   phone: '',
   company: '',
   role: '',
@@ -127,12 +57,84 @@ function formatBudget(value: number): string {
 }
 
 export function ContactFormSection() {
+  const { t } = useLanguage();
   const [step, setStep] = useState<FormStep>(1);
   const [formData, setFormData] = useState<FormData>(INITIAL_FORM_DATA);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
+
+  const CONTACT_DETAILS: ContactDetail[] = [
+    {
+      icon: 'fas fa-envelope',
+      label: t('Email', 'البريد الإلكتروني'),
+      value: siteConfig.email,
+      href: `mailto:${siteConfig.email}`,
+    },
+    {
+      icon: 'fas fa-phone-alt',
+      label: t('Phone & WhatsApp', 'الهاتف والواتساب'),
+      value: siteConfig.phone,
+      href: siteConfig.phoneTel,
+    },
+    { icon: 'fas fa-globe', label: t('Location', 'الموقع'), value: t(siteConfig.location, 'عن بعد / عالمي') },
+    { icon: 'fas fa-clock', label: t('Response Time', 'وقت الاستجابة'), value: t('Within 24 hours on business days', 'في غضون 24 ساعة في أيام العمل') },
+  ];
+
+  const AVAILABILITY = [
+    { day: t('Monday – Friday', 'الاثنين – الجمعة'), time: t('9am – 6pm GMT', '9 صباحاً – 6 مساءً بتوقيت غرينتش'), status: 'available' },
+    { day: t('Saturday', 'السبت'), time: t('10am – 2pm GMT', '10 صباحاً – 2 مساءً بتوقيت غرينتش'), status: 'limited' },
+    { day: t('Sunday', 'الأحد'), time: t('Closed', 'مغلق'), status: 'closed' },
+  ];
+
+  const ROLES = [
+    t('Founder / CEO', 'مؤسس / رئيس تنفيذي'),
+    t('CTO / Tech Lead', 'مدير تقني / رئيس هندسي'),
+    t('Product Manager', 'مدير منتج'),
+    t('Engineering Manager', 'مدير هندسي'),
+    t('Developer', 'مطور برمجيات'),
+    t('Designer', 'مصمم'),
+    t('Other', 'آخر'),
+  ] as const;
+
+  const SERVICES_DATA = [
+    { key: '🧠 AI Development', icon: 'fas fa-brain', en: 'AI Development', ar: 'تطوير الذكاء الاصطناعي' },
+    { key: '⚙️ AI Automation', icon: 'fas fa-cogs', en: 'AI Automation', ar: 'أتمتة الذكاء الاصطناعي' },
+    { key: '💻 Web Application', icon: 'fas fa-laptop-code', en: 'Web Application', ar: 'تطبيقات الويب' },
+    { key: '📱 Mobile App', icon: 'fas fa-mobile-alt', en: 'Mobile App', ar: 'تطبيقات الهاتف المحمول' },
+    { key: '☁️ SaaS Platform', icon: 'fas fa-cloud', en: 'SaaS Platform', ar: 'منصات SaaS' },
+    { key: '🏢 Enterprise Software', icon: 'fas fa-building', en: 'Enterprise Software', ar: 'برمجيات المؤسسات' },
+    { key: '👥 Dedicated Team', icon: 'fas fa-users', en: 'Dedicated Team', ar: 'فريق عمل مخصص' },
+    { key: '🛡️ DevOps / Cloud', icon: 'fas fa-shield-alt', en: 'DevOps / Cloud', ar: 'DevOps والخدمات السحابية' },
+    { key: '🎨 UI/UX Design', icon: 'fas fa-paint-brush', en: 'UI/UX Design', ar: 'تصميم واجهة وتجربة المستخدم' },
+    { key: '📊 Data & Analytics', icon: 'fas fa-chart-bar', en: 'Data & Analytics', ar: 'البيانات والتحليلات' },
+  ];
+
+  const TIMELINES_DATA = [
+    { key: 'ASAP', icon: 'fas fa-bolt', en: 'ASAP', ar: 'في أقرب وقت', subEn: 'Start within 2 wks', subAr: 'البدء في غضون أسبوعين' },
+    { key: '1–3 Months', icon: 'far fa-calendar-alt', en: '1–3 Months', ar: 'خلال 1–3 أشهر', subEn: 'Planning stage', subAr: 'مرحلة التخطيط' },
+    { key: '3–6 Months', icon: 'far fa-calendar-check', en: '3–6 Months', ar: 'خلال 3–6 أشهر', subEn: 'Future planning', subAr: 'تخطيط مستقبلي' },
+    { key: 'Exploring', icon: 'far fa-comment-dots', en: 'Exploring', ar: 'استكشاف فقط', subEn: 'Just researching', subAr: 'مجرد بحث واستكشاف' },
+  ];
+
+  const CODEBASE_OPTIONS = [
+    t('No — starting from scratch', 'لا — البدء من الصفر'),
+    t('Yes — needs new features', 'نعم — يحتاج إلى ميزات جديدة'),
+    t('Yes — needs redesign/refactor', 'نعم — يحتاج إلى إعادة تصميم/إعادة هيكلة'),
+    t('Yes — needs AI integration', 'نعم — يحتاج إلى دمج ذكاء اصطناعي'),
+    t('Unsure', 'غير متأكد'),
+  ] as const;
+
+  const SOURCE_OPTIONS = [
+    t('Google Search', 'بحث جوجل'),
+    t('LinkedIn', 'لينكد إن'),
+    t('Twitter/X', 'تويتر/إكس'),
+    t('Referral', 'إحالة/توصية'),
+    t('GitHub', 'جيتهاب'),
+    t('Blog', 'مدونة'),
+    t('Other', 'آخر'),
+  ] as const;
 
   const update = useCallback((updates: Partial<FormData>) => {
     setFormData((prev) => ({ ...prev, ...updates }));
@@ -183,16 +185,26 @@ export function ContactFormSection() {
     setSubmitting(true);
     try {
       const phoneDigits = formData.phone.replace(/\D/g, '');
-      const res = await fetch('/api/contact/submit', {
+      const res = await fetch('http://localhost:5000/api/contacts/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           formType: 'contact',
+          firstName: formData.firstName.trim(),
+          lastName: formData.lastName.trim(),
           fullName: `${formData.firstName.trim()} ${formData.lastName.trim()}`,
           email: formData.email.trim(),
-          phoneCountry: '+224',
+          phoneCountry: formData.phoneCountry,
           phoneNumber: phoneDigits || undefined,
           company: formData.company.trim() || undefined,
+          role: formData.role || undefined,
+          services: formData.services,
+          timeline: formData.timeline,
+          budget: formData.budget,
+          codebase: formData.codebase || undefined,
+          description: formData.description.trim(),
+          source: formData.source || undefined,
+          requestNda: formData.requestNda,
           message: buildMessage(),
         }),
       });
@@ -204,7 +216,7 @@ export function ContactFormSection() {
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : 'Something went wrong. Please try again or email us directly.'
+        err instanceof Error ? err.message : t('Something went wrong. Please try again or email us directly.', 'حدث خطأ ما. يرجى المحاولة مرة أخرى أو مراسلتنا مباشرة عبر البريد الإلكتروني.')
       );
     } finally {
       setSubmitting(false);
@@ -221,23 +233,25 @@ export function ContactFormSection() {
         <Container>
           <div className="mx-auto max-w-2xl rounded-3xl border border-corematrix-border bg-corematrix-card p-12 text-center">
             <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-corematrix-green700 text-4xl text-white">
-              ✓
+              <i className="fas fa-check" />
             </div>
             <h2
               id="contact-form-heading"
               className="font-display text-2xl font-bold text-corematrix-textPrimary"
             >
-              Message Sent Successfully!
+              {t('Message Sent Successfully!', 'تم إرسال الرسالة بنجاح!')}
             </h2>
             <p className="mt-4 text-base leading-relaxed text-corematrix-textSecondary">
-              Thank you for reaching out. We&apos;ve received your project details and will respond
-              within 24 hours with a genuine technical perspective tailored to your needs.
+              {t(
+                "Thank you for reaching out. We've received your project details and will respond within 24 hours with a genuine technical perspective tailored to your needs.",
+                "شكراً لتواصلك معنا. لقد تلقينا تفاصيل مشروعك وسنقوم بالرد عليك في غضون 24 ساعة برؤية تقنية واقعية ومخصصة لتلبية احتياجاتك بالكامل."
+              )}
             </p>
             <Link
               href="/services"
               className="mt-8 inline-flex items-center gap-2 rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
             >
-              Explore Our Services →
+              {t('Explore Our Services →', 'استكشف خدماتنا ←')}
             </Link>
           </div>
         </Container>
@@ -245,11 +259,11 @@ export function ContactFormSection() {
     );
   }
 
-  const steps: { n: FormStep; label: string }[] = [
-    { n: 1, label: 'About You' },
-    { n: 2, label: 'Your Project' },
-    { n: 3, label: 'Details' },
-    { n: 4, label: 'Send' },
+  const steps = [
+    { n: 1, label: t('About You', 'معلوماتك') },
+    { n: 2, label: t('Your Project', 'مشروعك') },
+    { n: 3, label: t('Details', 'تفاصيل إضافية') },
+    { n: 4, label: t('Send', 'إرسال') },
   ];
 
   const budgetPct =
@@ -268,16 +282,16 @@ export function ContactFormSection() {
               id="contact-form-heading"
               className="font-display text-2xl font-bold text-corematrix-textPrimary"
             >
-              Get in Touch
+              {t('Get in Touch', 'تواصل معنا')}
             </h2>
             <p className="mt-3 text-sm text-corematrix-textSecondary">
-              Fill out the form and we&apos;ll get back within 24 hours.
+              {t("Fill out the form and we'll get back within 24 hours.", "املأ النموذج وسنقوم بالرد عليك في غضون 24 ساعة.")}
             </p>
             <div className="mt-6 space-y-4">
               {CONTACT_DETAILS.map((d) => (
                 <div key={d.label} className="flex items-start gap-3">
-                  <span className="text-lg" aria-hidden>
-                    {d.icon}
+                  <span className="text-sm text-corematrix-green400 mt-1" aria-hidden>
+                    <i className={d.icon} />
                   </span>
                   <div>
                     <p className="text-xs font-bold text-corematrix-textDim">{d.label}</p>
@@ -297,26 +311,26 @@ export function ContactFormSection() {
             </div>
             <div className="mt-8 flex gap-3">
               {[
-                { label: '𝕏', href: siteConfig.twitter, aria: 'Twitter' },
-                { label: 'in', href: siteConfig.linkedin, aria: 'LinkedIn' },
-                { label: 'octocat', href: siteConfig.github, aria: 'GitHub' },
-                { label: 'ig', href: siteConfig.instagram, aria: 'Instagram' },
-              ].map(({ label, href, aria }) => (
+                { icon: 'fab fa-twitter', href: siteConfig.twitter, aria: 'Twitter' },
+                { icon: 'fab fa-linkedin-in', href: siteConfig.linkedin, aria: 'LinkedIn' },
+                { icon: 'fab fa-github', href: siteConfig.github, aria: 'GitHub' },
+                { icon: 'fab fa-instagram', href: siteConfig.instagram, aria: 'Instagram' },
+              ].map(({ icon, href, aria }) => (
                 <a
                   key={aria}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-corematrix-border bg-corematrix-card text-xs font-bold text-corematrix-textMuted transition-all hover:border-corematrix-green700 hover:bg-corematrix-green900/30 hover:text-corematrix-green400"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-corematrix-border bg-corematrix-card text-base text-corematrix-textMuted transition-all hover:border-corematrix-green700 hover:bg-corematrix-green900/30 hover:text-corematrix-green400"
                   aria-label={aria}
                 >
-                  {label}
+                  <i className={icon} aria-hidden="true" />
                 </a>
               ))}
             </div>
             <div className="mt-6 rounded-2xl border border-corematrix-border bg-corematrix-card p-5">
               <p className="mb-4 font-display text-xs font-bold text-corematrix-textPrimary">
-                Availability
+                {t('Availability', 'مواعيد العمل والتوفر')}
               </p>
               {AVAILABILITY.map((a) => (
                 <div key={a.day} className="flex items-center justify-between py-2 text-sm">
@@ -357,7 +371,7 @@ export function ContactFormSection() {
                             : 'border-corematrix-border2 bg-corematrix-card2 text-corematrix-green400'
                       }`}
                     >
-                      {step > s.n ? '✓' : s.n}
+                      {step > s.n ? <i className="fas fa-check text-xs" /> : s.n}
                     </div>
                     <span className="ml-2 hidden text-xs font-medium text-corematrix-textMuted sm:inline">
                       {s.label}
@@ -378,79 +392,101 @@ export function ContactFormSection() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="mb-2 block text-xs font-medium text-corematrix-textMuted">
-                        First Name
+                        {t('First Name', 'الاسم الأول')}
                       </label>
                       <input
                         type="text"
                         value={formData.firstName}
                         onChange={(e) => update({ firstName: e.target.value })}
                         className="w-full rounded-lg border border-corematrix-border bg-corematrix-bg0 px-4 py-3 text-sm text-corematrix-textPrimary placeholder-corematrix-textDim focus:border-corematrix-green500 focus:outline-none focus:ring-1 focus:ring-corematrix-green500"
-                        placeholder="John"
+                        placeholder={t('John', 'أحمد')}
                       />
                     </div>
                     <div>
                       <label className="mb-2 block text-xs font-medium text-corematrix-textMuted">
-                        Last Name
+                        {t('Last Name', 'اسم العائلة')}
                       </label>
                       <input
                         type="text"
                         value={formData.lastName}
                         onChange={(e) => update({ lastName: e.target.value })}
                         className="w-full rounded-lg border border-corematrix-border bg-corematrix-bg0 px-4 py-3 text-sm text-corematrix-textPrimary placeholder-corematrix-textDim focus:border-corematrix-green500 focus:outline-none focus:ring-1 focus:ring-corematrix-green500"
-                        placeholder="Doe"
+                        placeholder={t('Doe', 'العتيبي')}
                       />
                     </div>
                   </div>
                   <div>
                     <label className="mb-2 block text-xs font-medium text-corematrix-textMuted">
-                      Work Email *
+                      {t('Work Email *', 'البريد الإلكتروني للعمل *')}
                     </label>
                     <input
                       type="email"
                       value={formData.email}
                       onChange={(e) => update({ email: e.target.value })}
                       className="w-full rounded-lg border border-corematrix-border bg-corematrix-bg0 px-4 py-3 text-sm text-corematrix-textPrimary placeholder-corematrix-textDim focus:border-corematrix-green500 focus:outline-none focus:ring-1 focus:ring-corematrix-green500"
-                      placeholder="john@company.com"
+                      placeholder="name@company.com"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="mb-2 block text-xs font-medium text-corematrix-textMuted">
-                        Phone
+                        {t('Phone', 'رقم الهاتف')}
                       </label>
-                      <input
-                        type="tel"
-                        value={formData.phone}
-                        onChange={(e) =>
-                          update({ phone: e.target.value.replace(/[^\d\s+-]/g, '') })
-                        }
-                        className="w-full rounded-lg border border-corematrix-border bg-corematrix-bg0 px-4 py-3 text-sm text-corematrix-textPrimary placeholder-corematrix-textDim focus:border-corematrix-green500 focus:outline-none focus:ring-1 focus:ring-corematrix-green500"
-                        placeholder={siteConfig.phone}
-                      />
+                      <div className="flex gap-2">
+                        <select
+                          value={formData.phoneCountry}
+                          onChange={(e) => update({ phoneCountry: e.target.value })}
+                          className="w-[110px] rounded-lg border border-corematrix-border bg-corematrix-bg0 px-2 py-3 text-xs text-corematrix-textPrimary focus:border-corematrix-green500 focus:outline-none focus:ring-1 focus:ring-corematrix-green500"
+                        >
+                          <option value="+966">🇸🇦 +966</option>
+                          <option value="+971">🇦🇪 +971</option>
+                          <option value="+1">🇺🇸 +1</option>
+                          <option value="+44">🇬🇧 +44</option>
+                          <option value="+91">🇮🇳 +91</option>
+                          <option value="+20">🇪🇬 +20</option>
+                          <option value="+974">🇶🇦 +974</option>
+                          <option value="+965">🇰🇼 +965</option>
+                          <option value="+968">🇴🇲 +968</option>
+                          <option value="+973">🇧🇭 +973</option>
+                          <option value="+962">🇯🇴 +962</option>
+                          <option value="+92">🇵🇰 +92</option>
+                          <option value="+880">🇧🇩 +880</option>
+                          <option value="+224">🇬🇳 +224</option>
+                        </select>
+                        <input
+                          type="tel"
+                          value={formData.phone}
+                          onChange={(e) =>
+                            update({ phone: e.target.value.replace(/[^\d\s+-]/g, '') })
+                          }
+                          className="flex-1 rounded-lg border border-corematrix-border bg-corematrix-bg0 px-4 py-3 text-sm text-corematrix-textPrimary placeholder-corematrix-textDim focus:border-corematrix-green500 focus:outline-none focus:ring-1 focus:ring-corematrix-green500"
+                          placeholder="50 123 4567"
+                        />
+                      </div>
                     </div>
                     <div>
                       <label className="mb-2 block text-xs font-medium text-corematrix-textMuted">
-                        Company Name
+                        {t('Company Name', 'اسم الشركة')}
                       </label>
                       <input
                         type="text"
                         value={formData.company}
                         onChange={(e) => update({ company: e.target.value })}
                         className="w-full rounded-lg border border-corematrix-border bg-corematrix-bg0 px-4 py-3 text-sm text-corematrix-textPrimary placeholder-corematrix-textDim focus:border-corematrix-green500 focus:outline-none focus:ring-1 focus:ring-corematrix-green500"
-                        placeholder="Acme Inc"
+                        placeholder={t('Acme Inc', 'شركة أكمي')}
                       />
                     </div>
                   </div>
                   <div>
                     <label className="mb-2 block text-xs font-medium text-corematrix-textMuted">
-                      Role
+                      {t('Role', 'الدور الوظيفي')}
                     </label>
                     <select
                       value={formData.role}
                       onChange={(e) => update({ role: e.target.value })}
                       className="w-full rounded-lg border border-corematrix-border bg-corematrix-bg0 px-4 py-3 text-sm text-corematrix-textPrimary focus:border-corematrix-green500 focus:outline-none focus:ring-1 focus:ring-corematrix-green500"
                     >
-                      <option value="">Select your role</option>
+                      <option value="">{t('Select your role', 'اختر دورك الوظيفي')}</option>
                       {ROLES.map((r) => (
                         <option key={r} value={r}>
                           {r}
@@ -465,49 +501,50 @@ export function ContactFormSection() {
                 <div className="space-y-6">
                   <div>
                     <label className="mb-3 block text-xs font-medium text-corematrix-textMuted">
-                      Services Needed *
+                      {t('Services Needed *', 'الخدمات المطلوبة *')}
                     </label>
                     <div className="flex flex-wrap gap-2">
-                      {SERVICES.map((s) => (
+                      {SERVICES_DATA.map((s) => (
                         <button
-                          key={s}
+                          key={s.key}
                           type="button"
-                          onClick={() => toggleService(s)}
-                          className={`rounded-full border px-4 py-2 text-xs font-medium transition-all ${
-                            formData.services.includes(s)
+                          onClick={() => toggleService(s.key)}
+                          className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium transition-all ${
+                            formData.services.includes(s.key)
                               ? 'border-corematrix-green400/30 bg-corematrix-green900/20 text-corematrix-green400 font-semibold'
                               : 'border-corematrix-border bg-corematrix-card2 text-corematrix-textMuted hover:border-corematrix-border2 hover:text-corematrix-textPrimary'
                           }`}
                         >
-                          {s}
+                          <i className={s.icon} aria-hidden="true" />
+                          <span>{t(s.en, s.ar)}</span>
                         </button>
                       ))}
                     </div>
                   </div>
                   <div>
                     <label className="mb-3 block text-xs font-medium text-corematrix-textMuted">
-                      Timeline *
+                      {t('Timeline *', 'الجدول الزمني *')}
                     </label>
                     <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                      {TIMELINES.map((t) => (
+                      {TIMELINES_DATA.map((tItem) => (
                         <button
-                          key={t.label}
+                          key={tItem.key}
                           type="button"
-                          onClick={() => update({ timeline: t.label })}
+                          onClick={() => update({ timeline: tItem.key })}
                           className={`rounded-xl border p-4 text-left transition-all ${
-                            formData.timeline === t.label
+                            formData.timeline === tItem.key
                               ? 'border-corematrix-green400/25 bg-corematrix-green900/20 shadow-[0_0_16px_rgba(34,197,94,0.07)]'
                               : 'border-corematrix-border bg-corematrix-card2 hover:border-corematrix-border2'
                           }`}
                         >
-                          <span className="text-xl" aria-hidden>
-                            {t.emoji}
+                          <span className="text-xl text-corematrix-green400" aria-hidden>
+                            <i className={tItem.icon} />
                           </span>
                           <p className="mt-2 font-display text-xs font-bold text-corematrix-textPrimary">
-                            {t.label}
+                            {t(tItem.en, tItem.ar)}
                           </p>
                           <p className="mt-0.5 text-[0.65rem] text-corematrix-textDim">
-                            {t.sub}
+                            {t(tItem.subEn, tItem.subAr)}
                           </p>
                         </button>
                       ))}
@@ -520,7 +557,7 @@ export function ContactFormSection() {
                 <div className="space-y-6">
                   <div>
                     <label className="mb-2 block text-xs font-medium text-corematrix-textMuted">
-                      Budget (USD)
+                      {t('Budget (USD)', 'الميزانية (بالدولار الأمريكي)')}
                     </label>
                     <p className="mb-2 font-display text-lg font-bold text-corematrix-green400">
                       {formatBudget(formData.budget)}
@@ -540,14 +577,14 @@ export function ContactFormSection() {
                   </div>
                   <div>
                     <label className="mb-2 block text-xs font-medium text-corematrix-textMuted">
-                      Existing Codebase?
+                      {t('Existing Codebase?', 'هل يوجد كود برمجي حالي؟')}
                     </label>
                     <select
                       value={formData.codebase}
                       onChange={(e) => update({ codebase: e.target.value })}
                       className="w-full rounded-lg border border-corematrix-border bg-corematrix-bg0 px-4 py-3 text-sm text-corematrix-textPrimary focus:border-corematrix-green500 focus:outline-none focus:ring-1 focus:ring-corematrix-green500"
                     >
-                      <option value="">Select an option</option>
+                      <option value="">{t('Select an option', 'اختر خياراً')}</option>
                       {CODEBASE_OPTIONS.map((o) => (
                         <option key={o} value={o}>
                           {o}
@@ -557,12 +594,15 @@ export function ContactFormSection() {
                   </div>
                   <div>
                     <label className="mb-2 block text-xs font-medium text-corematrix-textMuted">
-                      Project Description *
+                      {t('Project Description *', 'وصف المشروع *')}
                     </label>
                     <textarea
                       value={formData.description}
                       onChange={(e) => update({ description: e.target.value })}
-                      placeholder="Tell us about your project — what problem are you solving, who are your users, what does success look like?"
+                      placeholder={t(
+                        "Tell us about your project — what problem are you solving, who are your users, what does success look like?",
+                        "أخبرنا عن مشروعك — ما هي المشكلة التي تقوم بحلها، من هم فئات المستخدمين المستهدفين، وكيف يبدو شكل النجاح بالنسبة لك؟"
+                      )}
                       rows={5}
                       className="min-h-[120px] w-full rounded-lg border border-corematrix-border bg-corematrix-bg0 px-4 py-3 text-sm text-corematrix-textPrimary placeholder-corematrix-textDim focus:border-corematrix-green500 focus:outline-none focus:ring-1 focus:ring-corematrix-green500"
                     />
@@ -574,12 +614,11 @@ export function ContactFormSection() {
                     onClick={() => setFileName('document.pdf')}
                     onKeyDown={(e) => e.key === 'Enter' && setFileName('document.pdf')}
                   >
-                    {/* TODO: Wire to your file upload endpoint or Payload media collection */}
                     {fileName ? (
                       <p className="text-sm text-corematrix-green400">{fileName}</p>
                     ) : (
                       <p className="text-sm text-corematrix-textMuted">
-                        Drop files or click to upload (optional)
+                        {t('Drop files or click to upload (optional)', 'اسحب الملفات هنا أو انقر لتحميلها (اختياري)')}
                       </p>
                     )}
                   </div>
@@ -590,25 +629,25 @@ export function ContactFormSection() {
                 <div className="space-y-5">
                   <div className="rounded-xl border border-corematrix-border2 bg-corematrix-card2 p-5">
                     <p className="font-display text-xs font-bold text-corematrix-textPrimary mb-3">
-                      What happens next
+                      {t('What happens next', 'ماذا سيحدث بعد ذلك')}
                     </p>
                     <ol className="space-y-2 text-xs text-corematrix-textMuted">
-                      <li>1. We review your brief</li>
-                      <li>2. Personal response within 24h</li>
-                      <li>3. Free discovery call if there&apos;s a fit</li>
-                      <li>4. Detailed proposal within 48–72h</li>
+                      <li>{t('1. We review your brief', '1. نراجع ملخص مشروعك')}</li>
+                      <li>{t('2. Personal response within 24h', '2. رد شخصي ومخصص خلال 24 ساعة')}</li>
+                      <li>{t("3. Free discovery call if there's a fit", '3. مكالمة استكشافية مجانية إذا وجد توافق')}</li>
+                      <li>{t('4. Detailed proposal within 48–72h', '4. تقديم عرض تفصيلي للمشروع خلال 48-72 ساعة')}</li>
                     </ol>
                   </div>
                   <div>
                     <label className="mb-2 block text-xs font-medium text-corematrix-textMuted">
-                      How did you find us?
+                      {t('How did you find us?', 'كيف عثرت علينا؟')}
                     </label>
                     <select
                       value={formData.source}
                       onChange={(e) => update({ source: e.target.value })}
                       className="w-full rounded-lg border border-corematrix-border bg-corematrix-bg0 px-4 py-3 text-sm text-corematrix-textPrimary focus:border-corematrix-green500 focus:outline-none focus:ring-1 focus:ring-corematrix-green500"
                     >
-                      <option value="">Select</option>
+                      <option value="">{t('Select', 'اختر')}</option>
                       {SOURCE_OPTIONS.map((o) => (
                         <option key={o} value={o}>
                           {o}
@@ -624,7 +663,7 @@ export function ContactFormSection() {
                       className="mt-1 h-4 w-4 rounded border-corematrix-border bg-corematrix-bg0 text-corematrix-green700 focus:ring-corematrix-green500"
                     />
                     <span className="text-sm text-corematrix-textSecondary">
-                      I&apos;d like to sign an NDA before discussing project details
+                      {t("I'd like to sign an NDA before discussing project details", 'أود توقيع اتفاقية عدم إفصاح (NDA) قبل مناقشة تفاصيل المشروع')}
                     </span>
                   </label>
                   <label className="flex cursor-pointer items-start gap-3">
@@ -635,7 +674,7 @@ export function ContactFormSection() {
                       className="mt-1 h-4 w-4 rounded border-corematrix-border bg-corematrix-bg0 text-corematrix-green700 focus:ring-corematrix-green500"
                     />
                     <span className="text-sm text-corematrix-textSecondary">
-                      I agree to Corematrix&apos;s Privacy Policy and consent to being contacted. *
+                      {t("I agree to Corematrix's Privacy Policy and consent to being contacted. *", 'أوافق على سياسة خصوصية كورماتريكس وأوافق على أن يتم الاتصال بي. *')}
                     </span>
                   </label>
                   {error && (
@@ -651,7 +690,7 @@ export function ContactFormSection() {
                     onClick={() => setStep((s) => (s - 1) as FormStep)}
                     className="rounded-lg border border-corematrix-border px-6 py-2.5 text-sm font-semibold text-corematrix-textPrimary transition hover:border-corematrix-border2"
                   >
-                    Back
+                    {t('Back', 'رجوع')}
                   </button>
                 ) : (
                   <div />
@@ -667,7 +706,7 @@ export function ContactFormSection() {
                     }
                     className="rounded-lg bg-corematrix-green700 px-6 py-2.5 text-sm font-semibold text-white uppercase transition hover:bg-corematrix-green500 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Next
+                    {t('Next', 'التالي')}
                   </button>
                 ) : (
                   <button
@@ -679,10 +718,10 @@ export function ContactFormSection() {
                     {submitting ? (
                       <span className="inline-flex items-center gap-2">
                         <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                        Sending...
+                        {t('Sending...', 'جاري الإرسال...')}
                       </span>
                     ) : (
-                      'Send Message'
+                      t('Send Message', 'إرسال الرسالة')
                     )}
                   </button>
                 )}

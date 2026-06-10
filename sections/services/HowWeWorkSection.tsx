@@ -1,5 +1,7 @@
+'use client';
 import { Container } from '@/components/ui/Container';
 import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 
 type ProcessStep = { num: string; title: string; body: string };
 
@@ -36,7 +38,33 @@ const PROCESS_STEPS: ProcessStep[] = [
   },
 ];
 
+// Translation maps for titles and bodies
+const titleTranslations: Record<string, string> = {
+  'Discovery Sprint': 'سباق الاكتشاف',
+  'Architecture Design': 'تصميم الهندسة المعمارية',
+  'Agile Build Sprints': 'سباقات بناء مرنة',
+  'AI Integration Layer': 'طبقة تكامل الذكاء الاصطناعي',
+  'QA & Security Audit': 'تدقيق الجودة والأمان',
+  'Launch & Grow': 'الإطلاق والنمو',
+};
+
+const bodyTranslations: Record<string, string> = {
+  '2-week deep dive into goals, constraints, users, and technical landscape. Outputs a full spec and delivery roadmap.':
+    'غوص عميق لمدة أسبوعين في الأهداف والقيود والمستخدمين والمشهد الفني. ينتج مواصفات كاملة وخارطة طريق للتسليم.',
+  'System design, database schema, API contracts, and UI wireframes — reviewed and approved before build starts.':
+    'تصميم النظام، مخطط قاعدة البيانات، عقود API، وإطارات واجهة المستخدم — تم مراجعته والموافقة عليه قبل بدء البناء.',
+  '2-week sprints with daily standups, Friday demos, and a shared board visible to you at all times.':
+    'سباقات لمدة أسبوعين مع اجتماعات يومية، عروض تجريبية يوم الجمعة، ولوحة مشتركة مرئية لك طوال الوقت.',
+  'AI capabilities woven in at the right stage — LLM features, automation flows, intelligent data pipelines.':
+    'قدرات الذكاء الاصطناعي مدمجة في المرحلة المناسبة — ميزات LLM، تدفقات الأتمتة، خطوط بيانات ذكية.',
+  'Automated test suite, manual QA, OWASP security scanning, and performance benchmarks before launch.':
+    'حزمة اختبار آلية، ضمان جودة يدوي، فحص أمان OWASP، ومعايير أداء قبل الإطلاق.',
+  'Zero-downtime deployment, monitoring setup, team handoff documentation, and ongoing support retainer.':
+    'نشر بلا توقف، إعداد مراقبة، توثيق تسليم الفريق، ودعم مستمر.',
+};
+
 export function HowWeWorkSection() {
+  const { t } = useLanguage();
   return (
     <section
       id="how-we-work"
@@ -45,10 +73,10 @@ export function HowWeWorkSection() {
     >
       <Container>
         <MarketingSectionHeader
-          label="HOW WE WORK"
-          title="From Discovery to Delivery — A Process You'll Actually Enjoy"
+          label={t('HOW WE WORK', 'طريقة العمل')}
+          title={t('From Discovery to Delivery — A Process You\'ll Actually Enjoy', 'من الاكتشاف إلى التسليم — عملية ستحبها فعلاً')}
           titleId="how-we-work-heading"
-          description="Transparent, agile, and designed for your success. We keep you in the loop at every step."
+          description={t('Transparent, agile, and designed for your success. We keep you in the loop at every step.', 'شفاف، مرن، ومصمم لنجاحك. نبقيك على اطلاع في كل خطوة.')}
         />
 
         <div className="relative mt-14 grid grid-cols-2 gap-0 sm:grid-cols-3 lg:grid-cols-6">
@@ -62,10 +90,10 @@ export function HowWeWorkSection() {
                 {step.num}
               </div>
               <h3 className="mb-1.5 font-display text-xs font-bold text-corematrix-textPrimary">
-                {step.title}
+                {t(step.title, titleTranslations[step.title] ?? step.title)}
               </h3>
               <p className="text-[0.72rem] font-light leading-snug text-corematrix-textMuted">
-                {step.body}
+                {t(step.body, bodyTranslations[step.body] ?? step.body)}
               </p>
             </div>
           ))}

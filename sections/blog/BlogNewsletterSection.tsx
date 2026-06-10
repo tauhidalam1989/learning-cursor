@@ -2,32 +2,43 @@
 
 import { useState } from 'react';
 import { Container } from '@/components/ui/Container';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function BlogNewsletterSection() {
-  const [name, setName] = useState('');
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
     setLoading(true);
+    setError(null);
     try {
-      // TODO: Wire to email marketing service (Mailchimp, ConvertKit, Resend, etc.)
-      await fetch('/api/contact/submit', {
+      const res = await fetch('http://localhost:5000/api/newsletters', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          formType: 'newsletter',
-          fullName: name.trim() || 'Newsletter Subscriber',
-          email: email.trim(),
-          message: 'Blog newsletter signup',
-        }),
+        body: JSON.stringify({ email: email.trim() }),
       });
+
+      if (res.status === 409) {
+        setError(t('This email is already subscribed!', 'هذا البريد الإلكتروني مشترك بالفعل!'));
+        setLoading(false);
+        return;
+      }
+
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.message || t('Something went wrong. Please try again.', 'حدث خطأ ما. يرجى المحاولة مرة أخرى.'));
+        setLoading(false);
+        return;
+      }
+
       setSubmitted(true);
     } catch {
-      setLoading(false);
+      setError(t('Network error. Please try again later.', 'خطأ في الشبكة. يرجى المحاولة مرة أخرى لاحقاً.'));
     } finally {
       setLoading(false);
     }
@@ -50,80 +61,80 @@ export function BlogNewsletterSection() {
             aria-hidden
           />
           <div className="relative z-10">
-            <p className="section-label text-corematrix-green400">NEWSLETTER</p>
+            <p className="section-label text-corematrix-green400">{t('NEWSLETTER', 'النشرة البريدية')}</p>
             <h2
               id="blog-newsletter-heading"
               className="mt-3 font-display text-2xl font-bold text-corematrix-textPrimary sm:text-3xl"
             >
-              Engineering Insights, Every Tuesday
+              {t('Engineering Insights, Every Tuesday', 'رؤى وأفكار هندسية، كل ثلاثاء')}
             </h2>
             <p className="mt-4 text-base leading-relaxed text-corematrix-textSecondary">
-              Join 2,400+ engineers and founders who read our weekly newsletter.
-              No AI-generated filler — just real, useful content from the team
-              that&apos;s actually shipping AI products in production.
+              {t(
+                "Join 2,400+ engineers and founders who read our weekly newsletter. No AI-generated filler — just real, useful content from the team that's actually shipping AI products in production.",
+                'انضم إلى أكثر من 2,400 مهندس ومؤسس يقرأون نشرتنا الأسبوعية. بدون حشو مولد بالذكاء الاصطناعي — فقط محتوى حقيقي ومفيد من الفريق الذي يطلق منتجات الذكاء الاصطناعي في بيئة الإنتاج الفعلية.'
+              )}
             </p>
             <ul className="mt-4 flex flex-col gap-2 text-sm text-corematrix-textSecondary">
               <li className="flex items-center gap-2">
                 <span className="text-corematrix-green400">✓</span>
-                One deep-dive article per week
+                {t('One deep-dive article per week', 'مقالة واحدة متعمقة أسبوعياً')}
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-corematrix-green400">✓</span>
-                Curated links from across the engineering web
+                {t('Curated links from across the engineering web', 'روابط مختارة بعناية من مختلف مواقع هندسة البرمجيات')}
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-corematrix-green400">✓</span>
-                Occasional early access to our tools and frameworks
+                {t('Occasional early access to our tools and frameworks', 'وصول مبكر بين الحين والآخر لأدواتنا وأطر عملنا')}
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-corematrix-green400">✓</span>
-                Unsubscribe in one click, anytime
+                {t('Unsubscribe in one click, anytime', 'إلغاء الاشتراك بنقرة واحدة في أي وقت')}
               </li>
             </ul>
             <p className="mt-6 text-xs text-corematrix-textDim">
-              Join 2,400+ engineers already subscribed
+              {t('Join 2,400+ engineers already subscribed', 'انضم إلى أكثر من 2,400 مهندس مشترك بالفعل')}
             </p>
           </div>
           <div className="relative z-10 mt-8 lg:mt-0">
             {submitted ? (
               <p className="text-lg font-semibold text-corematrix-green400">
-                ✓ You&apos;re subscribed! Check your inbox for a confirmation.
+                {t("✓ You're subscribed! Check your inbox for a confirmation.", '✓ تم اشتراكك بنجاح! يرجى التحقق من بريدك الإلكتروني للتأكيد.')}
               </p>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Your name"
-                    className="flex-1 rounded-lg border border-corematrix-border bg-corematrix-bg0 px-4 py-3 text-sm text-corematrix-textPrimary placeholder-corematrix-textDim focus:border-corematrix-green500 focus:outline-none"
-                  />
+                <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center w-full rounded-xl border border-corematrix-border bg-corematrix-bg0 p-1.5 focus-within:border-corematrix-green500 focus-within:ring-1 focus-within:ring-corematrix-green500 transition-all duration-300 gap-2 sm:gap-0">
                   <input
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Your email"
+                    onChange={(e) => { setEmail(e.target.value); setError(null); }}
+                    placeholder={t('Your email', 'بريدك الإلكتروني')}
                     required
-                    className="flex-1 rounded-lg border border-corematrix-border bg-corematrix-bg0 px-4 py-3 text-sm text-corematrix-textPrimary placeholder-corematrix-textDim focus:border-corematrix-green500 focus:outline-none"
+                    className="flex-grow bg-transparent px-4 py-3 sm:py-2.5 text-sm text-corematrix-textPrimary placeholder-corematrix-textDim focus:outline-none w-full"
                   />
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="shrink-0 rounded-lg bg-corematrix-green700 px-6 py-3 sm:py-2.5 text-sm font-semibold text-white transition hover:bg-corematrix-green500 disabled:opacity-50 cursor-pointer"
+                  >
+                    {loading ? (
+                      <span className="inline-flex items-center gap-2">
+                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                        {t('Subscribing...', 'جاري الاشتراك...')}
+                      </span>
+                    ) : (
+                      t('Subscribe', 'اشترك الآن')
+                    )}
+                  </button>
                 </div>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500 disabled:opacity-50 sm:w-auto"
-                >
-                  {loading ? (
-                    <span className="inline-flex items-center gap-2">
-                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                      Subscribing...
-                    </span>
-                  ) : (
-                    'Subscribe'
-                  )}
-                </button>
+                {error && (
+                  <p className="text-sm font-medium text-amber-400">
+                    <i className="fas fa-exclamation-circle mr-1.5" />
+                    {error}
+                  </p>
+                )}
                 <p className="text-xs text-corematrix-textDim">
-                  We respect your privacy. Unsubscribe anytime.
+                  {t('We respect your privacy. Unsubscribe anytime.', 'نحن نحترم خصوصيتك. يمكنك إلغاء الاشتراك في أي وقت.')}
                 </p>
               </form>
             )}

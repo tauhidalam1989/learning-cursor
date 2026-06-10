@@ -7,7 +7,7 @@ import { breadcrumbJsonLd, portfolioCaseStudyJsonLd } from '@/lib/seo/jsonld';
 import { PortfolioCaseStudyLayout } from '@/sections/portfolio/PortfolioCaseStudyLayout';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 const ALL_PROJECTS = [...PROJECTS, FEATURED_PROJECT];
@@ -25,11 +25,12 @@ function metaDescriptionForSlug(slug: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const project = ALL_PROJECTS.find((p) => p.slug === params.slug);
+  const { slug } = await params;
+  const project = ALL_PROJECTS.find((p) => p.slug === slug);
   if (!project) return { title: 'Project Not Found' };
-  const narrative = getPortfolioCaseNarrative(params.slug, project);
-  const description = metaDescriptionForSlug(params.slug);
-  const url = `${siteConfig.url}/portfolio/${params.slug}`;
+  const narrative = getPortfolioCaseNarrative(slug, project);
+  const description = metaDescriptionForSlug(slug);
+  const url = `${siteConfig.url}/portfolio/${slug}`;
   return {
     title: `${project.title} — Portfolio | Corematrix`,
     description,
@@ -49,21 +50,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function PortfolioDetailPage({ params }: Props) {
-  const project = ALL_PROJECTS.find((p) => p.slug === params.slug);
+export default async function PortfolioDetailPage({ params }: Props) {
+  const { slug } = await params;
+  const project = ALL_PROJECTS.find((p) => p.slug === slug);
   if (!project) notFound();
 
-  const narrative = getPortfolioCaseNarrative(params.slug, project);
+  const narrative = getPortfolioCaseNarrative(slug, project);
   const articleLd = portfolioCaseStudyJsonLd({
     title: project.title,
     description: narrative.challenge,
-    slug: params.slug,
+    slug: slug,
     datePublished: narrative.datePublished,
   });
   const breadcrumbLd = breadcrumbJsonLd([
     { name: 'Home', item: siteConfig.url },
     { name: 'Portfolio', item: `${siteConfig.url}/portfolio` },
-    { name: project.title, item: `${siteConfig.url}/portfolio/${params.slug}` },
+    { name: project.title, item: `${siteConfig.url}/portfolio/${slug}` },
   ]);
 
   return (

@@ -6,13 +6,14 @@ import { PrivacyLayout } from '@/sections/privacy/PrivacyLayout';
 import { PrivacyContactCta } from '@/sections/privacy/PrivacyContactCta';
 
 const privacyUrl = `${siteConfig.url}/privacy`;
+const canonicalPrivacyUrl = `${siteConfig.url}/privacy-policy`;
 
 export const metadata: Metadata = {
   title: 'Privacy Policy — Corematrix',
   description:
     'Corematrix Privacy Policy. Learn how we collect, use, protect, and manage your personal data in compliance with GDPR and international privacy standards.',
   alternates: {
-    canonical: privacyUrl,
+    canonical: canonicalPrivacyUrl,
   },
 };
 

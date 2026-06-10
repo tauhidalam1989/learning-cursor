@@ -1,10 +1,49 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { BLOG_CATEGORIES } from '@/data/blogData';
+import { getAllDbPosts } from '@/lib/blog';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function BlogCategoryNav() {
+  const { language } = useLanguage();
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [categories, setCategories] = useState<{ id: string; label: string; count: number }[]>([]);
+
+  useEffect(() => {
+    async function calculateCounts() {
+      const posts = await getAllDbPosts(language);
+      
+      const uniqueCategories = new Set<string>();
+      const categoryMap = new Map<string, string>();
+      
+      posts.forEach(post => {
+        if (post.category) {
+          uniqueCategories.add(post.category);
+          if (post.categoryLabel) {
+            categoryMap.set(post.category, post.categoryLabel);
+          }
+        }
+      });
+
+      const list = Array.from(uniqueCategories).map(catId => {
+        const count = posts.filter(p => p.category === catId).length;
+        return {
+          id: catId,
+          label: categoryMap.get(catId) || catId.toUpperCase(),
+          count
+        };
+      });
+
+      const allLabel = language === 'ar' ? 'كل المقالات' : 'All Posts';
+      const computed = [
+        { id: 'all', label: allLabel, count: posts.length },
+        ...list
+      ];
+      
+      setCategories(computed);
+    }
+    calculateCounts();
+  }, [language]);
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -31,7 +70,7 @@ export function BlogCategoryNav() {
     >
       <div className="overflow-x-auto scrollbar-hide">
         <div className="flex min-w-max">
-          {BLOG_CATEGORIES.map((c) => (
+          {categories.map((c) => (
             <button
               key={c.id}
               type="button"

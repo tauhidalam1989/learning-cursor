@@ -1,10 +1,12 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { useFilterListener } from '@/hooks/usePortalFilter';
 import type { FilterId } from './ServiceFilterNav';
+import { useLanguage } from '@/context/LanguageContext';
 
 export type ServiceCard = {
   icon: string;
@@ -12,7 +14,7 @@ export type ServiceCard = {
   description: string;
   tags: string[];
   linkLabel: string;
-  category: 'ai' | 'web' | 'saas' | 'teams';
+  category: string;
   /** When set, links to `/services/[seoSlug]` inner landing */
   detailSlug?: string;
 };
@@ -28,214 +30,64 @@ export type ServiceCategory = {
   id: string;
   label: string;
   anchorId: string;
-  filterKey: 'ai' | 'web' | 'saas' | 'teams';
+  filterKey: string;
   featured?: FeaturedService;
   cards: ServiceCard[];
 };
 
-const AI_FEATURED: FeaturedService = {
-  badge: '⭐ Most In-Demand Service',
-  title: 'AI Product Development & Custom Intelligent Systems',
-  description:
-    'We build production-ready AI products from the ground up — LLM-powered applications, autonomous AI agents, computer vision systems, and custom ML models that integrate seamlessly into your existing technology stack and drive measurable ROI.',
-  features: [
-    'End-to-end AI product development (strategy → architecture → deployment)',
-    'LLM integration: GPT-4, Claude, Gemini, Llama, and custom fine-tuned models',
-    'RAG pipeline design and implementation with Pinecone, pgvector, Weaviate',
-    'Multi-agent AI systems with tool use, memory, and autonomous decision-making',
-    'Computer vision, NLP, and predictive analytics systems',
-    'AI safety, evaluation frameworks, and production monitoring',
-  ],
-};
-
-const SERVICE_CATEGORIES: ServiceCategory[] = [
-  {
-    id: 'ai',
-    label: 'AI & Intelligent Systems',
-    anchorId: 'ai-dev',
-    filterKey: 'ai',
-    featured: AI_FEATURED,
-    cards: [
-      {
-        icon: '⚙️',
-        title: 'AI Automation & Workflow Intelligence',
-        description:
-          'Replace manual processes with intelligent AI pipelines that learn and adapt. We reduce operational costs by an average of 60% while eliminating human error at scale — from document processing to multi-step approval workflows.',
-        tags: ['#RAG', '#Pipelines', '#n8n', '#LangChain'],
-        linkLabel: 'Get a consultation',
-        category: 'ai',
-        detailSlug: 'ai-automation-workflow-intelligence',
-      },
-      {
-        icon: '🔬',
-        title: 'Machine Learning & Predictive Analytics',
-        description:
-          'Turn your existing data into a strategic asset. Custom ML models for demand forecasting, churn prediction, anomaly detection, recommendation engines, and intelligent pricing — giving your business a genuine data-driven competitive edge.',
-        tags: ['#PyTorch', '#TensorFlow', '#MLOps', '#Forecasting'],
-        linkLabel: 'Explore ML services',
-        category: 'ai',
-        detailSlug: 'machine-learning-predictive-analytics',
-      },
-      {
-        icon: '🤖',
-        title: 'Conversational AI & Intelligent Chatbots',
-        description:
-          'AI assistants that understand your business deeply. From customer support bots that resolve 80% of tickets automatically, to internal knowledge assistants that search your entire document library using natural language.',
-        tags: ['#LLM', '#LangChain', '#RAG', '#Embeddings'],
-        linkLabel: 'Build your chatbot',
-        category: 'ai',
-        detailSlug: 'conversational-ai-chatbots',
-      },
-    ],
-  },
-  {
-    id: 'web',
-    label: 'Web & Mobile Development',
-    anchorId: 'web-dev',
-    filterKey: 'web',
-    cards: [
-      {
-        icon: '💻',
-        title: 'Custom Web Application Development',
-        description:
-          'High-performance web applications built with Next.js 14, React 18, TypeScript, and Tailwind CSS. Pixel-perfect UIs with exceptional Core Web Vitals scores, full accessibility compliance, and SEO-ready architecture.',
-        tags: ['#Next.js', '#React', '#TypeScript', '#Node.js'],
-        linkLabel: 'Start your web project',
-        category: 'web',
-        detailSlug: 'custom-web-application-development',
-      },
-      {
-        icon: '📱',
-        title: 'Cross-Platform Mobile App Development',
-        description:
-          'Ship to iOS and Android simultaneously without compromising on quality. React Native and Flutter apps that feel completely native — beautiful animations, 60fps scrolling, offline support, and deep OS integrations.',
-        tags: ['#ReactNative', '#Flutter', '#iOS', '#Android'],
-        linkLabel: 'Build your mobile app',
-        category: 'web',
-        detailSlug: 'mobile-app-development',
-      },
-      {
-        icon: '🎨',
-        title: 'UI/UX Design & Product Design',
-        description:
-          'Beautiful, functional product design grounded in user research. End-to-end design delivery — wireframes, information architecture, high-fidelity Figma prototypes, design systems, and component libraries ready for production handoff.',
-        tags: ['#Figma', '#DesignSystem', '#UXResearch', '#Accessibility'],
-        linkLabel: 'See our design work',
-        category: 'web',
-        detailSlug: 'ui-ux-product-design',
-      },
-      {
-        icon: '🔗',
-        title: 'API Development & System Integrations',
-        description:
-          'Connect your entire technology ecosystem with robust, well-documented APIs. RESTful and GraphQL APIs, third-party integrations (Stripe, Salesforce, HubSpot, and 100+ more), and event-driven microservices that scale reliably.',
-        tags: ['#REST', '#GraphQL', '#tRPC', '#Webhooks'],
-        linkLabel: 'Discuss your integration',
-        category: 'web',
-        detailSlug: 'api-development-system-integrations',
-      },
-      {
-        icon: '🛒',
-        title: 'eCommerce & Marketplace Development',
-        description:
-          'Custom eCommerce platforms that outperform off-the-shelf solutions. Headless commerce with Next.js and Stripe, custom inventory systems, multi-vendor marketplaces, and AI-powered recommendation engines that increase average order value.',
-        tags: ['#Shopify', '#Stripe', '#Headless', '#Marketplace'],
-        linkLabel: 'Launch your store',
-        category: 'web',
-        detailSlug: 'ecommerce-marketplace-development',
-      },
-      {
-        icon: '⚡',
-        title: 'Performance Engineering & Cloud Migration',
-        description:
-          'Legacy systems and slow applications cost you users and revenue. We audit, refactor, and migrate your infrastructure to modern cloud-native architectures — dramatically improving performance, reducing costs, and adding the scalability your business demands.',
-        tags: ['#AWS', '#GCP', '#Docker', '#K8s'],
-        linkLabel: 'Modernize your stack',
-        category: 'web',
-        detailSlug: 'performance-engineering-cloud-migration',
-      },
-    ],
-  },
-  {
-    id: 'saas',
-    label: 'SaaS & Enterprise Platform Development',
-    anchorId: 'saas',
-    filterKey: 'saas',
-    cards: [
-      {
-        icon: '☁️',
-        title: 'SaaS Platform Architecture & Development',
-        description:
-          'From validated idea to fundable SaaS product — we architect and build multi-tenant platforms that scale. Subscription billing with Stripe, RBAC, usage metering, analytics dashboards, and white-labelling capabilities ready from day one.',
-        tags: ['#MultiTenant', '#Stripe', '#RBAC', '#Supabase'],
-        linkLabel: 'Build your SaaS',
-        category: 'saas',
-        detailSlug: 'saas-platform-development',
-      },
-      {
-        icon: '🏢',
-        title: 'Enterprise Software Development',
-        description:
-          'Complex, mission-critical enterprise systems built for the long haul. Custom ERP modules, workflow management, internal tools, and data platforms that integrate with your existing SAP, Salesforce, or Microsoft ecosystem.',
-        tags: ['#Enterprise', '#ERP', '#CRM', '#SSO'],
-        linkLabel: 'Talk enterprise',
-        category: 'saas',
-        detailSlug: 'enterprise-software-development',
-      },
-      {
-        icon: '🛡️',
-        title: 'DevOps, Security & Infrastructure Engineering',
-        description:
-          'Ship faster and sleep better. Robust CI/CD pipelines, infrastructure-as-code with Terraform, container orchestration with Kubernetes, automated security scanning, and monitoring stacks — so your team focuses on features, not fires.',
-        tags: ['#DevOps', '#Terraform', '#CI/CD', '#Security'],
-        linkLabel: 'Secure your infrastructure',
-        category: 'saas',
-        detailSlug: 'devops-security-infrastructure',
-      },
-    ],
-  },
-  {
-    id: 'teams',
-    label: 'Dedicated Teams & Outsourcing',
-    anchorId: 'teams',
-    filterKey: 'teams',
-    cards: [
-      {
-        icon: '👥',
-        title: 'Dedicated Development Team Model',
-        description:
-          'Extend your engineering capacity with a pre-vetted team that integrates completely into your workflow. Your dedicated team attends your standups, uses your tools, and ships on your roadmap — with the ownership mentality of an in-house hire.',
-        tags: ['#DedicatedTeam', '#Embedded', '#Agile'],
-        linkLabel: 'Build your team',
-        category: 'teams',
-        detailSlug: 'dedicated-development-teams',
-      },
-      {
-        icon: '🔍',
-        title: 'Staff Augmentation & Specialist Contractors',
-        description:
-          'Need a senior Next.js engineer, an AI/ML specialist, or a DevOps expert for a specific project phase? Pre-vetted specialists placed into your team on flexible contracts — fast onboarding, no recruitment overhead, zero compromise on quality.',
-        tags: ['#Staffing', '#Augmentation', '#Specialists'],
-        linkLabel: 'Find your specialist',
-        category: 'teams',
-        detailSlug: 'staff-augmentation-specialists',
-      },
-      {
-        icon: '🌐',
-        title: 'Offshore Development Centre (ODC)',
-        description:
-          'Build a full offshore engineering hub under the Corematrix umbrella — with the speed and cost-efficiency of offshore development, but with the transparency and quality standards of a Tier-1 technology partner. Ideal for scaling 10–50+ engineers.',
-        tags: ['#ODC', '#Offshore', '#Scale', '#CostEffective'],
-        linkLabel: 'Explore ODC model',
-        category: 'teams',
-        detailSlug: 'offshore-development-centre',
-      },
-    ],
-  },
-];
-
 export function MainServicesSection() {
   const filter = useFilterListener('serviceFilter') as FilterId;
+  const { language, t } = useLanguage();
+  const [categories, setCategories] = useState<ServiceCategory[]>([]);
+
+  useEffect(() => {
+    async function fetchDbServicesAndCategories() {
+      try {
+        const [catsRes, servicesRes] = await Promise.all([
+          fetch('http://localhost:5000/api/service-categories'),
+          fetch('http://localhost:5000/api/services')
+        ]);
+        if (!catsRes.ok || !servicesRes.ok) throw new Error('API offline');
+        
+        const catsData = await catsRes.json();
+        const servicesData = await servicesRes.json();
+        
+        const grouped = catsData.map((cat: any) => {
+          // Find if there is a featured service in DB for this category
+          const dbFeatured = servicesData.find((s: any) => s.category === cat.filterKey && s.badge_en);
+
+          // Gather all normal cards for this category from database
+          const dbCards = servicesData.filter((s: any) => s.category === cat.filterKey).map((s: any) => ({
+            icon: s.icon,
+            title: language === 'ar' ? s.title_ar : s.title_en,
+            description: language === 'ar' ? s.description_ar : s.description_en,
+            tags: language === 'ar' ? s.tags_ar : s.tags_en,
+            linkLabel: language === 'ar' ? s.linkLabel_ar : s.linkLabel_en,
+            category: s.category,
+            detailSlug: s.detailSlug,
+          }));
+
+          return {
+            id: cat.id,
+            label: language === 'ar' ? cat.label_ar : cat.label_en,
+            anchorId: cat.anchorId,
+            filterKey: cat.filterKey,
+            featured: dbFeatured ? {
+              badge: language === 'ar' ? (dbFeatured.badge_ar || dbFeatured.badge_en) : dbFeatured.badge_en,
+              title: language === 'ar' ? (dbFeatured.title_ar || dbFeatured.title_en) : dbFeatured.title_en,
+              description: language === 'ar' ? (dbFeatured.description_ar || dbFeatured.description_en) : dbFeatured.description_en,
+              features: language === 'ar' ? (dbFeatured.features_ar || dbFeatured.features_en) : dbFeatured.features_en,
+            } : undefined,
+            cards: dbCards,
+          };
+        });
+        setCategories(grouped);
+      } catch (e) {
+        console.warn('API error retrieving services and categories:', e);
+      }
+    }
+    fetchDbServicesAndCategories();
+  }, [language]);
 
   return (
     <section
@@ -244,7 +96,7 @@ export function MainServicesSection() {
       className="border-t border-corematrix-border bg-corematrix-bg0 pt-20 pb-24"
     >
       <Container>
-        {SERVICE_CATEGORIES.map((category) => {
+        {categories.map((category) => {
           const show = filter === 'all' || filter === category.filterKey;
           if (!show) return null;
 
@@ -284,19 +136,19 @@ export function MainServicesSection() {
                         href="/contact"
                         className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
                       >
-                        Get a consultation →
+                        {t('Get a consultation →', 'احصل على استشارة ←')}
                       </Link>
                       <Link
                         href="/services/ai-product-development"
                         className="inline-flex items-center justify-center rounded-lg border border-corematrix-border2 px-5 py-2.5 text-sm font-semibold text-corematrix-textPrimary transition hover:border-corematrix-green700"
                       >
-                        Service overview
+                        {t('Service overview', 'نظرة عامة على الخدمة')}
                       </Link>
                       <Link
                         href="#case-studies"
                         className="inline-flex items-center justify-center rounded-lg border border-corematrix-border2 px-5 py-2.5 text-sm font-semibold text-corematrix-textPrimary transition hover:border-corematrix-green700"
                       >
-                        See case studies
+                        {t('See case studies', 'شاهد دراسات الحالة')}
                       </Link>
                     </div>
                   </div>
@@ -320,8 +172,8 @@ export function MainServicesSection() {
                     className="group relative flex flex-col gap-0 overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-card p-7 transition-all duration-300 card-glow hover:-translate-y-1 reveal"
                   >
                     <div className="absolute left-0 right-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-corematrix-green700 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-                    <div className="mb-5 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-corematrix-green700/20 bg-corematrix-green900/40 text-xl">
-                      {card.icon}
+                    <div className="mb-5 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-corematrix-green700/20 bg-corematrix-green900/40 text-xl text-corematrix-green400">
+                      <i className={card.icon} />
                     </div>
                     <h3 className="font-display text-base font-bold text-corematrix-textPrimary">
                       {card.title}
@@ -345,7 +197,7 @@ export function MainServicesSection() {
                           href={`/services/${card.detailSlug}`}
                           className="text-sm font-semibold text-corematrix-textSecondary transition-colors hover:text-corematrix-green400"
                         >
-                          Service overview →
+                          {t('Service overview →', 'نظرة عامة على الخدمة ←')}
                         </Link>
                       )}
                       <Link

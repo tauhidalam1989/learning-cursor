@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { siteUrl } from '@/lib/seo';
 import { organizationJsonLd } from '@/lib/seo/jsonld';
 import { AboutHeroSection } from '@/sections/about/AboutHeroSection';
 import { WhoWeAreSection } from '@/sections/about/WhoWeAreSection';
@@ -34,6 +35,9 @@ export const metadata: Metadata = {
     url: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://corematrix.com'}/about`,
     siteName: 'Corematrix',
     type: 'website',
+  },
+  alternates: {
+    canonical: `${siteUrl}/about`,
   },
 };
 

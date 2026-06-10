@@ -1,96 +1,165 @@
 import { siteUrl } from '@/lib/seo';
-import { getAllBlogPosts } from '@/lib/posts';
 import { PROJECTS, FEATURED_PROJECT } from '@/data/portfolioData';
 import { getAllServiceLandingSlugs } from '@/lib/service-seo-routes';
 
 /**
- * Dynamic sitemap.xml route for Next.js App Router.
- * - Includes common static routes, portfolio slugs, and all published blog posts.
- * - Uses NEXT_PUBLIC_SITE_URL (via siteUrl) for canonical absolute URLs.
+ * Dynamic, high-performance sitemap.xml route for Next.js App Router.
+ * - Dynamically fetches all published Blogs, Careers, and Services from the CMS/Admin database.
+ * - Handles static routes and their aliases with designated SEO priorities.
+ * - Uses NEXT_PUBLIC_SITE_URL for absolute canonical mapping.
+ * - Recovers gracefully from database or network connectivity errors.
  */
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
+  // 1. Static Pages with SEO Changefreq and Priority Mapping
   const pages = [
-    { url: '/', priority: 1.0 },
-    { url: '/blog', priority: 0.9 },
-    { url: '/about', priority: 0.7 },
-    { url: '/services', priority: 0.7 },
-    { url: '/services/adobe-licensing', priority: 0.65 },
-    { url: '/contact', priority: 0.7 },
-    { url: '/careers', priority: 0.7 },
-    { url: '/portfolio', priority: 0.8 },
-    { url: '/privacy', priority: 0.3 },
-    { url: '/terms', priority: 0.3 },
-    { url: '/feedback', priority: 0.3 },
+    { url: '/', priority: 1.0, changefreq: 'daily' },
+    { url: '/about', priority: 0.8, changefreq: 'monthly' },
+    { url: '/blog', priority: 0.8, changefreq: 'weekly' },
+    { url: '/careers', priority: 0.7, changefreq: 'weekly' },
+    { url: '/services', priority: 0.9, changefreq: 'weekly' },
+    { url: '/services/adobe-licensing', priority: 0.65, changefreq: 'weekly' },
+    { url: '/contact', priority: 0.7, changefreq: 'weekly' },
+    { url: '/portfolio', priority: 0.8, changefreq: 'monthly' },
+    { url: '/feedback', priority: 0.3, changefreq: 'monthly' },
+    
+    // Core functional legal pages
+    { url: '/privacy', priority: 0.4, changefreq: 'monthly' },
+    { url: '/terms', priority: 0.4, changefreq: 'monthly' },
+    
+    // Aliases matching user requests
+    { url: '/privacy-policy', priority: 0.4, changefreq: 'monthly' },
+    { url: '/terms-and-conditions', priority: 0.4, changefreq: 'monthly' },
   ];
 
+  // 2. Static Portfolio Projects
   const portfolioSlugs = [...PROJECTS, FEATURED_PROJECT].map((p) => ({
     url: `/portfolio/${p.slug}`,
     priority: 0.6,
+    changefreq: 'monthly',
+    lastmod: new Date().toISOString(),
   }));
 
-  const serviceLandingUrls = getAllServiceLandingSlugs().map((slug) => ({
+  // 3. Static Services Landing Pages
+  const staticServices = getAllServiceLandingSlugs().map((slug) => ({
     url: `/services/${slug}`,
-    priority: 0.65,
+    priority: 0.8,
+    changefreq: 'weekly',
+    lastmod: new Date().toISOString(),
   }));
 
-  // Fetch blog posts from the DB
-  let posts: Awaited<ReturnType<typeof getAllBlogPosts>> = [];
+  // 4. Fetch Dynamic Published Blogs from Database REST API
+  let dynamicBlogs: any[] = [];
   try {
-    posts = await getAllBlogPosts();
+    const res = await fetch('http://127.0.0.1:5000/api/blogs', { cache: 'no-store' });
+    if (res.ok) {
+      const posts = await res.json();
+      dynamicBlogs = posts
+        .filter((post: any) => post.status === 'PUBLISHED')
+        .map((post: any) => ({
+          url: `/blog/${post.slug}`,
+          priority: 0.7,
+          changefreq: 'weekly',
+          lastmod: post.updatedAt || post.publishedAt || new Date().toISOString(),
+        }));
+    } else {
+      console.warn(`Sitemap: Blogs API returned non-OK status ${res.status}`);
+    }
   } catch (err) {
-    // If fetching posts fails, continue with static pages only.
-    posts = [];
+    console.error('Sitemap: Failed to fetch dynamic blogs from database:', err);
+  }
+
+  // 5. Fetch Dynamic Active Careers from Database REST API
+  let dynamicCareers: any[] = [];
+  try {
+    const res = await fetch('http://127.0.0.1:5000/api/careers', { cache: 'no-store' });
+    if (res.ok) {
+      const careers = await res.json();
+      dynamicCareers = careers.map((career: any) => ({
+        url: `/careers/${career.id}`,
+        priority: 0.6,
+        changefreq: 'weekly',
+        lastmod: career.updatedAt || career.createdAt || new Date().toISOString(),
+      }));
+    } else {
+      console.warn(`Sitemap: Careers API returned non-OK status ${res.status}`);
+    }
+  } catch (err) {
+    console.error('Sitemap: Failed to fetch dynamic careers from database:', err);
+  }
+
+  // 6. Fetch Dynamic Published Services from Database REST API
+  let dynamicServices: any[] = [];
+  try {
+    const res = await fetch('http://127.0.0.1:5000/api/services', { cache: 'no-store' });
+    if (res.ok) {
+      const services = await res.json();
+      dynamicServices = services
+        .filter((svc: any) => svc.isPublished)
+        .map((svc: any) => ({
+          url: `/services/${svc.detailSlug}`,
+          priority: 0.8,
+          changefreq: 'weekly',
+          lastmod: svc.updatedAt || svc.publishedAt || new Date().toISOString(),
+        }));
+    } else {
+      console.warn(`Sitemap: Services API returned non-OK status ${res.status}`);
+    }
+  } catch (err) {
+    console.error('Sitemap: Failed to fetch dynamic services from database:', err);
   }
 
   const now = new Date().toISOString();
-  const urls = [
-    ...pages.map((p) => {
+
+  // Combine all sitemap nodes
+  const allEntries = [
+    ...pages.map((p) => ({
+      url: p.url,
+      priority: p.priority,
+      changefreq: p.changefreq,
+      lastmod: now,
+    })),
+    ...portfolioSlugs,
+    ...staticServices,
+    ...dynamicBlogs,
+    ...dynamicCareers,
+    ...dynamicServices,
+  ];
+
+  // Helper to ensure correct ISO String timestamps in XML
+  const formatLastmod = (dateStr: string) => {
+    try {
+      return new Date(dateStr).toISOString();
+    } catch {
+      return now;
+    }
+  };
+
+  const xmlEntries = allEntries
+    .map((entry) => {
       return `<url>
-  <loc>${siteUrl}${p.url}</loc>
-  <lastmod>${now}</lastmod>
-  <changefreq>weekly</changefreq>
-  <priority>${p.priority}</priority>
+  <loc>${siteUrl}${entry.url}</loc>
+  <lastmod>${formatLastmod(entry.lastmod)}</lastmod>
+  <changefreq>${entry.changefreq}</changefreq>
+  <priority>${entry.priority.toFixed(1)}</priority>
 </url>`;
-    }),
-    ...portfolioSlugs.map((p) => {
-      return `<url>
-  <loc>${siteUrl}${p.url}</loc>
-  <lastmod>${now}</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>${p.priority}</priority>
-</url>`;
-    }),
-    ...serviceLandingUrls.map((p) => {
-      return `<url>
-  <loc>${siteUrl}${p.url}</loc>
-  <lastmod>${now}</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>${p.priority}</priority>
-</url>`;
-    }),
-    ...posts.map((post) => {
-      const lastmod = post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined;
-      return `<url>
-  <loc>${siteUrl}/blog/${post.slug}</loc>
-  ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}
-  <changefreq>monthly</changefreq>
-  <priority>0.6</priority>
-</url>`;
-    }),
-  ].join('\n');
+    })
+    .join('\n');
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls}
+${xmlEntries}
 </urlset>`;
 
   return new Response(xml, {
     status: 200,
     headers: {
       'Content-Type': 'application/xml',
-      // Cache for 24 hours at the CDN
-      'Cache-Control': 's-maxage=86400, stale-while-revalidate=3600',
+      // Sensible stale-while-revalidate caching policy to optimize response times
+      'Cache-Control': 's-maxage=3600, stale-while-revalidate=600',
     },
   });
 }
+
 

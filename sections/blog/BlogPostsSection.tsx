@@ -4,16 +4,26 @@ import { useState, useEffect, useMemo } from 'react';
 import { Container } from '@/components/ui/Container';
 import { PostCard } from '@/components/blog/PostCard';
 import { BlogSidebar } from '@/components/blog/BlogSidebar';
-import { BLOG_POSTS } from '@/data/blogData';
+import { getAllDbPosts } from '@/lib/blog';
+import { useLanguage } from '@/context/LanguageContext';
 import type { BlogPost } from '@/types/blog';
 
-// TODO: Replace BLOG_POSTS with CMS fetch
 const INITIAL_COUNT = 6;
 
 export function BlogPostsSection() {
+  const { language } = useLanguage();
+  const [posts, setPosts] = useState<BlogPost[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [visibleCount, setVisibleCount] = useState<number>(INITIAL_COUNT);
+
+  useEffect(() => {
+    async function loadPosts() {
+      const dbPosts = await getAllDbPosts(language);
+      setPosts(dbPosts);
+    }
+    loadPosts();
+  }, [language]);
 
   useEffect(() => {
     const catHandler = (e: Event) => {
@@ -33,7 +43,7 @@ export function BlogPostsSection() {
   }, []);
 
   const filtered = useMemo(() => {
-    let list: BlogPost[] = [...BLOG_POSTS];
+    let list: BlogPost[] = [...posts];
     if (activeCategory !== 'all') {
       list = list.filter((p) => p.category === activeCategory);
     }
@@ -47,7 +57,7 @@ export function BlogPostsSection() {
       );
     }
     return list;
-  }, [activeCategory, searchQuery]);
+  }, [posts, activeCategory, searchQuery]);
 
   const visible = filtered.slice(0, visibleCount);
   const hasMore = visibleCount < filtered.length;
@@ -57,7 +67,7 @@ export function BlogPostsSection() {
     <section
       id="blog-posts"
       aria-labelledby="blog-posts-heading"
-      className="bg-corematrix-bg0 pb-20 pt-0"
+      className="bg-corematrix-bg0 pb-20 pt-16"
     >
       <Container>
         <div className="grid grid-cols-1 items-start gap-12 xl:grid-cols-[1fr_320px]">

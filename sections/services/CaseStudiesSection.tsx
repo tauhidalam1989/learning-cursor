@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 
 type CaseStudy = {
   category: string;
@@ -13,7 +16,7 @@ type CaseStudy = {
 const CASE_STUDIES: CaseStudy[] = [
   {
     category: 'AI Automation',
-    emoji: '🤖',
+    emoji: 'fas fa-robot',
     title: 'AI Document Processing Platform for a Legal Tech Startup',
     description:
       'Built an end-to-end AI system that processes contracts, extracts key clauses, flags risks, and generates summaries — replacing 8 hours of manual review per document.',
@@ -25,7 +28,7 @@ const CASE_STUDIES: CaseStudy[] = [
   },
   {
     category: 'SaaS Platform',
-    emoji: '☁️',
+    emoji: 'fas fa-cloud',
     title: 'Multi-Tenant SaaS Analytics Platform — 0 to $1M ARR',
     description:
       'Architected and built a complete B2B SaaS analytics platform from scratch, including multi-tenancy, Stripe billing, custom dashboards, and an embedded AI insights engine.',
@@ -37,7 +40,7 @@ const CASE_STUDIES: CaseStudy[] = [
   },
   {
     category: 'Web Application',
-    emoji: '💻',
+    emoji: 'fas fa-code',
     title: 'Enterprise Internal Tool — Replaced $240k/yr SaaS Subscriptions',
     description:
       'Custom internal operations platform for a 500-person company, replacing three expensive SaaS tools with one unified system tailored to their exact workflows.',
@@ -49,7 +52,49 @@ const CASE_STUDIES: CaseStudy[] = [
   },
 ];
 
+// Translation maps for i18n
+const categoryTranslations: Record<string, string> = {
+  'AI Automation': 'أتمتة الذكاء الاصطناعي',
+  'SaaS Platform': 'منصات SaaS',
+  'Web Application': 'تطبيقات الويب',
+};
+
+const titleTranslations: Record<string, string> = {
+  'AI Document Processing Platform for a Legal Tech Startup': 'منصة معالجة المستندات بالذكاء الاصطناعي لشركة تكنولوجيا قانونية ناشئة',
+  'Multi-Tenant SaaS Analytics Platform — 0 to $1M ARR': 'منصة تحليلات SaaS متعددة المستأجرين — من 0 إلى 1 مليون دولار كإيرادات سنوية متكررة',
+  'Enterprise Internal Tool — Replaced $240k/yr SaaS Subscriptions': 'أداة داخلية للمؤسسات — استبدلت اشتراكات SaaS بقيمة 240 ألف دولار سنوياً',
+};
+
+const descriptionTranslations: Record<string, string> = {
+  'Built an end-to-end AI system that processes contracts, extracts key clauses, flags risks, and generates summaries — replacing 8 hours of manual review per document.':
+    'بناء نظام ذكاء اصطناعي متكامل يعالج العقود، ويستخلص البنود الرئيسية، ويحدد المخاطر، وينشئ ملخصات — مما يختصر 8 ساعات من المراجعة اليدوية لكل مستند.',
+  'Architected and built a complete B2B SaaS analytics platform from scratch, including multi-tenancy, Stripe billing, custom dashboards, and an embedded AI insights engine.':
+    'تصميم وبناء منصة تحليلات B2B SaaS كاملة من الصفر، بما في ذلك تعدد المستأجرين، فوترة Stripe، لوحات تحكم مخصصة، ومحرك رؤى مدمج بالذكاء الاصطناعي.',
+  'Custom internal operations platform for a 500-person company, replacing three expensive SaaS tools with one unified system tailored to their exact workflows.':
+    'منصة عمليات داخلية مخصصة لشركة تضم 500 شخص، لتحل محل ثلاث أدوات SaaS مكلفة بنظام واحد موحد مصمم خصيصاً لسير عملهم الدقيق.',
+};
+
+const metricLabelTranslations: Record<string, string> = {
+  'Time saved': 'الوقت الموفر',
+  'Docs/month': 'وثيقة/شهر',
+  'Delivery': 'مدة التسليم',
+  'ARR in 9mo': 'معدل إيرادات سنوي في 9 أشهر',
+  'Enterprise clients': 'عملاء شركات',
+  'To launch': 'حتى الإطلاق',
+  'Annual savings': 'توفير سنوي',
+  'Daily users': 'مستخدم يومي',
+  'Build time': 'مدة البناء',
+};
+
+const metricValueTranslations: Record<string, string> = {
+  '8 wks': '8 أسابيع',
+  '14 wks': '14 أسبوعًا',
+  '10 wks': '10 أسابيع',
+};
+
 export function CaseStudiesSection() {
+  const { t } = useLanguage();
+
   return (
     <section
       id="case-studies"
@@ -58,10 +103,13 @@ export function CaseStudiesSection() {
     >
       <Container>
         <MarketingSectionHeader
-          label="RESULTS WE'VE DELIVERED"
-          title="Real Projects. Measurable Outcomes."
+          label={t("RESULTS WE'VE DELIVERED", 'النتائج التي حققناها')}
+          title={t('Real Projects. Measurable Outcomes.', 'مشاريع حقيقية. نتائج ملموسة.')}
           titleId="case-studies-heading"
-          description="Here's a snapshot of what we've built — and the impact it's creating."
+          description={t(
+            "Here's a snapshot of what we've built — and the impact it's creating.",
+            'إليك لمحة سريعة عما بنيناه — والأثر الذي يحدثه.'
+          )}
         />
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -74,47 +122,34 @@ export function CaseStudiesSection() {
                 {/* TODO: Replace with <Image src="..." alt="..." fill /> once asset is available */}
                 <div className="absolute inset-0 bg-gradient-to-br from-corematrix-green900 to-corematrix-card2 opacity-70" />
                 <span className="absolute top-3 left-3 z-10 rounded-full border border-corematrix-green700/30 bg-corematrix-green900/40 px-3 py-1 text-[0.65rem] font-mono font-semibold text-corematrix-green400">
-                  {study.category}
+                  {t(study.category, categoryTranslations[study.category] ?? study.category)}
                 </span>
-                <span className="relative z-10 text-5xl" aria-hidden>
-                  {study.emoji}
+                <span className="relative z-10 text-4xl text-corematrix-green400" aria-hidden="true">
+                  <i className={study.emoji} />
                 </span>
               </div>
               <div className="p-6">
                 <h3 className="mb-2 font-display text-sm font-bold leading-snug text-corematrix-textPrimary">
-                  {study.title}
+                  {t(study.title, titleTranslations[study.title] ?? study.title)}
                 </h3>
                 <p className="mb-4 text-xs font-light leading-relaxed text-corematrix-textMuted">
-                  {study.description}
+                  {t(study.description, descriptionTranslations[study.description] ?? study.description)}
                 </p>
                 <div className="mb-4 flex gap-4">
                   {study.metrics.map((m) => (
                     <div key={m.label} className="text-center">
                       <p className="font-display text-lg font-extrabold leading-none text-corematrix-green400">
-                        {m.value}
+                        {t(m.value, metricValueTranslations[m.value] ?? m.value)}
                       </p>
-                      <p className="mt-0.5 text-[0.6rem] text-corematrix-textDim">{m.label}</p>
+                      <p className="mt-0.5 text-[0.6rem] text-corematrix-textDim">
+                        {t(m.label, metricLabelTranslations[m.label] ?? m.label)}
+                      </p>
                     </div>
                   ))}
                 </div>
-                <Link
-                  href="/portfolio"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-corematrix-green400 transition-all hover:gap-3"
-                >
-                  View case study →
-                </Link>
               </div>
             </article>
           ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <Link
-            href="/portfolio"
-            className="inline-flex items-center gap-2 rounded-lg border border-corematrix-border px-6 py-3 text-sm font-semibold text-corematrix-textPrimary transition-all hover:border-corematrix-green400/30 hover:text-corematrix-green400"
-          >
-            View Full Portfolio →
-          </Link>
         </div>
       </Container>
     </section>

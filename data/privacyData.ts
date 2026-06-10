@@ -123,48 +123,48 @@ export const COOKIE_ROWS: CookieRow[] = [
 
 export const USER_RIGHTS: UserRight[] = [
   {
-    icon: '👁️',
+    icon: 'far fa-eye',
     title: 'Right to Access',
     description:
       'Request a copy of the personal data we hold about you and how we use it.',
   },
   {
-    icon: '✏️',
+    icon: 'fas fa-edit',
     title: 'Right to Rectification',
     description: 'Ask us to correct inaccurate or incomplete personal data about you.',
   },
   {
-    icon: '🗑️',
+    icon: 'fas fa-trash-alt',
     title: 'Right to Erasure',
     description:
       'Request deletion of your data where there is no compelling reason to continue processing.',
   },
   {
-    icon: '🔒',
+    icon: 'fas fa-lock',
     title: 'Right to Restriction',
     description:
       'Request that we restrict processing of your data in certain circumstances.',
   },
   {
-    icon: '📦',
+    icon: 'fas fa-box-open',
     title: 'Right to Portability',
     description:
       'Receive your data in a structured, machine-readable format and transfer it.',
   },
   {
-    icon: '🚫',
+    icon: 'fas fa-ban',
     title: 'Right to Object',
     description:
       'Object to processing based on legitimate interests or for direct marketing at any time.',
   },
   {
-    icon: '↩️',
+    icon: 'fas fa-undo',
     title: 'Withdraw Consent',
     description:
       'Where processing is based on consent, withdraw it at any time without affecting past processing.',
   },
   {
-    icon: '⚖️',
+    icon: 'fas fa-balance-scale',
     title: 'Right to Complain',
     description: 'Lodge a complaint with your local data protection authority.',
   },

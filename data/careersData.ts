@@ -11,7 +11,7 @@ import type {
 export const OPEN_ROLES: OpenRole[] = [
   {
     id: 'senior-ai-ml-engineer',
-    icon: '🧠',
+    icon: 'fas fa-brain',
     title: 'Senior AI/ML Engineer',
     department: 'engineering',
     location: 'Remote',
@@ -21,7 +21,7 @@ export const OPEN_ROLES: OpenRole[] = [
   },
   {
     id: 'senior-nextjs-engineer',
-    icon: '💻',
+    icon: 'fas fa-laptop-code',
     title: 'Senior Next.js / React Engineer',
     department: 'engineering',
     location: 'Remote',
@@ -31,7 +31,7 @@ export const OPEN_ROLES: OpenRole[] = [
   },
   {
     id: 'backend-engineer-python',
-    icon: '⚙️',
+    icon: 'fas fa-cogs',
     title: 'Backend Engineer (Python/FastAPI)',
     department: 'engineering',
     location: 'Remote',
@@ -41,7 +41,7 @@ export const OPEN_ROLES: OpenRole[] = [
   },
   {
     id: 'react-native-engineer',
-    icon: '📱',
+    icon: 'fas fa-mobile-alt',
     title: 'React Native / Mobile Engineer',
     department: 'engineering',
     location: 'Remote',
@@ -50,7 +50,7 @@ export const OPEN_ROLES: OpenRole[] = [
   },
   {
     id: 'llm-research-engineer',
-    icon: '🔬',
+    icon: 'fas fa-microscope',
     title: 'LLM Research Engineer',
     department: 'engineering',
     location: 'Remote',
@@ -60,7 +60,7 @@ export const OPEN_ROLES: OpenRole[] = [
   },
   {
     id: 'product-designer',
-    icon: '🎨',
+    icon: 'fas fa-palette',
     title: 'Product Designer (UI/UX)',
     department: 'design',
     location: 'Remote',
@@ -70,7 +70,7 @@ export const OPEN_ROLES: OpenRole[] = [
   },
   {
     id: 'technical-product-manager',
-    icon: '🗺️',
+    icon: 'fas fa-map-marked-alt',
     title: 'Technical Product Manager',
     department: 'product',
     location: 'Remote',
@@ -79,7 +79,7 @@ export const OPEN_ROLES: OpenRole[] = [
   },
   {
     id: 'devops-platform-engineer',
-    icon: '🛡️',
+    icon: 'fas fa-shield-alt',
     title: 'DevOps / Platform Engineer',
     department: 'devops',
     location: 'Remote',
@@ -90,32 +90,32 @@ export const OPEN_ROLES: OpenRole[] = [
 
 export const WHY_CARDS: WhyCard[] = [
   {
-    icon: '🧠',
+    icon: 'fas fa-brain',
     title: 'AI-First Engineering Culture',
     body: "We're not just adding AI features — it's woven into everything we build. You'll work with the latest LLM frameworks, RAG architectures, and agent systems in actual production, not just demos.",
   },
   {
-    icon: '🚀',
+    icon: 'fas fa-rocket',
     title: 'Real Ownership & Impact',
     body: "Engineers here don't execute tickets — they own outcomes. You'll have full context on every business decision, participate in architecture discussions, and see your work used by real users within weeks.",
   },
   {
-    icon: '🌍',
+    icon: 'fas fa-globe',
     title: '100% Remote, Async-First',
     body: "We've been remote from day one. Our processes are built for async — thorough documentation, deep work blocks, and no meetings without a clear agenda. Work from wherever you do your best work.",
   },
   {
-    icon: '📚',
+    icon: 'fas fa-book',
     title: 'Serious Learning Investment',
     body: 'Every engineer gets a $1,500/yr learning budget for courses, conferences, books, and experiments. We encourage exploration time. The team\'s knowledge grows together, not in silos.',
   },
   {
-    icon: '💰',
+    icon: 'fas fa-coins',
     title: 'Competitive Compensation',
     body: 'Market-rate salaries benchmarked globally, equity for key hires, performance bonuses, and all the hardware you need. We believe great work deserves great pay — full stop.',
   },
   {
-    icon: '🤝',
+    icon: 'fas fa-handshake',
     title: 'No Bureaucracy, No BS',
     body: 'Flat structure. Short decision chains. No pointless standups. No status-update culture. We hire adults, give them context, and trust them to do great work. Accountability without micromanagement.',
   },
@@ -123,49 +123,49 @@ export const WHY_CARDS: WhyCard[] = [
 
 export const BENEFITS: Benefit[] = [
   {
-    icon: '💰',
+    icon: 'fas fa-coins',
     title: 'Competitive Salary',
     description:
       'Market-rate pay benchmarked globally, reviewed annually. We share our salary bands openly.',
   },
   {
-    icon: '📈',
+    icon: 'fas fa-chart-line',
     title: 'Equity & Bonuses',
     description:
       'Meaningful equity for key roles. Performance bonuses tied to company and personal outcomes.',
   },
   {
-    icon: '🏥',
+    icon: 'fas fa-medkit',
     title: 'Health Coverage',
     description:
       'Comprehensive health insurance (medical, dental, vision) for you and your family.',
   },
   {
-    icon: '🏖️',
+    icon: 'fas fa-umbrella-beach',
     title: 'Unlimited PTO',
     description:
       'We mean it. Minimum 20 days encouraged. Leaders take time off to model healthy behavior.',
   },
   {
-    icon: '💻',
+    icon: 'fas fa-laptop',
     title: 'Top-Tier Hardware',
     description:
       'MacBook Pro or Linux workstation of your choice, plus a $500 home office setup budget.',
   },
   {
-    icon: '📚',
+    icon: 'fas fa-book',
     title: '$1,500 Learning Budget',
     description:
       'Courses, conferences, books, workshops. Use it however you learn best — no approval needed.',
   },
   {
-    icon: '⏰',
+    icon: 'fas fa-clock',
     title: 'Flexible Hours',
     description:
       'Core overlap hours, but otherwise you set your schedule. We care about output, not clock-watching.',
   },
   {
-    icon: '🌍',
+    icon: 'fas fa-globe',
     title: 'Work From Anywhere',
     description:
       'Fully distributed team. Our processes are built for async — not bolted on as an afterthought.',
@@ -175,35 +175,35 @@ export const BENEFITS: Benefit[] = [
 export const PROCESS_STEPS: ProcessStep[] = [
   {
     num: '01',
-    icon: '📝',
+    icon: 'fas fa-file-signature',
     title: 'Application Review',
     body: "We read every application personally. No automated screening. You'll hear from us within 48 hours with specific, useful feedback.",
     timing: '48 hours',
   },
   {
     num: '02',
-    icon: '💬',
+    icon: 'fas fa-phone-alt',
     title: 'Intro Call (30 min)',
     body: "A relaxed video call with the hiring manager. We'll tell you about the role honestly — including the hard parts. You'll have time to ask anything.",
     timing: '30 minutes',
   },
   {
     num: '03',
-    icon: '🧪',
+    icon: 'fas fa-laptop-code',
     title: 'Technical Assessment',
     body: 'A take-home challenge (2–3 hours max) or a live collaborative session — your choice. Real problems, not trick puzzles. Paid for senior roles.',
     timing: '2–3 hours',
   },
   {
     num: '04',
-    icon: '🤝',
+    icon: 'fas fa-users',
     title: 'Team Interview (60 min)',
     body: "Meet 2–3 team members you'd actually work with. Part technical deep-dive, part culture conversation. We want to see how you think and communicate.",
     timing: '60 minutes',
   },
   {
     num: '05',
-    icon: '🎉',
+    icon: 'fas fa-award',
     title: 'Offer & Onboarding',
     body: 'Decision within 24 hours of your final interview. Transparent offer with full breakdown. Structured 30/60/90-day onboarding plan from day one.',
     timing: '24 hours after final',
@@ -264,12 +264,12 @@ export const CULTURE_VALUES: CultureValue[] = [
 ];
 
 export const LIFE_CELLS: LifeCell[] = [
-  { icon: '💻', label: 'Deep Work Sessions', span: 'tall' },
-  { icon: '🤝', label: 'Weekly Team Standups', span: 'wide' },
-  { icon: '🛠️', label: 'Hackathon Fridays' },
-  { icon: '📚', label: 'Learning Sessions' },
-  { icon: '🚀', label: 'Product Demos' },
-  { icon: '🧠', label: 'AI Research Club' },
+  { icon: 'fas fa-laptop-code', label: 'Deep Work Sessions', span: 'tall' },
+  { icon: 'fas fa-handshake', label: 'Weekly Team Standups', span: 'wide' },
+  { icon: 'fas fa-tools', label: 'Hackathon Fridays' },
+  { icon: 'fas fa-book-reader', label: 'Learning Sessions' },
+  { icon: 'fas fa-rocket', label: 'Product Demos' },
+  { icon: 'fas fa-brain', label: 'AI Research Club' },
 ];
 
 export const TECH_STACK_ITEMS = [
@@ -299,10 +299,4 @@ export const TECH_STACK_ITEMS = [
   'Terraform',
 ] as const;
 
-export const DEPARTMENT_FILTERS = [
-  { id: 'all', label: 'All Roles', count: 8 },
-  { id: 'engineering', label: 'Engineering', count: 5 },
-  { id: 'design', label: 'Design', count: 1 },
-  { id: 'product', label: 'Product', count: 1 },
-  { id: 'devops', label: 'DevOps', count: 1 },
-] as const;
+

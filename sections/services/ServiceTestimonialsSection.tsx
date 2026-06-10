@@ -1,5 +1,8 @@
+'use client';
+
 import { Container } from '@/components/ui/Container';
 import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
+import { useLanguage } from '@/context/LanguageContext';
 
 type ServiceTestimonial = {
   stars: number;
@@ -40,7 +43,43 @@ const TESTIMONIALS: ServiceTestimonial[] = [
   },
 ];
 
+// Explicitly typed translation maps for i18n
+const tagTranslations: Record<string, string> = {
+  'AI Development': 'تطوير الذكاء الاصطناعي',
+  'SaaS Development': 'تطوير منصات SaaS',
+  'Dedicated Team': 'فريق عمل مخصص',
+};
+
+const quoteTranslations: Record<string, string> = {
+  'We needed an AI system that processes thousands of legal contracts per day. Corematrix built something that exceeded every requirement — and delivered two weeks ahead of schedule. The code quality is exceptional.':
+    'كنا بحاجة إلى نظام ذكاء اصطناعي يعالج آلاف العقود القانونية يومياً. قامت كورماتريكس ببناء شيء تجاوز كل المتطلبات — وتم تسليمه قبل أسبوعين من الموعد المحدد. جودة الكود استثنائية.',
+  "Corematrix took our product from zero to $1M ARR in nine months. They contributed to product decisions, challenged our assumptions, and built a foundation that's still scaling without issues 18 months later.":
+    'ساعدتنا كورماتريكس في الانتقال بمنتجنا من الصفر إلى مليون دولار كإيرادات سنوية متكررة في غضون تسعة أشهر. لقد ساهموا في قرارات المنتج، وتحدوا افتراضاتنا، وبنوا أساساً لا يزال يتوسع دون مشاكل بعد 18 شهراً.',
+  "We hired a dedicated Next.js team through Corematrix 14 months ago and can't imagine going back. They integrate completely, think like product owners, and their quality makes our in-house engineers better.":
+    'لقد قمنا بتعيين فريق Next.js مخصص من خلال كورماتريكس منذ 14 شهراً ولا يمكننا تخيل العودة إلى الوراء. إنهم يندمجون تماماً معنا، ويفكرون كأصحاب منتجات، وجودة عملهم تجعل مهندسينا الداخليين أفضل.',
+};
+
+const initialTranslations: Record<string, string> = {
+  'JM': 'ج م',
+  'SR': 'ص ر',
+  'DK': 'د ك',
+};
+
+const nameTranslations: Record<string, string> = {
+  'James M.': 'جيمس م.',
+  'Sophie R.': 'صوفي ر.',
+  'David K.': 'ديفيد ك.',
+};
+
+const roleTranslations: Record<string, string> = {
+  'CTO, LegalTech Startup': 'المدير التقني، شركة تكنولوجيا قانونية ناشئة',
+  'Founder & CEO, SaaS Co.': 'المؤسس والرئيس التنفيذي، شركة SaaS',
+  'VP Engineering, Scale-up': 'نائب رئيس الهندسة، شركة متسارعة النمو',
+};
+
 export function ServiceTestimonialsSection() {
+  const { t } = useLanguage();
+
   return (
     <section
       id="service-testimonials"
@@ -49,17 +88,20 @@ export function ServiceTestimonialsSection() {
     >
       <Container>
         <MarketingSectionHeader
-          label="CLIENT STORIES"
-          title="Don't Take Our Word For It"
+          label={t('CLIENT STORIES', 'قصص عملائنا')}
+          title={t("Don't Take Our Word For It", 'لا تكتفِ بسماع رأينا')}
           titleId="service-testimonials-heading"
-          description="Hear from founders and technical leaders who've shipped with us."
+          description={t(
+            "Hear from founders and technical leaders who've shipped with us.",
+            'استمع إلى آراء المؤسسين والقادة التقنيين الذين أطلقوا مشاريعهم معنا.'
+          )}
         />
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {TESTIMONIALS.map((t) => (
+          {TESTIMONIALS.map((tItem) => (
             <blockquote
-              key={t.name}
-              className="reveal relative overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-card p-8 transition-colors hover:border-corematrix-border2"
+              key={tItem.name}
+              className="reveal group relative overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-card p-8 transition-colors hover:border-corematrix-border2"
             >
               <span
                 className="pointer-events-none absolute top-3 left-6 font-serif text-6xl leading-none text-corematrix-green900"
@@ -68,21 +110,25 @@ export function ServiceTestimonialsSection() {
                 &ldquo;
               </span>
               <div className="mb-3 text-sm tracking-widest text-corematrix-green400">
-                {'★'.repeat(t.stars)}
+                {'★'.repeat(tItem.stars)}
               </div>
               <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-corematrix-green700/20 bg-corematrix-green900/20 px-3 py-1 font-mono text-[0.65rem] font-semibold text-corematrix-green700">
-                {t.serviceTag}
+                {t(tItem.serviceTag, tagTranslations[tItem.serviceTag] ?? tItem.serviceTag)}
               </span>
               <p className="relative z-10 mb-5 text-sm italic font-light leading-relaxed text-corematrix-textSecondary">
-                {t.quote}
+                {t(tItem.quote, quoteTranslations[tItem.quote] ?? tItem.quote)}
               </p>
               <footer className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-corematrix-green900/40 font-display text-sm font-bold text-corematrix-green400">
-                  {t.initials}
+                  {t(tItem.initials, initialTranslations[tItem.initials] ?? tItem.initials)}
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-corematrix-textPrimary">{t.name}</p>
-                  <p className="text-xs text-corematrix-textMuted">{t.role}</p>
+                  <p className="text-sm font-semibold text-corematrix-textPrimary">
+                    {t(tItem.name, nameTranslations[tItem.name] ?? tItem.name)}
+                  </p>
+                  <p className="text-xs text-corematrix-textMuted">
+                    {t(tItem.role, roleTranslations[tItem.role] ?? tItem.role)}
+                  </p>
                 </div>
               </footer>
             </blockquote>

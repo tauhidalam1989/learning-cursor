@@ -9,6 +9,7 @@ import { ContactTrustSection } from '@/sections/contact/ContactTrustSection';
 import { ContactFaqSection } from '@/sections/contact/ContactFaqSection';
 import { ContactCtaSection } from '@/sections/contact/ContactCtaSection';
 import { siteConfig } from '@/config/site';
+import { siteUrl } from '@/lib/seo';
 
 export const metadata = {
   title: 'Contact Corematrix — Start Your AI or Software Project Today',
@@ -31,6 +32,9 @@ export const metadata = {
     url: `${siteConfig.url}/contact`,
     siteName: 'Corematrix',
     type: 'website' as const,
+  },
+  alternates: {
+    canonical: `${siteUrl}/contact`,
   },
 };
 

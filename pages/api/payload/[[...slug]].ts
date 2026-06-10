@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Use the imported config object directly so we don't need to compile the
         // config separately at runtime.
         config,
-        secret: process.env.PAYLOAD_SECRET || process.env.PAYLOAD_SERVER_SECRET || 'dev-secret',
+        secret: process.env.PAYLOAD_SECRET || process.env.PAYLOAD_SERVER_SECRET || '35c6e838d21b4a1b8c2c77dcfde9b8ef421b8f1c8a14b51c8a1e8c1d1a1b1c1d',
         express: app,
       } as any);
 
