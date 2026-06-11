@@ -12,7 +12,6 @@ type Feature = {
   body_ar: string;
   iconBg: string;
   iconColor: string;
-  textColor: string;
 };
 
 const FEATURES: Feature[] = [
@@ -23,7 +22,6 @@ const FEATURES: Feature[] = [
     body_ar: 'كل مشروع يتم بناؤه مع وضع القدرات الذكية في الاعتبار منذ اليوم الأول.',
     iconBg: 'bg-purple-700/30',
     iconColor: 'text-purple-400',
-    textColor: 'text-purple-300/90',
   },
   {
     title_en: "Next.js & Modern Stack",
@@ -32,7 +30,6 @@ const FEATURES: Feature[] = [
     body_ar: "نحن نستخدم نفس حزمة التقنيات التي تعمل عليها أفضل المنتجات في العالم — Next.js و TypeScript و Python.",
     iconBg: 'bg-sky-700/30',
     iconColor: 'text-sky-400',
-    textColor: 'text-sky-300/90',
   },
   {
     title_en: 'Business-Outcome Focused',
@@ -41,7 +38,6 @@ const FEATURES: Feature[] = [
     body_ar: 'نحن نقيس النجاح بمقاييس نموك، وليس فقط بمراحل تسليم الكود.',
     iconBg: 'bg-amber-700/30',
     iconColor: 'text-amber-400',
-    textColor: 'text-amber-300/90',
   },
   {
     title_en: 'Transparent & Agile',
@@ -50,7 +46,6 @@ const FEATURES: Feature[] = [
     body_ar: 'عروض أسبوعية لنتائج العمل، لوحات معلومات مشتركة، لا يوجد تطوير غامض على الإطلاق.',
     iconBg: 'bg-rose-700/30',
     iconColor: 'text-rose-400',
-    textColor: 'text-rose-300/90',
   },
   {
     title_en: 'End-to-End Delivery',
@@ -59,7 +54,6 @@ const FEATURES: Feature[] = [
     body_ar: 'الاستراتيجية ← التصميم ← التطوير ← الإطلاق ← الدعم المستمر. نحن نتولى كل شيء.',
     iconBg: 'bg-teal-700/30',
     iconColor: 'text-teal-400',
-    textColor: 'text-teal-300/90',
   },
 ];
 
@@ -127,7 +121,7 @@ export function WhyCorematrixSection() {
                     <h3 className="font-display font-semibold text-corematrix-textPrimary">
                       {language === 'ar' ? f.title_ar : f.title_en}
                     </h3>
-                    <p className={`mt-0.5 text-sm leading-relaxed ${f.textColor}`}>
+                    <p className="mt-0.5 text-sm leading-relaxed text-corematrix-textSecondary">
                       {language === 'ar' ? f.body_ar : f.body_en}
                     </p>
                   </div>
@@ -156,4 +150,3 @@ export function WhyCorematrixSection() {
     </section>
   );
 }
-

@@ -59,6 +59,22 @@ function BodySection({ heading, body, theme }: { heading: string; body: string; 
   );
 }
 
+function renderTitleWithGreenLastTwoWords(text: string) {
+  if (!text) return '';
+  const words = text.trim().split(/\s+/);
+  if (words.length <= 2) {
+    return <span className="text-corematrix-green400">{text}</span>;
+  }
+  const mainPart = words.slice(0, words.length - 2).join(' ');
+  const lastTwo = words.slice(words.length - 2).join(' ');
+  return (
+    <>
+      {mainPart}{' '}
+      <span className="text-corematrix-green400">{lastTwo}</span>
+    </>
+  );
+}
+
 export function ServiceLandingPage({ config: cfg }: { config: ServiceLandingConfig }) {
   const { language, dir, t } = useLanguage();
   const isAr = language === 'ar';
@@ -156,7 +172,7 @@ export function ServiceLandingPage({ config: cfg }: { config: ServiceLandingConf
             <span className="text-corematrix-green400">{localizedBreadcrumb}</span>
           </nav>
 
-          <p className="section-label text-corematrix-green400">{t('Service', 'الخدمة')}</p>
+          {/* <p className="section-label text-corematrix-green400">{t('Service', 'الخدمة')}</p> */}
 
           {localizedBadge && (
             <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-corematrix-green700/30 bg-corematrix-green900/30 px-3 py-1 text-xs font-medium text-corematrix-green400">
@@ -168,7 +184,7 @@ export function ServiceLandingPage({ config: cfg }: { config: ServiceLandingConf
             id="service-landing-heading"
             className="mt-3 max-w-[900px] font-display text-[clamp(2rem,4vw,3.2rem)] font-extrabold leading-[1.06] tracking-tight text-corematrix-textPrimary"
           >
-            {localizedH1}
+            {renderTitleWithGreenLastTwoWords(localizedH1)}
           </h1>
 
           <p className="mt-6 max-w-[680px] text-base font-light leading-relaxed text-corematrix-textSecondary">

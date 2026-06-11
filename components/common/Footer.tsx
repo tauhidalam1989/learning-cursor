@@ -59,7 +59,7 @@ export function Footer() {
 
   return (
     <footer
-      className="bg-gradient-to-r from-[#02140f] via-[#032916] to-[#02140f] py-14 text-white sm:py-16 lg:py-20"
+      className="bg-gradient-to-r from-[#02140f] via-[#032916] to-[#02140f] pt-14 pb-6 text-white sm:pt-16 sm:pb-8 lg:pt-20 lg:pb-10"
       role="contentinfo"
       aria-label={t('Site footer', 'تذييل الموقع')}
       style={{
@@ -83,18 +83,18 @@ export function Footer() {
               {t('FOLLOW US', 'تابعنا')}
             </p>
             <div className="mt-4 flex gap-3">
-              {/* Social icons: FontAwesome with brand background */}
-              <a href={siteConfig.twitter} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1DA1F2] text-white hover:brightness-110 hover:scale-110 transition-all duration-300" aria-label="Twitter">
-                <i className="fab fa-twitter text-sm" />
+              {/* Social icons: FontAwesome with green background and brand-colored icons */}
+              <a href={siteConfig.twitter} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-[#052e16] border border-white/5 hover:border-[#1DA1F2]/30 hover:scale-110 transition-all duration-300" aria-label="Twitter">
+                <i className="fab fa-twitter text-sm text-[#1DA1F2]" />
               </a>
-              <a href={siteConfig.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1877F2] text-white hover:brightness-110 hover:scale-110 transition-all duration-300" aria-label="Facebook">
-                <i className="fab fa-facebook-f text-sm" />
+              <a href={siteConfig.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-[#052e16] border border-white/5 hover:border-[#1877F2]/30 hover:scale-110 transition-all duration-300" aria-label="Facebook">
+                <i className="fab fa-facebook-f text-sm text-[#1877F2]" />
               </a>
-              <a href={siteConfig.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white hover:brightness-110 hover:scale-110 transition-all duration-300" aria-label="Instagram">
-                <i className="fab fa-instagram text-sm" />
+              <a href={siteConfig.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-[#052e16] border border-white/5 hover:border-[#ee2a7b]/30 hover:scale-110 transition-all duration-300" aria-label="Instagram">
+                <i className="fab fa-instagram text-sm text-[#ee2a7b]" />
               </a>
-              <a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0077B5] text-white hover:brightness-110 hover:scale-110 transition-all duration-300" aria-label="LinkedIn">
-                <i className="fab fa-linkedin-in text-sm" />
+              <a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-[#052e16] border border-white/5 hover:border-[#0077B5]/30 hover:scale-110 transition-all duration-300" aria-label="LinkedIn">
+                <i className="fab fa-linkedin-in text-sm text-[#0077B5]" />
               </a>
             </div>
           </div>
@@ -217,7 +217,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 border-t border-white/6 pt-8">
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 border-t border-white/6 pt-6">
           <p className="text-sm text-white/60">
             © {siteConfig.currentYear} {language === 'ar' ? 'كورماتريكس' : siteConfig.name}. {t('All rights reserved.', 'جميع الحقوق محفوظة.')}
           </p>

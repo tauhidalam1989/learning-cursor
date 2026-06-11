@@ -12,7 +12,6 @@ type Testimonial = {
   role_en: string;
   role_ar: string;
   quoteColor: string;
-  starColor: string;
   avatarBg: string;
   avatarText: string;
 };
@@ -28,7 +27,6 @@ const TESTIMONIALS: Testimonial[] = [
     role_en: 'CTO, SaaS Startup',
     role_ar: 'الرئيس التنفيذي للتكنولوجيا، شركة ناشئة في مجال البرمجيات كخدمة (SaaS)',
     quoteColor: 'text-purple-900/30',
-    starColor: 'text-purple-400',
     avatarBg: 'bg-purple-900/40',
     avatarText: 'text-purple-400',
   },
@@ -42,7 +40,6 @@ const TESTIMONIALS: Testimonial[] = [
     role_en: 'VP Engineering, Enterprise Co.',
     role_ar: 'نائب رئيس الهندسة، شركة مساهمة كبرى',
     quoteColor: 'text-amber-900/30',
-    starColor: 'text-amber-400',
     avatarBg: 'bg-amber-900/40',
     avatarText: 'text-amber-400',
   },
@@ -56,7 +53,6 @@ const TESTIMONIALS: Testimonial[] = [
     role_en: 'Founder, Tech Company',
     role_ar: 'مؤسس، شركة تكنولوجيا',
     quoteColor: 'text-cyan-900/30',
-    starColor: 'text-cyan-400',
     avatarBg: 'bg-cyan-900/40',
     avatarText: 'text-cyan-400',
   },
@@ -91,7 +87,7 @@ export function TestimonialsSection() {
               >
                 &ldquo;
               </span>
-              <p className={`mb-4 ${testi.starColor}`} aria-hidden>
+              <p className="mb-4 text-amber-400" aria-hidden>
                 ★★★★★
               </p>
               <p className="relative z-10 text-sm italic leading-relaxed text-corematrix-textSecondary">
@@ -115,4 +111,3 @@ export function TestimonialsSection() {
     </section>
   );
 }
-

@@ -60,7 +60,7 @@ export function ClientLogosSection() {
       className="border-t border-corematrix-border bg-corematrix-bg0 py-16"
     >
       <Container>
-        <p className="mb-10 text-center font-display text-[0.68rem] font-bold uppercase tracking-[0.15em] text-corematrix-textDim">
+        <p className="mb-10 text-center font-display text-sm font-bold uppercase tracking-[0.15em] text-white">
           {t("TRUSTED BY TEAMS AT", "شريك تقني موثوق لدى فرق العمل في")}
         </p>
         <div className="reveal grid grid-cols-3 divide-x divide-y divide-corematrix-border overflow-hidden rounded-2xl border border-corematrix-border md:grid-cols-6">

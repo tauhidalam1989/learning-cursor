@@ -13,6 +13,8 @@ type CultureItem = {
   body_ar: string;
   iconColor: string;
   iconBg: string;
+  hoverColor: string;
+  hoverBorder: string;
 };
 
 const CULTURE_ITEMS: CultureItem[] = [
@@ -24,6 +26,8 @@ const CULTURE_ITEMS: CultureItem[] = [
     body_ar: 'يحصل كل مهندس لدينا على ميزانية تعلم شخصية مخصصة للدورات والمؤتمرات والتجارب التقنية.',
     iconColor: 'text-purple-400',
     iconBg: 'bg-purple-900/40 border-purple-700/20',
+    hoverColor: 'group-hover:text-purple-400',
+    hoverBorder: 'hover:border-purple-500/50',
   },
   {
     icon: 'fas fa-globe',
@@ -33,6 +37,8 @@ const CULTURE_ITEMS: CultureItem[] = [
     body_ar: 'بيئة عمل تعتمد تماماً عن بعد مع اتصالات غير متزامنة. اعمل من أي مكان وتواجد حيثما يلزم.',
     iconColor: 'text-cyan-400',
     iconBg: 'bg-cyan-900/40 border-cyan-700/20',
+    hoverColor: 'group-hover:text-cyan-400',
+    hoverBorder: 'hover:border-cyan-500/50',
   },
   {
     icon: 'fas fa-rocket',
@@ -42,6 +48,8 @@ const CULTURE_ITEMS: CultureItem[] = [
     body_ar: 'يمتلك مهندسونا الميزات من البداية إلى النهاية — بدءاً من قرارات البنية الهندسية إلى مراقبة الأنظمة الإنتاجية.',
     iconColor: 'text-orange-400',
     iconBg: 'bg-orange-900/40 border-orange-700/20',
+    hoverColor: 'group-hover:text-orange-400',
+    hoverBorder: 'hover:border-orange-500/50',
   },
   {
     icon: 'fas fa-chart-line',
@@ -51,6 +59,8 @@ const CULTURE_ITEMS: CultureItem[] = [
     body_ar: 'تتم مشاركة مؤشرات الشركة، وآراء وملاحظات العملاء، والقرارات الهندسية بشكل علني عبر كامل الفريق.',
     iconColor: 'text-sky-400',
     iconBg: 'bg-sky-900/40 border-sky-700/20',
+    hoverColor: 'group-hover:text-sky-400',
+    hoverBorder: 'hover:border-sky-500/50',
   },
 ];
 
@@ -78,12 +88,12 @@ export function CultureSection() {
               {CULTURE_ITEMS.map((item) => (
                 <article
                   key={item.title_en}
-                  className="reveal rounded-2xl border border-corematrix-border bg-corematrix-card p-6 transition-all hover:-translate-y-0.5 hover:border-corematrix-border2"
+                  className={`group reveal rounded-2xl border border-corematrix-border bg-corematrix-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(255,255,255,0.015)] ${item.hoverBorder}`}
                 >
-                  <span className={`shrink-0 flex h-9 w-9 items-center justify-center rounded-lg border text-base ${item.iconBg} ${item.iconColor}`} aria-hidden="true">
+                  <span className={`shrink-0 flex h-9 w-9 items-center justify-center rounded-lg border text-base ${item.iconBg} ${item.iconColor} transition-all duration-300 group-hover:scale-105`} aria-hidden="true">
                     <i className={item.icon} />
                   </span>
-                  <h3 className="mt-3 font-display font-semibold text-corematrix-textPrimary">
+                  <h3 className={`mt-3 font-display font-semibold text-corematrix-textPrimary transition-colors duration-300 ${item.hoverColor}`}>
                     {language === 'ar' ? item.title_ar : item.title_en}
                   </h3>
                   <p className="mt-1 text-sm leading-relaxed text-corematrix-textSecondary">

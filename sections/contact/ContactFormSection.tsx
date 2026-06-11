@@ -335,20 +335,20 @@ export function ContactFormSection() {
             </div>
             <div className="mt-8 flex gap-3">
               {[
-                { icon: 'fab fa-twitter', href: siteConfig.twitter, aria: 'Twitter' },
-                { icon: 'fab fa-linkedin-in', href: siteConfig.linkedin, aria: 'LinkedIn' },
-                { icon: 'fab fa-facebook-f', href: siteConfig.facebook, aria: 'Facebook' },
-                { icon: 'fab fa-instagram', href: siteConfig.instagram, aria: 'Instagram' },
-              ].map(({ icon, href, aria }) => (
+                { icon: 'fab fa-twitter', href: siteConfig.twitter, aria: 'Twitter', colorClass: 'text-[#1DA1F2]', hoverBorder: 'hover:border-[#1DA1F2]/30' },
+                { icon: 'fab fa-linkedin-in', href: siteConfig.linkedin, aria: 'LinkedIn', colorClass: 'text-[#0077B5]', hoverBorder: 'hover:border-[#0077B5]/30' },
+                { icon: 'fab fa-facebook-f', href: siteConfig.facebook, aria: 'Facebook', colorClass: 'text-[#1877F2]', hoverBorder: 'hover:border-[#1877F2]/30' },
+                { icon: 'fab fa-instagram', href: siteConfig.instagram, aria: 'Instagram', colorClass: 'text-[#ee2a7b]', hoverBorder: 'hover:border-[#ee2a7b]/30' },
+              ].map(({ icon, href, aria, colorClass, hoverBorder }) => (
                 <a
                   key={aria}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-corematrix-border bg-corematrix-card text-base text-corematrix-textMuted transition-all hover:border-corematrix-green700 hover:bg-corematrix-green900/30 hover:text-corematrix-green400"
+                  className={`flex h-10 w-10 items-center justify-center rounded-xl border border-white/5 bg-[#052e16] transition-all hover:scale-110 ${hoverBorder}`}
                   aria-label={aria}
                 >
-                  <i className={icon} aria-hidden="true" />
+                  <i className={`${icon} text-base ${colorClass}`} aria-hidden="true" />
                 </a>
               ))}
             </div>
