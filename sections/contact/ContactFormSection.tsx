@@ -28,6 +28,25 @@ export interface FormData {
 
 export type ContactDetail = { icon: string; label: string; value: string; href?: string };
 
+const DETAILS_THEMES = [
+  {
+    iconColor: 'text-cyan-400',
+    hoverText: 'hover:text-cyan-400',
+  },
+  {
+    iconColor: 'text-emerald-400',
+    hoverText: 'hover:text-emerald-400',
+  },
+  {
+    iconColor: 'text-sky-400',
+    hoverText: 'hover:text-sky-400',
+  },
+  {
+    iconColor: 'text-amber-400',
+    hoverText: 'hover:text-amber-400',
+  },
+];
+
 const BUDGET_MIN = 5000;
 const BUDGET_MAX = 500000;
 const BUDGET_STEP = 5000;
@@ -287,33 +306,38 @@ export function ContactFormSection() {
             <p className="mt-3 text-sm text-corematrix-textSecondary">
               {t("Fill out the form and we'll get back within 24 hours.", "املأ النموذج وسنقوم بالرد عليك في غضون 24 ساعة.")}
             </p>
-            <div className="mt-6 space-y-4">
-              {CONTACT_DETAILS.map((d) => (
-                <div key={d.label} className="flex items-start gap-3">
-                  <span className="text-sm text-corematrix-green400 mt-1" aria-hidden>
-                    <i className={d.icon} />
-                  </span>
-                  <div>
-                    <p className="text-xs font-bold text-corematrix-textDim">{d.label}</p>
-                    {d.href ? (
-                      <a
-                        href={d.href}
-                        className="text-sm text-corematrix-textSecondary hover:text-corematrix-green400"
-                      >
-                        {d.value}
-                      </a>
-                    ) : (
-                      <p className="text-sm text-corematrix-textSecondary">{d.value}</p>
-                    )}
+            <div className="mt-6 space-y-5">
+              {CONTACT_DETAILS.map((d, idx) => {
+                const theme = DETAILS_THEMES[idx % DETAILS_THEMES.length];
+                return (
+                  <div key={d.label} className="space-y-1">
+                    <p className="flex items-center gap-2 text-xs font-bold text-corematrix-textDim">
+                      <span className={`text-sm ${theme.iconColor}`} aria-hidden>
+                        <i className={d.icon} />
+                      </span>
+                      {d.label}
+                    </p>
+                    <div className="pl-6">
+                      {d.href ? (
+                        <a
+                          href={d.href}
+                          className={`text-sm text-corematrix-textSecondary transition-colors ${theme.hoverText}`}
+                        >
+                          {d.value}
+                        </a>
+                      ) : (
+                        <p className="text-sm text-corematrix-textSecondary">{d.value}</p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <div className="mt-8 flex gap-3">
               {[
                 { icon: 'fab fa-twitter', href: siteConfig.twitter, aria: 'Twitter' },
                 { icon: 'fab fa-linkedin-in', href: siteConfig.linkedin, aria: 'LinkedIn' },
-                { icon: 'fab fa-github', href: siteConfig.github, aria: 'GitHub' },
+                { icon: 'fab fa-facebook-f', href: siteConfig.facebook, aria: 'Facebook' },
                 { icon: 'fab fa-instagram', href: siteConfig.instagram, aria: 'Instagram' },
               ].map(({ icon, href, aria }) => (
                 <a

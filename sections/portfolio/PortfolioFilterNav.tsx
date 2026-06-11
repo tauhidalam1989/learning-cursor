@@ -10,7 +10,7 @@ export function PortfolioFilterNav() {
     <section
       id="projects"
       aria-label="Filter portfolio projects"
-      className="sticky top-[68px] z-50 border-y border-corematrix-border bg-corematrix-bg0 py-5"
+      className="sticky top-[68px] z-40 border-y border-corematrix-border bg-corematrix-bg0 py-5"
     >
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-2 px-4 sm:px-6 lg:px-8">
         {FILTER_OPTIONS.map((opt) => (

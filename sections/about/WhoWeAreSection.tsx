@@ -16,6 +16,7 @@ type Pillar = {
   hoverBorder: string;
   hoverBg: string;
   hoverGlow: string;
+  textColor: string;
 };
 
 const PILLARS: Pillar[] = [
@@ -32,6 +33,7 @@ const PILLARS: Pillar[] = [
     hoverBorder: 'hover:border-cyan-500/40',
     hoverBg: 'hover:bg-cyan-950/35',
     hoverGlow: 'hover:shadow-[0_0_20px_rgba(6,182,212,0.15)]',
+    textColor: 'text-cyan-300/90',
   },
   {
     icon: 'fas fa-handshake',
@@ -46,6 +48,7 @@ const PILLARS: Pillar[] = [
     hoverBorder: 'hover:border-amber-500/40',
     hoverBg: 'hover:bg-amber-950/35',
     hoverGlow: 'hover:shadow-[0_0_20px_rgba(245,158,11,0.15)]',
+    textColor: 'text-amber-300/90',
   },
   {
     icon: 'fas fa-bolt',
@@ -60,6 +63,7 @@ const PILLARS: Pillar[] = [
     hoverBorder: 'hover:border-indigo-500/40',
     hoverBg: 'hover:bg-indigo-950/35',
     hoverGlow: 'hover:shadow-[0_0_20px_rgba(99,102,241,0.15)]',
+    textColor: 'text-indigo-300/90',
   },
 ];
 
@@ -78,7 +82,7 @@ type Milestone = {
 
 const MILESTONES: Milestone[] = [
   {
-    year: '2019',
+    year: '2020',
     title_en: 'Founded',
     title_ar: 'التأسيس',
     body_en: 'Started as a small web dev studio with 3 engineers and a bold vision.',
@@ -89,7 +93,7 @@ const MILESTONES: Milestone[] = [
     bodyColor: 'text-cyan-300/70',
   },
   {
-    year: '2020',
+    year: '2022',
     title_en: 'First Enterprise Deal',
     title_ar: 'أول صفقة مع مؤسسة كبرى',
     body_en: 'Landed first enterprise SaaS contract. Grew to 10 engineers.',
@@ -100,7 +104,7 @@ const MILESTONES: Milestone[] = [
     bodyColor: 'text-amber-300/70',
   },
   {
-    year: '2022',
+    year: '2023',
     title_en: 'AI Division Launched',
     title_ar: 'إطلاق قسم الذكاء الاصطناعي',
     body_en: 'Dedicated AI/ML team formed. First LLM product shipped to production.',
@@ -111,7 +115,7 @@ const MILESTONES: Milestone[] = [
     bodyColor: 'text-indigo-300/70',
   },
   {
-    year: '2023',
+    year: '2024',
     title_en: 'Went Global',
     title_ar: 'الانطلاق نحو العالمية',
     body_en: 'Clients across 12 countries. Opened dedicated team model.',
@@ -122,7 +126,7 @@ const MILESTONES: Milestone[] = [
     bodyColor: 'text-purple-300/70',
   },
   {
-    year: '2024',
+    year: '2025',
     title_en: '50+ Projects',
     title_ar: 'أكثر من 50 مشروعاً',
     body_en: 'Crossed 50 delivered projects. 98% client retention.',
@@ -133,7 +137,7 @@ const MILESTONES: Milestone[] = [
     bodyColor: 'text-rose-300/70',
   },
   {
-    year: '2025→',
+    year: '2026→',
     title_en: 'Next Chapter',
     title_ar: 'الفصل التالي',
     body_en: 'Scaling AI products. Building proprietary enterprise AI frameworks.',
@@ -200,7 +204,7 @@ export function WhoWeAreSection() {
                     <h3 className="font-display font-semibold text-corematrix-textPrimary">
                       {language === 'ar' ? p.title_ar : p.title_en}
                     </h3>
-                    <p className="mt-1 text-sm leading-relaxed text-corematrix-textSecondary">
+                    <p className={`mt-1 text-sm leading-relaxed ${p.textColor}`}>
                       {language === 'ar' ? p.body_ar : p.body_en}
                     </p>
                   </div>

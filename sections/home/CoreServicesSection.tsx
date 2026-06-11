@@ -11,6 +11,10 @@ type Service = {
   description_en: string;
   description_ar: string;
   tags: string[];
+  iconColor: string;
+  iconBg: string;
+  iconBorder: string;
+  glowLine: string;
 };
 
 const SERVICES: Service[] = [
@@ -23,6 +27,10 @@ const SERVICES: Service[] = [
     description_ar:
       'نحن نبني منتجات ذكاء اصطناعي متكاملة — تطبيقات قائمة على النماذج اللغوية الكبيرة، والوكلاء الأذكياء، والرؤية الحاسوبية، وأنظمة معالجة اللغة الطبيعية المخصصة لأهداف عملك.',
     tags: ['#LLM', '#GPT', '#NLP'],
+    iconColor: 'text-purple-400',
+    iconBg: 'bg-purple-950/40',
+    iconBorder: 'border-purple-700/20',
+    glowLine: 'via-purple-500',
   },
   {
     icon: 'fas fa-cogs',
@@ -33,6 +41,10 @@ const SERVICES: Service[] = [
     description_ar:
       'تخلص من سير العمل المتكرر باستخدام الأتمتة الذكية. نحن نبني أنظمة RAG، وخطوط أنابيب الذكاء الاصطناعي المخصصة، وأدوات أتمتة العمليات التي تقلل التكاليف وتوفر الوقت.',
     tags: ['#RAG', '#Agents', '#ML'],
+    iconColor: 'text-amber-400',
+    iconBg: 'bg-amber-950/40',
+    iconBorder: 'border-amber-700/20',
+    glowLine: 'via-amber-500',
   },
   {
     icon: 'fas fa-code',
@@ -43,6 +55,10 @@ const SERVICES: Service[] = [
     description_ar:
       'تطبيقات ويب عالية الأداء تم بناؤها باستخدام Next.js و React وتقنيات التطوير الكاملة الحديثة — صُممت من أجل السرعة وقابلية التوسع وتجربة مستخدم استثنائية.',
     tags: ['#Next.js', '#React', '#TypeScript'],
+    iconColor: 'text-sky-400',
+    iconBg: 'bg-sky-950/40',
+    iconBorder: 'border-sky-700/20',
+    glowLine: 'via-sky-500',
   },
   {
     icon: 'fas fa-mobile-alt',
@@ -53,6 +69,10 @@ const SERVICES: Service[] = [
     description_ar:
       'تطبيقات هاتف محمول متعددة المنصات باستخدام React Native و Flutter — مصممة بشكل جميل وسريع، ومبنية لنظامي iOS و Android من قاعدة كود واحدة.',
     tags: ['#ReactNative', '#Flutter', '#iOS'],
+    iconColor: 'text-emerald-400',
+    iconBg: 'bg-emerald-950/40',
+    iconBorder: 'border-emerald-700/20',
+    glowLine: 'via-emerald-500',
   },
   {
     icon: 'fas fa-cloud',
@@ -63,6 +83,10 @@ const SERVICES: Service[] = [
     description_ar:
       'من منتج MVP الأولي إلى نظام SaaS متعدد المستأجرين واسع النطاق — نحن نصمم ونبني ونوسع منتجات برمجية قائمة على الاشتراك تنمو مع نمو عملك.',
     tags: ['#SaaS', '#Cloud', '#Architecture'],
+    iconColor: 'text-pink-400',
+    iconBg: 'bg-pink-950/40',
+    iconBorder: 'border-pink-700/20',
+    glowLine: 'via-pink-500',
   },
   {
     icon: 'fas fa-users',
@@ -73,6 +97,10 @@ const SERVICES: Service[] = [
     description_ar:
       'زد من طاقتك الهندسية مع مطورين معتمدين. فرق مخصصة، أو زيادة عدد الموظفين، أو تعهيد كامل للمشروع — تسليم شفاف، وعقود مرنة.',
     tags: ['#Outsourcing', '#Teams', '#Scale'],
+    iconColor: 'text-cyan-400',
+    iconBg: 'bg-cyan-950/40',
+    iconBorder: 'border-cyan-700/20',
+    glowLine: 'via-cyan-500',
   },
 ];
 
@@ -122,8 +150,8 @@ export function CoreServicesSection() {
               key={s.title_en}
               className="group relative overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-card p-7 transition-all duration-300 hover:-translate-y-1 card-glow reveal"
             >
-              <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-corematrix-green700 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-corematrix-green700/20 bg-corematrix-green900/40 text-base text-corematrix-green400">
+              <div className={`absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent ${s.glowLine} to-transparent opacity-0 transition-opacity group-hover:opacity-100`} />
+              <div className={`flex h-10 w-10 items-center justify-center rounded-lg border ${s.iconBorder} ${s.iconBg} text-base ${s.iconColor}`}>
                 <i className={s.icon} aria-hidden="true" />
               </div>
               <h3 className="mt-4 font-display text-lg font-semibold text-corematrix-textPrimary">

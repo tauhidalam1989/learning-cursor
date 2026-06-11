@@ -6,9 +6,34 @@ import { TwoColumnFaqSection } from '@/components/shared/TwoColumnFaqSection';
 import { MarketingCtaBand } from '@/components/shared/MarketingCtaBand';
 import { useLanguage } from '@/context/LanguageContext';
 
-type WhyFeature = { icon: string; title: string; body: string };
-type Program = { badge: string; name: string; subtitle: string; body: string; featured: boolean };
-type Product = { icon: string; title: string; apps: string; description: string; tags: string[] };
+type WhyFeature = {
+  icon: string;
+  title: string;
+  body: string;
+  iconBg: string;
+  titleClass: string;
+};
+type Program = {
+  badge: string;
+  name: string;
+  subtitle: string;
+  body: string;
+  featured: boolean;
+  cardClass: string;
+  badgeClass: string;
+  titleClass: string;
+  gradientBar: string;
+};
+type Product = {
+  icon: string;
+  title: string;
+  apps: string;
+  description: string;
+  tags: string[];
+  iconBg: string;
+  accentText: string;
+  hoverClass: string;
+};
 type Sector = {
   icon: string;
   title: string;
@@ -22,8 +47,24 @@ type Sector = {
   hoverGlow: string;
   headingColor: string;
 };
-type ProcessStep = { num: string; title: string; body: string };
-type ValueAddedService = { title: string; body: string };
+type ProcessStep = {
+  num: string;
+  title: string;
+  body: string;
+  numColor: string;
+  bgClass: string;
+  hoverBorder: string;
+  hoverBg: string;
+  hoverGlow: string;
+};
+type ValueAddedService = {
+  title: string;
+  body: string;
+  icon: string;
+  iconBg: string;
+  hoverClass: string;
+  titleClass: string;
+};
 type FaqItem = { q: string; a: string };
 
 const WHY_FEATURES: readonly WhyFeature[] = [
@@ -32,36 +73,48 @@ const WHY_FEATURES: readonly WhyFeature[] = [
     title: 'Official Adobe Partner',
     body:
       '100% genuine licenses with full compliance assurance — every seat is backed by Adobe certification.',
+    iconBg: 'border-purple-500/20 bg-purple-950/40 text-purple-400',
+    titleClass: 'group-hover:text-purple-400',
   },
   {
     icon: 'fas fa-bolt',
     title: 'VIP & ETLA Options',
     body:
       'Flexible VIP plans or multi-year ETLA agreements tailored to your scale and procurement model.',
+    iconBg: 'border-sky-500/20 bg-sky-950/40 text-sky-400',
+    titleClass: 'group-hover:text-sky-400',
   },
   {
     icon: 'fas fa-shield-alt',
     title: 'Full Compliance Coverage',
     body:
       'License health checks and audits so your organization stays compliant and cost-optimized.',
+    iconBg: 'border-amber-500/20 bg-amber-950/40 text-amber-400',
+    titleClass: 'group-hover:text-amber-400',
   },
   {
     icon: 'fas fa-cogs',
     title: 'Seamless User Management',
     body:
       'Centralized control through Adobe Admin Console with SSO integration and deployment support.',
+    iconBg: 'border-rose-500/20 bg-rose-950/40 text-rose-400',
+    titleClass: 'group-hover:text-rose-400',
   },
   {
     icon: 'fas fa-globe',
     title: 'Global Support',
     body:
       'Experts across time zones for deployment, renewals, and ongoing license optimization.',
+    iconBg: 'border-teal-500/20 bg-teal-950/40 text-teal-400',
+    titleClass: 'group-hover:text-teal-400',
   },
   {
     icon: 'fas fa-chart-line',
     title: 'End-to-End Delivery',
     body:
       'From requirements and provisioning to admin training and renewals — we own the full lifecycle.',
+    iconBg: 'border-orange-500/20 bg-orange-950/40 text-orange-400',
+    titleClass: 'group-hover:text-orange-400',
   },
 ];
 
@@ -73,6 +126,10 @@ const PROGRAMS: readonly Program[] = [
     body:
       'Best for SMBs: flexible seat management with annual billing — scale seats as your team changes.',
     featured: false,
+    cardClass: 'hover:border-purple-500/35 hover:shadow-[0_0_40px_rgba(168,85,247,0.08)] border-corematrix-border',
+    badgeClass: 'border-purple-500/20 bg-purple-950/40 text-purple-400',
+    titleClass: 'group-hover:text-purple-400',
+    gradientBar: 'from-purple-700 via-purple-400 to-purple-500',
   },
   {
     badge: 'Most Popular',
@@ -81,6 +138,10 @@ const PROGRAMS: readonly Program[] = [
     body:
       'Streamlined provisioning, consolidated billing, and scalability for growing organizations and partners.',
     featured: true,
+    cardClass: 'border-corematrix-green400/35 ring-1 ring-corematrix-green400/20 hover:border-corematrix-green400/50 hover:shadow-[0_0_40px_rgba(34,197,94,0.08)]',
+    badgeClass: 'border-corematrix-green700/40 bg-corematrix-green900/40 text-corematrix-green400',
+    titleClass: 'group-hover:text-corematrix-green400',
+    gradientBar: 'from-corematrix-green700 via-corematrix-green400 to-corematrix-green500',
   },
   {
     badge: 'Enterprise',
@@ -89,6 +150,10 @@ const PROGRAMS: readonly Program[] = [
     body:
       'Multi-year predictability, advanced admin controls, enterprise support, and usage reporting at scale.',
     featured: false,
+    cardClass: 'hover:border-sky-500/35 hover:shadow-[0_0_40px_rgba(14,165,233,0.08)] border-corematrix-border',
+    badgeClass: 'border-sky-500/20 bg-sky-950/40 text-sky-400',
+    titleClass: 'group-hover:text-sky-400',
+    gradientBar: 'from-sky-700 via-sky-400 to-sky-500',
   },
 ];
 
@@ -100,6 +165,9 @@ const PRODUCTS: readonly Product[] = [
     description:
       'Photoshop, Illustrator, InDesign, Premiere Pro, After Effects, Lightroom, XD, and more — suite or targeted apps.',
     tags: ['Photoshop', 'Illustrator', 'Premiere Pro', 'After Effects'],
+    iconBg: 'border-purple-500/25 bg-purple-950/45 text-purple-400',
+    accentText: 'text-purple-400',
+    hoverClass: 'hover:border-purple-500/30 hover:shadow-[0_0_30px_rgba(168,85,247,0.06)]',
   },
   {
     icon: 'fas fa-file-alt',
@@ -108,6 +176,9 @@ const PRODUCTS: readonly Product[] = [
     description:
       'Acrobat Pro for secure PDF workflows plus Adobe Sign for compliant e-signatures across your business.',
     tags: ['Acrobat Pro', 'Adobe Sign', 'PDF'],
+    iconBg: 'border-sky-500/25 bg-sky-950/45 text-sky-400',
+    accentText: 'text-sky-400',
+    hoverClass: 'hover:border-sky-500/30 hover:shadow-[0_0_30px_rgba(14,165,233,0.06)]',
   },
   {
     icon: 'fas fa-images',
@@ -116,6 +187,9 @@ const PRODUCTS: readonly Product[] = [
     description:
       'Stock images, vectors, templates, and video integrated with your Creative Cloud workflow.',
     tags: ['Images', 'Vectors', 'Video'],
+    iconBg: 'border-amber-500/25 bg-amber-950/45 text-amber-400',
+    accentText: 'text-amber-400',
+    hoverClass: 'hover:border-amber-500/30 hover:shadow-[0_0_30px_rgba(245,158,11,0.06)]',
   },
   {
     icon: 'fas fa-cube',
@@ -124,6 +198,9 @@ const PRODUCTS: readonly Product[] = [
     description:
       'Texturing, rendering, and modeling tools for creative and product teams — Substance 3D Collection.',
     tags: ['3D', 'Texturing', 'Rendering'],
+    iconBg: 'border-rose-500/25 bg-rose-950/45 text-rose-400',
+    accentText: 'text-rose-400',
+    hoverClass: 'hover:border-rose-500/30 hover:shadow-[0_0_30px_rgba(244,63,94,0.06)]',
   },
 ];
 
@@ -213,26 +290,51 @@ const PROCESS: readonly ProcessStep[] = [
     num: '01',
     title: 'Requirement Analysis',
     body: 'We map current and future software needs across teams, projects, and regions.',
+    numColor: 'text-purple-400',
+    bgClass: 'bg-purple-950/30 border-purple-500/20',
+    hoverBorder: 'group-hover:border-purple-500',
+    hoverBg: 'group-hover:bg-purple-700',
+    hoverGlow: 'group-hover:shadow-[0_0_24px_rgba(168,85,247,0.25)]',
   },
   {
     num: '02',
     title: 'Tailored Quotation',
     body: 'A clear Adobe license plan with transparent pricing and flexible commercial terms.',
+    numColor: 'text-sky-400',
+    bgClass: 'bg-sky-950/30 border-sky-500/20',
+    hoverBorder: 'group-hover:border-sky-500',
+    hoverBg: 'group-hover:bg-sky-700',
+    hoverGlow: 'group-hover:shadow-[0_0_24px_rgba(14,165,233,0.25)]',
   },
   {
     num: '03',
     title: 'License Provisioning',
     body: 'Fast activation through Adobe Admin Console — typically within hours of confirmation.',
+    numColor: 'text-amber-400',
+    bgClass: 'bg-amber-950/30 border-amber-500/20',
+    hoverBorder: 'group-hover:border-amber-500',
+    hoverBg: 'group-hover:bg-amber-700',
+    hoverGlow: 'group-hover:shadow-[0_0_24px_rgba(245,158,11,0.25)]',
   },
   {
     num: '04',
     title: 'Deployment Support',
     body: 'User assignment, SSO, and Admin Console setup with guidance for your IT team.',
+    numColor: 'text-rose-400',
+    bgClass: 'bg-rose-950/30 border-rose-500/20',
+    hoverBorder: 'group-hover:border-rose-500',
+    hoverBg: 'group-hover:bg-rose-700',
+    hoverGlow: 'group-hover:shadow-[0_0_24px_rgba(244,63,94,0.25)]',
   },
   {
     num: '05',
     title: 'Renewal & Optimization',
     body: 'Usage tracking and cost reviews ahead of every renewal cycle.',
+    numColor: 'text-teal-400',
+    bgClass: 'bg-teal-950/30 border-teal-500/20',
+    hoverBorder: 'group-hover:border-teal-500',
+    hoverBg: 'group-hover:bg-teal-700',
+    hoverGlow: 'group-hover:shadow-[0_0_24px_rgba(20,184,166,0.25)]',
   },
 ];
 
@@ -240,26 +342,50 @@ const VALUE_ADDED: readonly ValueAddedService[] = [
   {
     title: 'License Health Check',
     body: 'Validate compliance, eliminate shelfware, and right-size spend.',
+    icon: 'fas fa-heartbeat',
+    iconBg: 'border-purple-500/25 bg-purple-950/45 text-purple-400',
+    hoverClass: 'hover:border-purple-500/30 hover:shadow-[0_0_30px_rgba(168,85,247,0.06)]',
+    titleClass: 'text-purple-400 group-hover:text-purple-300',
   },
   {
     title: 'Admin Console Training',
     body: 'Hands-on sessions so IT can manage users, groups, and reporting confidently.',
+    icon: 'fas fa-chalkboard-teacher',
+    iconBg: 'border-sky-500/25 bg-sky-950/45 text-sky-400',
+    hoverClass: 'hover:border-sky-500/30 hover:shadow-[0_0_30px_rgba(14,165,233,0.06)]',
+    titleClass: 'text-sky-400 group-hover:text-sky-300',
   },
   {
     title: 'Migration Assistance',
     body: 'Move from individual IDs to business or enterprise identities with minimal disruption.',
+    icon: 'fas fa-exchange-alt',
+    iconBg: 'border-amber-500/25 bg-amber-950/45 text-amber-400',
+    hoverClass: 'hover:border-amber-500/30 hover:shadow-[0_0_30px_rgba(245,158,11,0.06)]',
+    titleClass: 'text-amber-400 group-hover:text-amber-300',
   },
   {
     title: 'SSO Setup',
     body: 'Enterprise single sign-on aligned with your identity provider.',
+    icon: 'fas fa-key',
+    iconBg: 'border-rose-500/25 bg-rose-950/45 text-rose-400',
+    hoverClass: 'hover:border-rose-500/30 hover:shadow-[0_0_30px_rgba(244,63,94,0.06)]',
+    titleClass: 'text-rose-400 group-hover:text-rose-300',
   },
   {
     title: 'Creative Team Enablement',
     body: 'Libraries, templates, and brand-consistent workflows for creative teams.',
+    icon: 'fas fa-paint-brush',
+    iconBg: 'border-teal-500/25 bg-teal-950/45 text-teal-400',
+    hoverClass: 'hover:border-teal-500/30 hover:shadow-[0_0_30px_rgba(20,184,166,0.06)]',
+    titleClass: 'text-teal-400 group-hover:text-teal-300',
   },
   {
     title: 'Compliance Reporting',
     body: 'Usage and entitlement reports for procurement, IT, and finance alignment.',
+    icon: 'fas fa-chart-bar',
+    iconBg: 'border-orange-500/25 bg-orange-950/45 text-orange-400',
+    hoverClass: 'hover:border-orange-500/30 hover:shadow-[0_0_30px_rgba(249,115,22,0.06)]',
+    titleClass: 'text-orange-400 group-hover:text-orange-300',
   },
 ];
 
@@ -489,7 +615,7 @@ function getTagTheme(tag: string) {
 }
 
 export function AdobeLicensingContent() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const translatedFaqs = FAQ_ITEMS.map((item) => ({
     q: t(item.q, faqQuestionTranslations[item.q] ?? item.q),
@@ -548,7 +674,11 @@ export function AdobeLicensingContent() {
             id="adobe-licensing-heading"
             className="max-w-[900px] font-display text-[clamp(2.5rem,4.5vw,4.2rem)] font-extrabold leading-[1.05] tracking-tight text-corematrix-textPrimary"
           >
-            {t('Genuine Adobe Licensing Solutions for Your Business', 'حلول تراخيص أدوبي الأصلية لشركتك')}
+            {t('Genuine ', 'حلول ')}
+            <em className="not-italic text-corematrix-green400">
+              {t('Adobe Licensing Solutions', 'تراخيص أدوبي الأصلية')}
+            </em>
+            {t(' for Your Business', ' لشركتك')}
           </h1>
 
           <p className="mt-6 max-w-[640px] text-base font-light leading-relaxed text-corematrix-textSecondary">
@@ -581,30 +711,32 @@ export function AdobeLicensingContent() {
         className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
       >
         <Container>
-          <p className="section-label text-corematrix-green400">{t('WHY COREMATRIX', 'لماذا كورماتريكس')}</p>
-          <h2
-            id="why-corematrix-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            {t('Why Corematrix for Adobe Licensing?', 'لماذا كورماتريكس لترخيص أدوبي؟')}
-          </h2>
-          <p className="mt-4 max-w-[640px] text-base leading-relaxed text-corematrix-textSecondary">
-            {t(
-              "We don't just sell licenses — we guide selection, deployment, compliance, and renewals across the full lifecycle.",
-              'نحن لا نبيع التراخيص فحسب — بل نوجهك في اختيارها ونشرها وامتثالها وتجديدها طوال دورة حياتها الكاملة.'
-            )}
-          </p>
+          <div className="mx-auto mb-12 flex max-w-[800px] flex-col items-center text-center">
+            <p className="section-label text-corematrix-green400">{t('WHY COREMATRIX', 'لماذا كورماتريكس')}</p>
+            <h2
+              id="why-corematrix-heading"
+              className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
+            >
+              {t('Why Corematrix for Adobe Licensing?', 'لماذا كورماتريكس لترخيص أدوبي؟')}
+            </h2>
+            <p className="mt-4 max-w-[640px] text-base leading-relaxed text-corematrix-textSecondary">
+              {t(
+                "We don't just sell licenses — we guide selection, deployment, compliance, and renewals across the full lifecycle.",
+                'نحن لا نبيع التراخيص فحسب — بل نوجهك في اختيارها ونشرها وامتثالها وتجديدها طوال دورة حياتها الكاملة.'
+              )}
+            </p>
+          </div>
 
           <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-corematrix-border bg-corematrix-border sm:grid-cols-2 lg:grid-cols-3">
             {WHY_FEATURES.map((f) => (
               <div
                 key={f.title}
-                className="bg-corematrix-card2 p-8 transition-colors hover:bg-corematrix-card"
+                className="group bg-corematrix-card2 p-8 transition-colors hover:bg-corematrix-card"
               >
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg border border-corematrix-green700/30 bg-corematrix-green900/30 text-base text-corematrix-green400">
+                <div className={`mb-4 flex h-14 w-14 items-center justify-center rounded-xl border text-xl transition-all group-hover:scale-110 ${f.iconBg}`}>
                   <i className={f.icon} aria-hidden="true" />
                 </div>
-                <h3 className="font-display text-base font-bold text-corematrix-textPrimary">
+                <h3 className={`font-display text-base font-bold text-corematrix-textPrimary transition-colors ${f.titleClass}`}>
                   {t(f.title, whyTitleTranslations[f.title] ?? f.title)}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-corematrix-textMuted">
@@ -623,40 +755,36 @@ export function AdobeLicensingContent() {
         className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
       >
         <Container>
-          <p className="section-label text-corematrix-green400">{t('LICENSING PROGRAMS', 'برامج الترخيص')}</p>
-          <h2
-            id="programs-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            {t('Licensing Programs', 'برامج الترخيص')}
-          </h2>
-          <p className="mt-4 max-w-[640px] text-base leading-relaxed text-corematrix-textSecondary">
-            {t(
-              'From growing teams to global enterprises — we align you with the right Adobe commercial model.',
-              'من الفرق النامية إلى المؤسسات العالمية — نوجهك نحو النموذج التجاري المناسب من أدوبي.'
-            )}
-          </p>
+          <div className="mx-auto mb-12 flex max-w-[800px] flex-col items-center text-center">
+            <p className="section-label text-corematrix-green400">{t('LICENSING PROGRAMS', 'برامج الترخيص')}</p>
+            <h2
+              id="programs-heading"
+              className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
+            >
+              {t('Licensing Programs', 'برامج الترخيص')}
+            </h2>
+            <p className="mt-4 max-w-[640px] text-base leading-relaxed text-corematrix-textSecondary">
+              {t(
+                'From growing teams to global enterprises — we align you with the right Adobe commercial model.',
+                'من الفرق النامية إلى المؤسسات العالمية — نوجهك نحو النموذج التجاري المناسب من أدوبي.'
+              )}
+            </p>
+          </div>
 
           <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
             {PROGRAMS.map((p) => (
               <div
                 key={p.name}
-                className={`relative overflow-hidden rounded-xl border bg-corematrix-card2 p-8 transition-all hover:-translate-y-0.5 hover:border-corematrix-border2 ${
-                  p.featured
-                    ? 'border-corematrix-green400/35 ring-1 ring-corematrix-green400/20'
-                    : 'border-corematrix-border'
-                }`}
+                className={`group relative overflow-hidden rounded-xl border bg-corematrix-card2 p-8 transition-all hover:-translate-y-0.5 ${p.cardClass}`}
               >
-                {p.featured && (
-                  <div
-                    className="absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-corematrix-green700 via-corematrix-green400 to-corematrix-green500"
-                    aria-hidden
-                  />
-                )}
-                <span className="inline-block rounded-full border border-corematrix-green700/40 bg-corematrix-green900/40 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-corematrix-green400">
+                <div
+                  className={`absolute left-0 right-0 top-0 h-1 bg-gradient-to-r ${p.gradientBar}`}
+                  aria-hidden
+                />
+                <span className={`inline-block rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wider ${p.badgeClass}`}>
                   {t(p.badge, programBadgeTranslations[p.badge] ?? p.badge)}
                 </span>
-                <h3 className="mt-4 font-display text-xl font-bold text-corematrix-textPrimary">
+                <h3 className={`mt-4 font-display text-xl font-bold text-corematrix-textPrimary transition-colors ${p.titleClass}`}>
                   {t(p.name, programNameTranslations[p.name] ?? p.name)}
                 </h3>
                 <p className="text-xs text-corematrix-textDim">
@@ -674,29 +802,31 @@ export function AdobeLicensingContent() {
       {/* Adobe Products */}
       <section aria-labelledby="products-heading" className="border-t border-corematrix-border bg-corematrix-bg0 py-24">
         <Container>
-          <p className="section-label text-corematrix-green400">{t('ADOBE PRODUCTS', 'منتجات أدوبي')}</p>
-          <h2
-            id="products-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            {t('Adobe Products', 'منتجات أدوبي')}
-          </h2>
-          <p className="mt-4 max-w-[640px] text-base leading-relaxed text-corematrix-textSecondary">
-            {t(
-              'Creative, document, stock, and 3D — licensed to match how your teams work.',
-              'الإبداع، والمستندات، ومخزون الصور، وثلاثي الأبعاد — مرخصة لتناسب طريقة عمل فرقك.'
-            )}
-          </p>
+          <div className="mx-auto mb-12 flex max-w-[800px] flex-col items-center text-center">
+            <p className="section-label text-corematrix-green400">{t('ADOBE PRODUCTS', 'منتجات أدوبي')}</p>
+            <h2
+              id="products-heading"
+              className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
+            >
+              {t('Adobe Products', 'منتجات أدوبي')}
+            </h2>
+            <p className="mt-4 max-w-[640px] text-base leading-relaxed text-corematrix-textSecondary">
+              {t(
+                'Creative, document, stock, and 3D — licensed to match how your teams work.',
+                'الإبداع، والمستندات، ومخزون الصور، وثلاثي الأبعاد — مرخصة لتناسب طريقة عمل فرقك.'
+              )}
+            </p>
+          </div>
 
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2">
             {PRODUCTS.map((p) => (
               <div
                 key={p.title}
-                className="rounded-xl border border-corematrix-border bg-corematrix-card2 p-6 transition-colors hover:border-corematrix-border2"
+                className={`rounded-xl border border-corematrix-border bg-corematrix-card2 p-6 transition-all ${p.hoverClass}`}
               >
                 <div className="flex gap-4">
                   <div
-                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-corematrix-green700/25 bg-corematrix-green900/25 text-base text-corematrix-green400"
+                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border text-base ${p.iconBg}`}
                     aria-hidden
                   >
                     <i className={p.icon} aria-hidden="true" />
@@ -705,7 +835,7 @@ export function AdobeLicensingContent() {
                     <h3 className="font-display text-base font-bold text-corematrix-textPrimary">
                       {t(p.title, productTitleTranslations[p.title] ?? p.title)}
                     </h3>
-                    <p className="text-xs font-medium text-corematrix-green400">
+                    <p className={`text-xs font-medium ${p.accentText}`}>
                       {t(p.apps, productAppsTranslations[p.apps] ?? p.apps)}
                     </p>
                   </div>
@@ -738,19 +868,21 @@ export function AdobeLicensingContent() {
         className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
       >
         <Container>
-          <p className="section-label text-corematrix-green400">{t('WHO WE SERVE', 'من نخدم')}</p>
-          <h2
-            id="who-we-serve-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            {t('Who We Serve', 'الجهات التي نخدمها')}
-          </h2>
-          <p className="mt-4 max-w-[640px] text-base leading-relaxed text-corematrix-textSecondary">
-            {t(
-              'Procurement, compliance, and operations — tailored by sector.',
-              'المشتريات، والامتثال، والعمليات — مخصصة ومبوبة حسب القطاع.'
-            )}
-          </p>
+          <div className="mx-auto mb-12 flex max-w-[800px] flex-col items-center text-center">
+            <p className="section-label text-corematrix-green400">{t('WHO WE SERVE', 'من نخدم')}</p>
+            <h2
+              id="who-we-serve-heading"
+              className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
+            >
+              {t('Who We Serve', 'الجهات التي نخدمها')}
+            </h2>
+            <p className="mt-4 max-w-[640px] text-base leading-relaxed text-corematrix-textSecondary">
+              {t(
+                'Procurement, compliance, and operations — tailored by sector.',
+                'المشتريات، والامتثال، والعمليات — مخصصة ومبوبة حسب القطاع.'
+              )}
+            </p>
+          </div>
 
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {SECTORS.map((s) => (
@@ -781,19 +913,21 @@ export function AdobeLicensingContent() {
         className="border-t border-corematrix-border bg-corematrix-bg0 py-24"
       >
         <Container>
-          <p className="section-label text-corematrix-green400">{t('OUR PROCESS', 'خطوات عملنا')}</p>
-          <h2
-            id="process-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            {t('Our Process', 'طريقة عملنا')}
-          </h2>
-          <p className="mt-4 max-w-[640px] text-base leading-relaxed text-corematrix-textSecondary">
-            {t(
-              'Transparent steps from first conversation to optimized renewals.',
-              'خطوات شفافة تبدأ من المحادثة الأولى وحتى التجديدات المحسنة.'
-            )}
-          </p>
+          <div className="mx-auto mb-12 flex max-w-[800px] flex-col items-center text-center">
+            <p className="section-label text-corematrix-green400">{t('OUR PROCESS', 'خطوات عملنا')}</p>
+            <h2
+              id="process-heading"
+              className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
+            >
+              {t('Our Process', 'طريقة عملنا')}
+            </h2>
+            <p className="mt-4 max-w-[640px] text-base leading-relaxed text-corematrix-textSecondary">
+              {t(
+                'Transparent steps from first conversation to optimized renewals.',
+                'خطوات شفافة تبدأ من المحادثة الأولى وحتى التجديدات المحسنة.'
+              )}
+            </p>
+          </div>
 
           <div className="relative mt-14">
             <div
@@ -806,7 +940,7 @@ export function AdobeLicensingContent() {
                   key={step.num}
                   className="group flex flex-col items-center px-2 text-center"
                 >
-                  <div className="relative z-10 mb-4 flex h-14 w-14 items-center justify-center rounded-full border-2 border-corematrix-border2 bg-corematrix-card2 font-display text-lg font-extrabold text-corematrix-green400 transition-all group-hover:border-corematrix-green500 group-hover:bg-corematrix-green700 group-hover:text-white group-hover:shadow-[0_0_24px_rgba(34,197,94,0.25)]">
+                  <div className={`relative z-10 mb-4 flex h-14 w-14 items-center justify-center rounded-full border-2 font-display text-lg font-extrabold transition-all ${step.bgClass} ${step.numColor} ${step.hoverBorder} ${step.hoverBg} group-hover:text-white ${step.hoverGlow}`}>
                     {step.num}
                   </div>
                   <h3 className="font-display text-base font-semibold text-corematrix-textPrimary sm:text-lg">
@@ -826,10 +960,15 @@ export function AdobeLicensingContent() {
           </div>
 
           <p className="mt-10 text-center text-sm text-corematrix-textMuted">
-            {t(
-              'Requirement Analysis → Tailored Quotation → License Provisioning → Deployment Support → Renewal & Optimization',
-              'تحليل المتطلبات ← عرض سعر مخصص ← توفير التراخيص ← دعم النشر ← التجديد والتحسين'
-            )}
+            {t('Requirement Analysis', 'تحليل المتطلبات')}{' '}
+            <span className="text-white mx-1">{language === 'ar' ? '←' : '→'}</span>{' '}
+            {t('Tailored Quotation', 'عرض سعر مخصص')}{' '}
+            <span className="text-white mx-1">{language === 'ar' ? '←' : '→'}</span>{' '}
+            {t('License Provisioning', 'توفير التراخيص')}{' '}
+            <span className="text-white mx-1">{language === 'ar' ? '←' : '→'}</span>{' '}
+            {t('Deployment Support', 'دعم النشر')}{' '}
+            <span className="text-white mx-1">{language === 'ar' ? '←' : '→'}</span>{' '}
+            {t('Renewal & Optimization', 'التجديد والتحسين')}
           </p>
         </Container>
       </section>
@@ -840,30 +979,37 @@ export function AdobeLicensingContent() {
         className="border-t border-corematrix-border bg-corematrix-bg2 py-24"
       >
         <Container>
-          <p className="section-label text-corematrix-green400">{t('VALUE-ADDED SERVICES', 'خدمات القيمة المضافة')}</p>
-          <h2
-            id="value-added-heading"
-            className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
-          >
-            {t('Value-Added Services', 'خدمات ذات قيمة مضافة')}
-          </h2>
-          <p className="mt-4 max-w-[640px] text-base leading-relaxed text-corematrix-textSecondary">
-            {t(
-              'Practical services that help you extract full value from every license.',
-              'خدمات عملية تساعدك على تحقيق الاستفادة القصوى من كل ترخيص.'
-            )}
-          </p>
+          <div className="mx-auto mb-12 flex max-w-[800px] flex-col items-center text-center">
+            <p className="section-label text-corematrix-green400">{t('VALUE-ADDED SERVICES', 'خدمات القيمة المضافة')}</p>
+            <h2
+              id="value-added-heading"
+              className="section-heading mt-3 text-3xl font-bold sm:text-4xl"
+            >
+              {t('Value-Added Services', 'خدمات ذات قيمة مضافة')}
+            </h2>
+            <p className="mt-4 max-w-[640px] text-base leading-relaxed text-corematrix-textSecondary">
+              {t(
+                'Practical services that help you extract full value from every license.',
+                'خدمات عملية تساعدك على تحقيق الاستفادة القصوى من كل ترخيص.'
+              )}
+            </p>
+          </div>
 
           <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {VALUE_ADDED.map((v) => (
               <div
                 key={v.title}
-                className="rounded-xl border border-corematrix-border bg-corematrix-card2 p-6 transition-colors hover:bg-corematrix-card"
+                className={`group rounded-xl border border-corematrix-border bg-corematrix-card2 p-6 transition-all ${v.hoverClass}`}
               >
-                <h3 className="font-display text-base font-bold text-corematrix-textPrimary">
-                  {t(v.title, valueTitleTranslations[v.title] ?? v.title)}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-corematrix-textMuted">
+                <div className="flex gap-4 items-center mb-4">
+                  <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border text-base ${v.iconBg}`} aria-hidden="true">
+                    <i className={v.icon} />
+                  </div>
+                  <h3 className={`font-display text-base font-bold text-corematrix-textPrimary transition-colors ${v.titleClass}`}>
+                    {t(v.title, valueTitleTranslations[v.title] ?? v.title)}
+                  </h3>
+                </div>
+                <p className="text-sm leading-relaxed text-corematrix-textMuted">
                   {t(v.body, valueBodyTranslations[v.body] ?? v.body)}
                 </p>
               </div>

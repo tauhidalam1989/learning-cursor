@@ -35,6 +35,49 @@ const stepTimingTranslations: Record<string, string> = {
   '24 hours after final': '24 ساعة بعد المقابلة النهائية',
 };
 
+const STEP_THEMES = [
+  {
+    // Purple
+    numColor: 'text-purple-400',
+    iconColor: 'text-purple-400',
+    badgeClass: 'border-purple-500/20 bg-purple-950/20 text-purple-400',
+    hoverBg: 'hover:bg-purple-950/10',
+    titleColor: 'text-purple-400 group-hover:text-purple-300',
+  },
+  {
+    // Sky
+    numColor: 'text-sky-400',
+    iconColor: 'text-sky-400',
+    badgeClass: 'border-sky-500/20 bg-sky-950/20 text-sky-400',
+    hoverBg: 'hover:bg-sky-950/10',
+    titleColor: 'text-sky-400 group-hover:text-sky-300',
+  },
+  {
+    // Amber
+    numColor: 'text-amber-400',
+    iconColor: 'text-amber-400',
+    badgeClass: 'border-amber-500/20 bg-amber-950/20 text-amber-400',
+    hoverBg: 'hover:bg-amber-950/10',
+    titleColor: 'text-amber-400 group-hover:text-amber-300',
+  },
+  {
+    // Rose
+    numColor: 'text-rose-400',
+    iconColor: 'text-rose-400',
+    badgeClass: 'border-rose-500/20 bg-rose-950/20 text-rose-400',
+    hoverBg: 'hover:bg-rose-950/10',
+    titleColor: 'text-rose-400 group-hover:text-rose-300',
+  },
+  {
+    // Teal
+    numColor: 'text-teal-400',
+    iconColor: 'text-teal-400',
+    badgeClass: 'border-teal-500/20 bg-teal-950/20 text-teal-400',
+    hoverBg: 'hover:bg-teal-950/10',
+    titleColor: 'text-teal-400 group-hover:text-teal-300',
+  },
+];
+
 export function InterviewProcessSection() {
   const { t } = useLanguage();
 
@@ -56,34 +99,37 @@ export function InterviewProcessSection() {
         />
 
         <div className="mt-12 overflow-hidden rounded-2xl border border-corematrix-border">
-          {PROCESS_STEPS.map((step) => (
-            <div
-              key={step.num}
-              className="grid grid-cols-[72px_1fr] border-b border-corematrix-border last:border-0 transition-colors hover:bg-corematrix-green900/[0.02]"
-            >
-              <div className="flex items-center justify-center border-r border-corematrix-border bg-corematrix-card2 py-7">
-                <span className="font-display text-2xl font-extrabold text-corematrix-textDim">
-                  {step.num}
-                </span>
-              </div>
-              <div className="flex items-start gap-4 bg-corematrix-card p-6">
-                <span className="mt-1 shrink-0 text-xl text-corematrix-green400" aria-hidden>
-                  <i className={step.icon} />
-                </span>
-                <div>
-                  <h3 className="font-display text-base font-bold text-corematrix-textPrimary">
-                    {t(step.title, stepTitleTranslations[step.title] ?? step.title)}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-corematrix-textSecondary">
-                    {t(step.body, stepBodyTranslations[step.body] ?? step.body)}
-                  </p>
-                  <span className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-corematrix-green700/20 bg-corematrix-green900/20 px-3 py-1 font-display text-[0.65rem] font-semibold text-corematrix-green700">
-                    ~ {t(step.timing, stepTimingTranslations[step.timing] ?? step.timing)}
+          {PROCESS_STEPS.map((step, idx) => {
+            const theme = STEP_THEMES[idx % STEP_THEMES.length];
+            return (
+              <div
+                key={step.num}
+                className={`group grid grid-cols-[72px_1fr] border-b border-corematrix-border last:border-0 transition-colors duration-300 ${theme.hoverBg}`}
+              >
+                <div className="flex items-center justify-center border-r border-corematrix-border bg-corematrix-card2 py-7">
+                  <span className={`font-display text-2xl font-extrabold transition-colors duration-300 ${theme.numColor}`}>
+                    {step.num}
                   </span>
                 </div>
+                <div className="flex items-start gap-4 bg-corematrix-card p-6">
+                  <span className={`mt-1 shrink-0 text-xl transition-colors duration-300 ${theme.iconColor}`} aria-hidden>
+                    <i className={step.icon} />
+                  </span>
+                  <div>
+                    <h3 className={`font-display text-base font-bold transition-colors duration-300 ${theme.titleColor}`}>
+                      {t(step.title, stepTitleTranslations[step.title] ?? step.title)}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-corematrix-textSecondary">
+                      {t(step.body, stepBodyTranslations[step.body] ?? step.body)}
+                    </p>
+                    <span className={`mt-2 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-display text-[0.65rem] font-semibold transition-colors duration-300 ${theme.badgeClass}`}>
+                      ~ {t(step.timing, stepTimingTranslations[step.timing] ?? step.timing)}
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </Container>
     </section>

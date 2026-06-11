@@ -12,6 +12,45 @@ export type NextStep = {
   timing: string;
 };
 
+const STEPS_THEMES = [
+  {
+    // Step 1: Amber
+    card: 'border-amber-500/20 bg-amber-950/10 hover:border-amber-400/50 hover:bg-amber-950/20 shadow-[0_4px_20px_rgba(245,158,11,0.05)]',
+    numColor: 'text-amber-500/30 group-hover:text-amber-400/40 transition-colors duration-300',
+    iconColor: 'text-amber-400 group-hover:scale-110 duration-300',
+    titleColor: 'text-amber-400 group-hover:text-amber-300 transition-colors duration-300',
+    bodyColor: 'text-amber-300/70 group-hover:text-amber-200/90 transition-colors duration-300',
+    badge: 'border-amber-500/25 bg-amber-950/20 text-amber-400',
+  },
+  {
+    // Step 2: Emerald
+    card: 'border-emerald-500/20 bg-emerald-950/10 hover:border-emerald-400/50 hover:bg-emerald-950/20 shadow-[0_4px_20px_rgba(16,185,129,0.05)]',
+    numColor: 'text-emerald-500/30 group-hover:text-emerald-400/40 transition-colors duration-300',
+    iconColor: 'text-emerald-400 group-hover:scale-110 duration-300',
+    titleColor: 'text-emerald-400 group-hover:text-emerald-300 transition-colors duration-300',
+    bodyColor: 'text-emerald-300/70 group-hover:text-emerald-200/90 transition-colors duration-300',
+    badge: 'border-emerald-500/25 bg-emerald-950/20 text-emerald-400',
+  },
+  {
+    // Step 3: Sky
+    card: 'border-sky-500/20 bg-sky-950/10 hover:border-sky-400/50 hover:bg-sky-950/20 shadow-[0_4px_20px_rgba(14,165,233,0.05)]',
+    numColor: 'text-sky-500/30 group-hover:text-sky-400/40 transition-colors duration-300',
+    iconColor: 'text-sky-400 group-hover:scale-110 duration-300',
+    titleColor: 'text-sky-400 group-hover:text-sky-300 transition-colors duration-300',
+    bodyColor: 'text-sky-300/70 group-hover:text-sky-200/90 transition-colors duration-300',
+    badge: 'border-sky-500/25 bg-sky-950/20 text-sky-400',
+  },
+  {
+    // Step 4: Purple
+    card: 'border-purple-500/20 bg-purple-950/10 hover:border-purple-400/50 hover:bg-purple-950/20 shadow-[0_4px_20px_rgba(168,85,247,0.05)]',
+    numColor: 'text-purple-500/30 group-hover:text-purple-400/40 transition-colors duration-300',
+    iconColor: 'text-purple-400 group-hover:scale-110 duration-300',
+    titleColor: 'text-purple-400 group-hover:text-purple-300 transition-colors duration-300',
+    bodyColor: 'text-purple-300/70 group-hover:text-purple-200/90 transition-colors duration-300',
+    badge: 'border-purple-500/25 bg-purple-950/20 text-purple-400',
+  },
+];
+
 export function WhatHappensNextSection() {
   const { t } = useLanguage();
 
@@ -72,29 +111,34 @@ export function WhatHappensNextSection() {
           description={t("Transparent process from first message to signed proposal.", "عملية شفافة وواضحة من الرسالة الأولى حتى توقيع عرض المشروع النهائي.")}
         />
 
-        <div className="mt-14 grid grid-cols-1 divide-x divide-corematrix-border overflow-hidden rounded-2xl border border-corematrix-border sm:grid-cols-2 lg:grid-cols-4">
-          {NEXT_STEPS.map((s) => (
-            <div
-              key={s.num}
-              className="bg-corematrix-card p-9 transition-colors hover:bg-corematrix-card2"
-            >
-              <p className="font-display mb-4 text-[2.5rem] font-extrabold leading-none tracking-[-0.04em] text-corematrix-textDim">
-                {s.num}
-              </p>
-              <span className="mb-3 block text-xl text-corematrix-green400" aria-hidden>
-                <i className={s.icon} aria-hidden="true" />
-              </span>
-              <h3 className="mb-2 font-display text-sm font-bold text-corematrix-textPrimary">
-                {s.title}
-              </h3>
-              <p className="mb-3 text-xs font-light leading-relaxed text-corematrix-textMuted">
-                {s.body}
-              </p>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-corematrix-green700/20 bg-corematrix-green900/20 px-3 py-1 font-display text-[0.65rem] font-semibold text-corematrix-green700">
-                {s.timing}
-              </span>
-            </div>
-          ))}
+        <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {NEXT_STEPS.map((s, idx) => {
+            const theme = STEPS_THEMES[idx % STEPS_THEMES.length];
+            return (
+              <div
+                key={s.num}
+                className={`group rounded-2xl border p-9 transition-all duration-300 ${theme.card}`}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <p className={`font-display text-[2.5rem] font-extrabold leading-none tracking-[-0.04em] ${theme.numColor}`}>
+                    {s.num}
+                  </p>
+                  <span className={`text-xl transition-transform ${theme.iconColor}`} aria-hidden>
+                    <i className={s.icon} aria-hidden="true" />
+                  </span>
+                </div>
+                <h3 className={`mb-2 font-display text-sm font-bold ${theme.titleColor}`}>
+                  {s.title}
+                </h3>
+                <p className={`mb-4 text-xs font-light leading-relaxed ${theme.bodyColor}`}>
+                  {s.body}
+                </p>
+                <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-display text-[0.65rem] font-semibold transition-colors duration-300 ${theme.badge}`}>
+                  {s.timing}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </Container>
     </section>

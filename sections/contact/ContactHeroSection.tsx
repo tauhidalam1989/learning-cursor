@@ -7,6 +7,57 @@ import { useLanguage } from '@/context/LanguageContext';
 
 export type ContactMethod = { icon: string; title: string; value: string };
 
+const BADGE_THEMES = [
+  {
+    icon: 'text-amber-400',
+    value: 'text-amber-400',
+    label: 'text-amber-400/70',
+    bg: 'bg-amber-950/15 border-amber-500/20 hover:border-amber-400/50 hover:bg-amber-950/25',
+  },
+  {
+    icon: 'text-sky-400',
+    value: 'text-sky-400',
+    label: 'text-sky-400/70',
+    bg: 'bg-sky-950/15 border-sky-500/20 hover:border-sky-400/50 hover:bg-sky-950/25',
+  },
+  {
+    icon: 'text-emerald-400',
+    value: 'text-emerald-400',
+    label: 'text-emerald-400/70',
+    bg: 'bg-emerald-950/15 border-emerald-500/20 hover:border-emerald-400/50 hover:bg-emerald-950/25',
+  },
+  {
+    icon: 'text-purple-400',
+    value: 'text-purple-400',
+    label: 'text-purple-400/70',
+    bg: 'bg-purple-950/15 border-purple-500/20 hover:border-purple-400/50 hover:bg-purple-950/25',
+  },
+];
+
+const METHOD_THEMES = [
+  {
+    iconBg: 'bg-cyan-950/40 border-cyan-500/30 text-cyan-400 group-hover:border-cyan-400/50 group-hover:bg-cyan-900/40',
+    cardBorder: 'border-cyan-500/20 bg-cyan-950/10 hover:border-cyan-400/50 hover:bg-cyan-950/20 shadow-[0_4px_20px_rgba(6,182,212,0.05)]',
+    iconHover: 'group-hover:scale-110 duration-300',
+    titleColor: 'text-cyan-400 group-hover:text-cyan-300 transition-colors',
+    valueColor: 'text-cyan-300/70 group-hover:text-cyan-200/90 transition-colors',
+  },
+  {
+    iconBg: 'bg-emerald-950/40 border-emerald-500/30 text-emerald-400 group-hover:border-emerald-400/50 group-hover:bg-emerald-900/40',
+    cardBorder: 'border-emerald-500/20 bg-emerald-950/10 hover:border-emerald-400/50 hover:bg-emerald-950/20 shadow-[0_4px_20px_rgba(16,185,129,0.05)]',
+    iconHover: 'group-hover:scale-110 duration-300',
+    titleColor: 'text-emerald-400 group-hover:text-emerald-300 transition-colors',
+    valueColor: 'text-emerald-300/70 group-hover:text-emerald-200/90 transition-colors',
+  },
+  {
+    iconBg: 'bg-sky-950/40 border-sky-500/30 text-sky-400 group-hover:border-sky-400/50 group-hover:bg-sky-900/40',
+    cardBorder: 'border-sky-500/20 bg-sky-950/10 hover:border-sky-400/50 hover:bg-sky-950/20 shadow-[0_4px_20px_rgba(14,165,233,0.05)]',
+    iconHover: 'group-hover:scale-110 duration-300',
+    titleColor: 'text-sky-400 group-hover:text-sky-300 transition-colors',
+    valueColor: 'text-sky-300/70 group-hover:text-sky-200/90 transition-colors',
+  },
+];
+
 export function ContactHeroSection() {
   const { t } = useLanguage();
 
@@ -21,7 +72,6 @@ export function ContactHeroSection() {
     { icon: 'fas fa-envelope', title: t('Email Us', 'راسلنا عبر البريد'), value: siteConfig.email },
     { icon: 'fas fa-phone-alt', title: t('Call or WhatsApp', 'الهاتف والواتساب'), value: siteConfig.phone },
     { icon: 'fab fa-linkedin', title: t('LinkedIn', 'لينكد إن'), value: siteConfig.linkedinDisplay },
-    { icon: 'fab fa-github', title: t('GitHub', 'جيتهاب'), value: siteConfig.githubDisplay },
   ];
 
   return (
@@ -84,22 +134,25 @@ export function ContactHeroSection() {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            {RESPONSE_BADGES.map((badge) => (
-              <div
-                key={badge.label}
-                className="flex items-center gap-2 rounded-xl border border-corematrix-border bg-corematrix-card px-4 py-2 text-sm"
-              >
-                <span className="text-corematrix-green400" aria-hidden>
-                  <i className={badge.icon} />
-                </span>
-                <span className="font-bold text-corematrix-green400">{badge.value}</span>
-                <span className="text-corematrix-textMuted">{badge.label}</span>
-              </div>
-            ))}
+            {RESPONSE_BADGES.map((badge, idx) => {
+              const theme = BADGE_THEMES[idx % BADGE_THEMES.length];
+              return (
+                <div
+                  key={badge.label}
+                  className={`flex items-center gap-2 rounded-xl border px-4 py-2 text-sm transition-all duration-300 ${theme.bg}`}
+                >
+                  <span className={theme.icon} aria-hidden>
+                    <i className={badge.icon} />
+                  </span>
+                  <span className={`font-bold ${theme.value}`}>{badge.value}</span>
+                  <span className={theme.label}>{badge.label}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        <div className="relative">
+        <div className="relative lg:-mt-36">
           <div className="relative overflow-hidden rounded-2xl border border-corematrix-border2 bg-corematrix-card2 p-9 shadow-[0_32px_80px_rgba(0,0,0,0.5)]">
             <div
               className="absolute left-0 right-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-corematrix-green700 to-transparent"
@@ -109,35 +162,38 @@ export function ContactHeroSection() {
               {t('REACH US DIRECTLY', 'تواصل معنا مباشرة')}
             </p>
             <div className="space-y-3">
-              {CONTACT_METHODS.map((method) => (
-                <div
-                  key={method.title}
-                  className="flex cursor-default items-center gap-4 rounded-xl border border-corematrix-border bg-corematrix-card p-4 transition-all hover:translate-x-1 hover:border-corematrix-border2"
-                >
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-corematrix-green700/20 bg-corematrix-green900/40 text-base text-corematrix-green400">
-                    <i className={method.icon} aria-hidden="true" />
+              {CONTACT_METHODS.map((method, idx) => {
+                const theme = METHOD_THEMES[idx % METHOD_THEMES.length];
+                return (
+                  <div
+                    key={method.title}
+                    className={`group flex cursor-default items-center gap-4 rounded-xl border p-4 transition-all duration-300 hover:translate-x-1 ${theme.cardBorder}`}
+                  >
+                    <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border transition-all duration-300 ${theme.iconBg} ${theme.iconHover}`}>
+                      <i className={method.icon} aria-hidden="true" />
+                    </div>
+                    <div>
+                      <p className={`font-display text-xs font-bold ${theme.titleColor}`}>
+                        {method.title}
+                      </p>
+                      <p className={`mt-0.5 text-xs font-light transition-colors ${theme.valueColor}`}>
+                        {method.value}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-display text-xs font-bold text-corematrix-textPrimary">
-                      {method.title}
-                    </p>
-                    <p className="mt-0.5 text-xs font-light text-corematrix-textMuted">
-                      {method.value}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
-          <div className="absolute -bottom-5 right-4 float-anim rounded-xl border border-corematrix-border2 bg-corematrix-card px-4 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+          <div className="absolute -bottom-5 right-4 float-anim rounded-xl border border-emerald-500/30 bg-emerald-950/20 px-4 py-3 shadow-[0_8px_32px_rgba(16,185,129,0.15)]">
             <div className="flex items-center gap-3">
-              <span className="h-2 w-2 rounded-full bg-corematrix-green400 dot-pulse" />
+              <span className="h-2 w-2 rounded-full bg-emerald-400 dot-pulse" />
               <div>
-                <p className="font-display text-sm font-bold text-corematrix-textPrimary">
+                <p className="font-display text-sm font-bold text-emerald-400">
                   {t('Currently accepting new projects', 'نقبل حالياً مشاريع جديدة')}
                 </p>
-                <p className="text-xs text-corematrix-textDim">
+                <p className="text-xs text-emerald-300/70">
                   {t('Next availability: This week', 'الجهوزية القادمة: هذا الأسبوع')}
                 </p>
               </div>

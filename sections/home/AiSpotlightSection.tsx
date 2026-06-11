@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { useLanguage } from '@/context/LanguageContext';
+import aiSpotlightIllustration from '@/public/images/ai-spotlight-illustration.png';
+
 
 type AiTile = {
   icon: string;
@@ -19,6 +21,7 @@ type AiTile = {
   hoverBorder: string;
   hoverBg: string;
   hoverGlow: string;
+  textColor: string;
 };
 
 const AI_TILES: AiTile[] = [
@@ -37,6 +40,7 @@ const AI_TILES: AiTile[] = [
     hoverBorder: 'hover:border-purple-500/40',
     hoverBg: 'hover:bg-purple-950/35',
     hoverGlow: 'hover:shadow-[0_0_20px_rgba(168,85,247,0.15)]',
+    textColor: 'text-purple-300/90',
   },
   {
     icon: 'fas fa-bolt',
@@ -53,6 +57,7 @@ const AI_TILES: AiTile[] = [
     hoverBorder: 'hover:border-amber-500/40',
     hoverBg: 'hover:bg-amber-950/35',
     hoverGlow: 'hover:shadow-[0_0_20px_rgba(245,158,11,0.15)]',
+    textColor: 'text-amber-300/90',
   },
   {
     icon: 'fas fa-chart-bar',
@@ -69,6 +74,7 @@ const AI_TILES: AiTile[] = [
     hoverBorder: 'hover:border-cyan-500/40',
     hoverBg: 'hover:bg-cyan-950/35',
     hoverGlow: 'hover:shadow-[0_0_20px_rgba(6,182,212,0.15)]',
+    textColor: 'text-cyan-300/90',
   },
 ];
 
@@ -82,7 +88,7 @@ export function AiSpotlightSection() {
       className="border-t border-corematrix-border bg-corematrix-bg2 py-12 sm:py-16 lg:py-24"
     >
       <Container>
-        <div className="grid min-w-0 gap-8 sm:gap-10 md:gap-12 lg:grid-cols-2 lg:items-center lg:gap-20">
+        <div className="grid min-w-0 gap-8 sm:gap-10 md:gap-12 lg:grid-cols-2 lg:items-start lg:gap-20">
           <div className="reveal min-w-0">
             <MarketingSectionHeader
               align="left"
@@ -108,7 +114,7 @@ export function AiSpotlightSection() {
                     <h3 className="font-display font-semibold text-corematrix-textPrimary">
                       {language === 'ar' ? tile.title_ar : tile.title_en}
                     </h3>
-                    <p className="mt-1 text-sm leading-relaxed text-corematrix-textSecondary">
+                    <p className={`mt-1 text-sm leading-relaxed ${tile.textColor}`}>
                       {language === 'ar' ? tile.body_ar : tile.body_en}
                     </p>
                   </div>
@@ -122,15 +128,15 @@ export function AiSpotlightSection() {
               {t("Explore AI Services →", "استكشف خدمات الذكاء الاصطناعي ←")}
             </Link>
           </div>
-          <div className="reveal reveal-delay-2 flex w-full min-w-0 justify-center lg:justify-end">
-            <div className="w-full max-w-[460px] min-w-0">
+          <div className="reveal reveal-delay-2 lg:sticky lg:top-28 flex w-full min-w-0 justify-center lg:justify-end lg:-mt-40">
+            <div className="w-full max-w-[540px] min-w-0">
               <Image
-                src="/images/ai-spotlight-illustration.png"
+                src={aiSpotlightIllustration}
                 alt="Isometric illustration of a laptop with a robot, AI cube, brain, and media icons on a circuit-board floor"
                 width={1024}
                 height={1024}
                 className="h-auto w-full rounded-2xl border border-corematrix-border bg-black object-contain"
-                sizes="(max-width: 1024px) 100vw, 460px"
+                sizes="(max-width: 1024px) 100vw, 540px"
               />
             </div>
           </div>

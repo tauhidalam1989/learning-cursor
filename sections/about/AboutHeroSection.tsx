@@ -144,7 +144,7 @@ export function AboutHeroSection() {
             </div>
           </div>
 
-          <div className="absolute -bottom-5 -left-4 flex items-center gap-3 rounded-xl border border-cyan-500/20 bg-cyan-950/30 px-4 py-3 shadow-[0_8px_32px_rgba(6,182,212,0.15)] float-anim-2 backdrop-blur-md">
+          <div className="absolute -bottom-9 -left-5 flex items-center gap-3 rounded-xl border border-cyan-500/20 bg-cyan-950/30 px-4 py-3 shadow-[0_8px_32px_rgba(6,182,212,0.15)] float-anim-2 backdrop-blur-md">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-cyan-500/10 text-lg text-cyan-400 border border-cyan-500/25" aria-hidden="true">
               <i className="fas fa-globe" />
             </span>

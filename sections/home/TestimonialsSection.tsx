@@ -11,6 +11,10 @@ type Testimonial = {
   name: string;
   role_en: string;
   role_ar: string;
+  quoteColor: string;
+  starColor: string;
+  avatarBg: string;
+  avatarText: string;
 };
 
 const TESTIMONIALS: Testimonial[] = [
@@ -23,6 +27,10 @@ const TESTIMONIALS: Testimonial[] = [
     name: 'Arjun K.',
     role_en: 'CTO, SaaS Startup',
     role_ar: 'الرئيس التنفيذي للتكنولوجيا، شركة ناشئة في مجال البرمجيات كخدمة (SaaS)',
+    quoteColor: 'text-purple-900/30',
+    starColor: 'text-purple-400',
+    avatarBg: 'bg-purple-900/40',
+    avatarText: 'text-purple-400',
   },
   {
     quote_en:
@@ -33,6 +41,10 @@ const TESTIMONIALS: Testimonial[] = [
     name: 'Sarah R.',
     role_en: 'VP Engineering, Enterprise Co.',
     role_ar: 'نائب رئيس الهندسة، شركة مساهمة كبرى',
+    quoteColor: 'text-amber-900/30',
+    starColor: 'text-amber-400',
+    avatarBg: 'bg-amber-900/40',
+    avatarText: 'text-amber-400',
   },
   {
     quote_en:
@@ -43,6 +55,10 @@ const TESTIMONIALS: Testimonial[] = [
     name: 'Michael J.',
     role_en: 'Founder, Tech Company',
     role_ar: 'مؤسس، شركة تكنولوجيا',
+    quoteColor: 'text-cyan-900/30',
+    starColor: 'text-cyan-400',
+    avatarBg: 'bg-cyan-900/40',
+    avatarText: 'text-cyan-400',
   },
 ];
 
@@ -70,19 +86,19 @@ export function TestimonialsSection() {
               className="reveal relative overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-card p-8 transition-colors hover:border-corematrix-border2"
             >
               <span
-                className="absolute left-6 top-3 font-serif text-6xl leading-none text-corematrix-green900"
+                className={`absolute left-6 top-3 font-serif text-6xl leading-none ${testi.quoteColor}`}
                 aria-hidden
               >
                 &ldquo;
               </span>
-              <p className="mb-4 text-corematrix-green400" aria-hidden>
+              <p className={`mb-4 ${testi.starColor}`} aria-hidden>
                 ★★★★★
               </p>
               <p className="relative z-10 text-sm italic leading-relaxed text-corematrix-textSecondary">
                 {language === 'ar' ? testi.quote_ar : testi.quote_en}
               </p>
               <div className="mt-6 flex items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-corematrix-green900/40 text-sm font-semibold text-corematrix-green400">
+                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${testi.avatarBg} text-sm font-semibold ${testi.avatarText}`}>
                   {testi.initials}
                 </div>
                 <div>

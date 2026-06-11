@@ -11,6 +11,12 @@ type CaseStudy = {
   title: string;
   description: string;
   metrics: { value: string; label: string }[];
+  tagClass: string;
+  iconClass: string;
+  gradientClass: string;
+  metricClass: string;
+  hoverClass: string;
+  titleClass: string;
 };
 
 const CASE_STUDIES: CaseStudy[] = [
@@ -25,6 +31,12 @@ const CASE_STUDIES: CaseStudy[] = [
       { value: '10k+', label: 'Docs/month' },
       { value: '8 wks', label: 'Delivery' },
     ],
+    tagClass: 'border-purple-500/20 bg-purple-950/40 text-purple-400',
+    iconClass: 'text-purple-400',
+    gradientClass: 'from-purple-950',
+    metricClass: 'text-purple-400',
+    hoverClass: 'hover:border-purple-500/30 hover:shadow-[0_0_40px_rgba(168,85,247,0.08)]',
+    titleClass: 'text-purple-400',
   },
   {
     category: 'SaaS Platform',
@@ -37,6 +49,12 @@ const CASE_STUDIES: CaseStudy[] = [
       { value: '200+', label: 'Enterprise clients' },
       { value: '14 wks', label: 'To launch' },
     ],
+    tagClass: 'border-corematrix-green700/30 bg-corematrix-green900/40 text-corematrix-green400',
+    iconClass: 'text-corematrix-green400',
+    gradientClass: 'from-corematrix-green900',
+    metricClass: 'text-corematrix-green400',
+    hoverClass: 'hover:border-corematrix-green500/30 hover:shadow-[0_0_40px_rgba(34,197,94,0.08)]',
+    titleClass: 'text-corematrix-green400',
   },
   {
     category: 'Web Application',
@@ -49,6 +67,12 @@ const CASE_STUDIES: CaseStudy[] = [
       { value: '500', label: 'Daily users' },
       { value: '10 wks', label: 'Build time' },
     ],
+    tagClass: 'border-sky-500/20 bg-sky-950/40 text-sky-400',
+    iconClass: 'text-sky-400',
+    gradientClass: 'from-sky-950',
+    metricClass: 'text-sky-400',
+    hoverClass: 'hover:border-sky-500/30 hover:shadow-[0_0_40px_rgba(14,165,233,0.08)]',
+    titleClass: 'text-sky-400',
   },
 ];
 
@@ -116,20 +140,20 @@ export function CaseStudiesSection() {
           {CASE_STUDIES.map((study) => (
             <article
               key={study.title}
-              className="reveal group overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-card transition-all duration-300 hover:-translate-y-1 hover:border-corematrix-border2 hover:shadow-[0_0_40px_rgba(34,197,94,0.07)]"
+              className={`reveal group overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-card transition-all duration-300 hover:-translate-y-1 ${study.hoverClass}`}
             >
               <div className="relative flex h-40 items-center justify-center overflow-hidden border-b border-corematrix-border bg-corematrix-bg0">
                 {/* TODO: Replace with <Image src="..." alt="..." fill /> once asset is available */}
-                <div className="absolute inset-0 bg-gradient-to-br from-corematrix-green900 to-corematrix-card2 opacity-70" />
-                <span className="absolute top-3 left-3 z-10 rounded-full border border-corematrix-green700/30 bg-corematrix-green900/40 px-3 py-1 text-[0.65rem] font-mono font-semibold text-corematrix-green400">
+                <div className={`absolute inset-0 bg-gradient-to-br ${study.gradientClass} to-corematrix-card2 opacity-70`} />
+                <span className={`absolute top-3 left-3 z-10 rounded-full border px-3 py-1 text-[0.65rem] font-mono font-semibold ${study.tagClass}`}>
                   {t(study.category, categoryTranslations[study.category] ?? study.category)}
                 </span>
-                <span className="relative z-10 text-4xl text-corematrix-green400" aria-hidden="true">
+                <span className={`relative z-10 text-4xl ${study.iconClass}`} aria-hidden="true">
                   <i className={study.emoji} />
                 </span>
               </div>
               <div className="p-6">
-                <h3 className="mb-2 font-display text-sm font-bold leading-snug text-corematrix-textPrimary">
+                <h3 className={`mb-2 font-display text-sm font-bold leading-snug ${study.titleClass}`}>
                   {t(study.title, titleTranslations[study.title] ?? study.title)}
                 </h3>
                 <p className="mb-4 text-xs font-light leading-relaxed text-corematrix-textMuted">
@@ -138,7 +162,7 @@ export function CaseStudiesSection() {
                 <div className="mb-4 flex gap-4">
                   {study.metrics.map((m) => (
                     <div key={m.label} className="text-center">
-                      <p className="font-display text-lg font-extrabold leading-none text-corematrix-green400">
+                      <p className={`font-display text-lg font-extrabold leading-none ${study.metricClass}`}>
                         {t(m.value, metricValueTranslations[m.value] ?? m.value)}
                       </p>
                       <p className="mt-0.5 text-[0.6rem] text-corematrix-textDim">

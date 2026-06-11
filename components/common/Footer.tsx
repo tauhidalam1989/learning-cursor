@@ -70,37 +70,37 @@ export function Footer() {
       }}
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-12">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-12">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-12">
           {/* Column 1: Brand/About */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-3">
             <Link href="/" className="flex items-center gap-3">
               <Image src="/images/logo.png" alt={t('Corematrix logo', 'شعار كورماتريكس')} width={160} height={36} priority />
             </Link>
-            <p className="mt-4 text-sm leading-relaxed text-white/70 max-w-[240px]">
+            <p className="mt-4 text-sm leading-relaxed text-white/70 max-w-[280px]">
               {t('COREMATRIX is a technology-driven IT services company focused on building intelligent, secure, and scalable solutions.', 'كورماتريكس هي شركة خدمات تقنية متطورة تركز على بناء حلول ذكية وآمنة وقابلة للتطوير.')}
             </p>
             <p className="mt-6 text-sm font-semibold uppercase tracking-wider text-white" style={{ letterSpacing: '0.12em' }}>
               {t('FOLLOW US', 'تابعنا')}
             </p>
             <div className="mt-4 flex gap-3">
-              {/* Social icons: FontAwesome with white circular background */}
-              <a href={siteConfig.twitter} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#02140f] hover:brightness-95 hover:scale-110 transition-transform" aria-label="Twitter">
+              {/* Social icons: FontAwesome with brand background */}
+              <a href={siteConfig.twitter} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1DA1F2] text-white hover:brightness-110 hover:scale-110 transition-all duration-300" aria-label="Twitter">
                 <i className="fab fa-twitter text-sm" />
               </a>
-              <a href={siteConfig.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#02140f] hover:brightness-95 hover:scale-110 transition-transform" aria-label="Facebook">
+              <a href={siteConfig.facebook} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1877F2] text-white hover:brightness-110 hover:scale-110 transition-all duration-300" aria-label="Facebook">
                 <i className="fab fa-facebook-f text-sm" />
               </a>
-              <a href={siteConfig.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#02140f] hover:brightness-95 hover:scale-110 transition-transform" aria-label="Instagram">
+              <a href={siteConfig.instagram} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white hover:brightness-110 hover:scale-110 transition-all duration-300" aria-label="Instagram">
                 <i className="fab fa-instagram text-sm" />
               </a>
-              <a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#02140f] hover:brightness-95 hover:scale-110 transition-transform" aria-label="LinkedIn">
+              <a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0077B5] text-white hover:brightness-110 hover:scale-110 transition-all duration-300" aria-label="LinkedIn">
                 <i className="fab fa-linkedin-in text-sm" />
               </a>
             </div>
           </div>
 
           {/* Column 2: Quick Links */}
-          <div>
+          <div className="lg:col-span-2">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white" style={{ fontFamily: 'var(--font-display)' }}>
               {t('QUICK LINKS', 'روابط سريعة')}
             </h3>
@@ -121,7 +121,7 @@ export function Footer() {
           </div>
 
           {/* Column 3: Services */}
-          <div>
+          <div className="lg:col-span-2">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white" style={{ fontFamily: 'var(--font-display)' }}>
               {t('SERVICES', 'خدماتنا')}
             </h3>
@@ -142,7 +142,7 @@ export function Footer() {
           </div>
 
           {/* Column 4: Additional Links */}
-          <div>
+          <div className="lg:col-span-2">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white" style={{ fontFamily: 'var(--font-display)' }}>
               {t('QUICK LINKS', 'روابط سريعة')}
             </h3>
@@ -163,7 +163,7 @@ export function Footer() {
           </div>
 
           {/* Column 5: Newsletter */}
-          <div>
+          <div className="lg:col-span-3">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white" style={{ fontFamily: 'var(--font-display)' }}>
               {t('NEWSLETTER', 'النشرة البريدية')}
             </h3>

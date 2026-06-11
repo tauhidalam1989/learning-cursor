@@ -110,6 +110,33 @@ function getValueTheme(num: string) {
   }
 }
 
+const TEAM_THEMES = [
+  {
+    bg: 'bg-gradient-to-br from-cyan-950/40 to-corematrix-card2',
+    border: 'border-cyan-500/20 hover:border-cyan-500/45',
+    text: 'text-cyan-400',
+    glow: 'hover:shadow-[0_0_20px_rgba(6,182,212,0.15)]',
+  },
+  {
+    bg: 'bg-gradient-to-br from-purple-950/40 to-corematrix-card2',
+    border: 'border-purple-500/20 hover:border-purple-500/45',
+    text: 'text-purple-400',
+    glow: 'hover:shadow-[0_0_20px_rgba(168,85,247,0.15)]',
+  },
+  {
+    bg: 'bg-gradient-to-br from-amber-950/40 to-corematrix-card2',
+    border: 'border-amber-500/20 hover:border-amber-500/45',
+    text: 'text-amber-400',
+    glow: 'hover:shadow-[0_0_20px_rgba(245,158,11,0.15)]',
+  },
+  {
+    bg: 'bg-gradient-to-br from-rose-950/40 to-corematrix-card2',
+    border: 'border-rose-500/20 hover:border-rose-500/45',
+    text: 'text-rose-400',
+    glow: 'hover:shadow-[0_0_20px_rgba(244,63,94,0.15)]',
+  },
+];
+
 export function CareersCultureSection() {
   const { t } = useLanguage();
 
@@ -156,7 +183,7 @@ export function CareersCultureSection() {
                     key={v.num}
                     className={`group rounded-xl border p-4 transition-all duration-300 hover:-translate-y-0.5 ${theme.bg} ${theme.border} ${theme.hoverBg} ${theme.hoverBorder} ${theme.hoverGlow}`}
                   >
-                    <p className={`font-display text-xs font-bold transition-colors duration-300 ${theme.numColor}`}>
+                    <p className={`font-display text-lg font-extrabold transition-colors duration-300 ${theme.numColor}`}>
                       {v.num}
                     </p>
                     <h3 className={`mt-1 font-display text-sm font-bold text-corematrix-textPrimary transition-colors duration-300 group-hover:${theme.titleColor}`}>
@@ -180,17 +207,19 @@ export function CareersCultureSection() {
               {t('THE TEAM', 'الفريق')}
             </p>
             <div className="mb-6 grid grid-cols-4 gap-2">
-              {['AK', 'SR', 'MJ', 'PL'].map((initials) => (
-                <div
-                  key={initials}
-                  className="relative aspect-square overflow-hidden rounded-xl border border-corematrix-border2 bg-gradient-to-br from-corematrix-green900 to-corematrix-card2"
-                >
-                  {/* TODO: Replace with <Image src={member.avatar} alt={member.name} fill className="object-cover rounded-xl" /> */}
-                  <span className="absolute inset-0 flex items-center justify-center font-display text-lg font-bold text-corematrix-green700">
-                    {initials}
-                  </span>
-                </div>
-              ))}
+              {['TA', 'NA', 'JA', 'VS'].map((initials, idx) => {
+                const theme = TEAM_THEMES[idx % TEAM_THEMES.length];
+                return (
+                  <div
+                    key={initials}
+                    className={`relative aspect-square overflow-hidden rounded-xl border transition-all duration-300 ${theme.bg} ${theme.border} ${theme.glow}`}
+                  >
+                    <span className={`absolute inset-0 flex items-center justify-center font-display text-lg font-extrabold transition-all duration-300 ${theme.text}`}>
+                      {initials}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
             <blockquote className="border-l-4 border-corematrix-green700 pl-4 italic text-corematrix-textSecondary">
               {t(
@@ -199,7 +228,7 @@ export function CareersCultureSection() {
               )}
             </blockquote>
             <cite className="mt-2 block text-sm text-corematrix-textDim">
-              {t('— Marcus J., Head of Engineering', '— ماركوس ج.، رئيس الهندسة')}
+              {t('— Jainish, Head of Engineering', '— جينيش، رئيس الهندسة')}
             </cite>
             <div className="mt-4 flex flex-wrap gap-2">
               {PERKS.map((p) => {

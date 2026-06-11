@@ -11,6 +11,10 @@ type ServiceTestimonial = {
   initials: string;
   name: string;
   role: string;
+  starsColor: string;
+  quoteMarkColor: string;
+  tagClass: string;
+  initialsClass: string;
 };
 
 const TESTIMONIALS: ServiceTestimonial[] = [
@@ -22,6 +26,10 @@ const TESTIMONIALS: ServiceTestimonial[] = [
     initials: 'JM',
     name: 'James M.',
     role: 'CTO, LegalTech Startup',
+    starsColor: 'text-purple-400',
+    quoteMarkColor: 'text-purple-900/30',
+    tagClass: 'border-purple-500/20 bg-purple-950/40 text-purple-400',
+    initialsClass: 'bg-purple-900/40 text-purple-400',
   },
   {
     stars: 5,
@@ -31,6 +39,10 @@ const TESTIMONIALS: ServiceTestimonial[] = [
     initials: 'SR',
     name: 'Sophie R.',
     role: 'Founder & CEO, SaaS Co.',
+    starsColor: 'text-corematrix-green400',
+    quoteMarkColor: 'text-corematrix-green900',
+    tagClass: 'border-corematrix-green700/20 bg-corematrix-green900/20 text-corematrix-green400',
+    initialsClass: 'bg-corematrix-green900/40 text-corematrix-green400',
   },
   {
     stars: 5,
@@ -40,6 +52,10 @@ const TESTIMONIALS: ServiceTestimonial[] = [
     initials: 'DK',
     name: 'David K.',
     role: 'VP Engineering, Scale-up',
+    starsColor: 'text-sky-400',
+    quoteMarkColor: 'text-sky-900/30',
+    tagClass: 'border-sky-500/20 bg-sky-950/40 text-sky-400',
+    initialsClass: 'bg-sky-900/40 text-sky-400',
   },
 ];
 
@@ -104,22 +120,22 @@ export function ServiceTestimonialsSection() {
               className="reveal group relative overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-card p-8 transition-colors hover:border-corematrix-border2"
             >
               <span
-                className="pointer-events-none absolute top-3 left-6 font-serif text-6xl leading-none text-corematrix-green900"
+                className={`pointer-events-none absolute top-3 left-6 font-serif text-6xl leading-none ${tItem.quoteMarkColor}`}
                 aria-hidden
               >
                 &ldquo;
               </span>
-              <div className="mb-3 text-sm tracking-widest text-corematrix-green400">
+              <div className={`mb-3 text-sm tracking-widest ${tItem.starsColor}`}>
                 {'★'.repeat(tItem.stars)}
               </div>
-              <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-corematrix-green700/20 bg-corematrix-green900/20 px-3 py-1 font-mono text-[0.65rem] font-semibold text-corematrix-green700">
+              <span className={`mb-3 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-[0.65rem] font-semibold ${tItem.tagClass}`}>
                 {t(tItem.serviceTag, tagTranslations[tItem.serviceTag] ?? tItem.serviceTag)}
               </span>
               <p className="relative z-10 mb-5 text-sm italic font-light leading-relaxed text-corematrix-textSecondary">
                 {t(tItem.quote, quoteTranslations[tItem.quote] ?? tItem.quote)}
               </p>
               <footer className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-corematrix-green900/40 font-display text-sm font-bold text-corematrix-green400">
+                <div className={`flex h-10 w-10 items-center justify-center rounded-full font-display text-sm font-bold ${tItem.initialsClass}`}>
                   {t(tItem.initials, initialTranslations[tItem.initials] ?? tItem.initials)}
                 </div>
                 <div>

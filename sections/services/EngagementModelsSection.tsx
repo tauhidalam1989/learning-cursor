@@ -13,6 +13,7 @@ type EngagementModel = {
   cta: string;
   ctaStyle: 'primary' | 'ghost';
   featured?: boolean;
+  iconBg: string;
 };
 
 const ENGAGEMENT_MODELS: EngagementModel[] = [
@@ -30,6 +31,7 @@ const ENGAGEMENT_MODELS: EngagementModel[] = [
     ],
     cta: 'Get a fixed quote →',
     ctaStyle: 'ghost',
+    iconBg: 'border-purple-700/20 bg-purple-900/40 text-purple-400',
   },
   {
     icon: 'fas fa-sync',
@@ -47,6 +49,7 @@ const ENGAGEMENT_MODELS: EngagementModel[] = [
     cta: 'Start a retainer →',
     ctaStyle: 'primary',
     featured: true,
+    iconBg: 'border-corematrix-green700/20 bg-corematrix-green900/40 text-corematrix-green400',
   },
   {
     icon: 'fas fa-users',
@@ -62,6 +65,7 @@ const ENGAGEMENT_MODELS: EngagementModel[] = [
     ],
     cta: 'Hire your team →',
     ctaStyle: 'ghost',
+    iconBg: 'border-sky-700/20 bg-sky-900/40 text-sky-400',
   },
 ];
 
@@ -142,7 +146,7 @@ export function EngagementModelsSection() {
                   </span>
                 </>
               )}
-              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-corematrix-green700/20 bg-corematrix-green900/40 text-xl text-corematrix-green400">
+              <div className={`mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border text-xl ${model.iconBg}`}>
                 <i className={model.icon} aria-hidden="true" />
               </div>
               <h3 className="font-display text-lg font-bold text-corematrix-textPrimary">

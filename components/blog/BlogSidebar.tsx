@@ -7,8 +7,8 @@ import { useLanguage } from '@/context/LanguageContext';
 import type { BlogPost } from '@/types/blog';
 
 const FEATURED_AUTHOR = {
-  initials: 'SR',
-  name: 'Sara Raza',
+  initials: 'NA',
+  name: 'Nadeem Akhtar',
   role: 'CTO',
   bio: 'Leads our AI and engineering practice. Former ML engineer at scale-ups.',
   bioAr: 'تقود ممارسة الذكاء الاصطناعي والهندسة لدينا. مهندسة تعلم آلي سابقة في شركات التكنولوجيا الكبرى.',
@@ -172,16 +172,16 @@ export function BlogSidebar() {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-corematrix-border2 bg-corematrix-card2 p-6">
+      <div className="group rounded-2xl border border-purple-500/20 bg-gradient-to-b from-purple-950/15 via-indigo-950/5 to-transparent p-6 transition-all duration-300 hover:border-purple-500/45 hover:shadow-[0_0_25px_rgba(168,85,247,0.12)]">
         <h3 className="font-display text-sm font-bold text-corematrix-textPrimary">
           {t('Featured Author', 'الكاتب المتميز')}
         </h3>
         <div className="mt-4 flex items-center gap-3">
-          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-corematrix-green900/40 font-display text-sm font-bold text-corematrix-green400">
+          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 font-display text-sm font-extrabold text-white shadow-lg transition-transform duration-300 group-hover:scale-110">
             {FEATURED_AUTHOR.initials}
           </div>
           <div>
-            <p className="font-display text-sm font-semibold text-corematrix-textPrimary">
+            <p className="font-display text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-400 to-purple-400">
               {FEATURED_AUTHOR.name}
             </p>
             <p className="text-xs text-corematrix-textDim">{FEATURED_AUTHOR.role}</p>
@@ -192,8 +192,8 @@ export function BlogSidebar() {
         </p>
         <div className="mt-4 pt-1">
           <Link
-            href="/blog?author=sara"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-corematrix-green400 hover:gap-3 transition-all duration-300"
+            href="/blog"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-400 hover:text-pink-400 hover:gap-3 transition-all duration-300"
           >
             {t('View All Articles →', 'عرض كل المقالات ←')}
           </Link>

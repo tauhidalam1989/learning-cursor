@@ -19,8 +19,8 @@ const TEAM: TeamMember[] = [
   {
     initials: 'TA',
     name: 'Tauhid Alam',
-    role_en: 'CEO & Co-Founder',
-    role_ar: 'الرئيس التنفيذي والشريك المؤسس',
+    role_en: 'CEO & Founder',
+    role_ar: 'الرئيس التنفيذي والمؤسس',
     bio_en: '15+ years leading product and engineering at enterprise scale. Former tech lead at two unicorn SaaS companies. Obsessed with AI and clean architecture.',
     bio_ar: 'خبرة تزيد عن 15 عاماً في قيادة المنتجات والهندسة البرمجية على نطاق المؤسسات الكبرى. قائد تقني سابق في شركتين برمجيتين بلغت قيمتهما المليار دولار. شغوف بالذكاء الاصطناعي والبنية البرمجية النظيفة.',
     avatarGradient: 'from-corematrix-green900 to-corematrix-card2',
@@ -28,8 +28,8 @@ const TEAM: TeamMember[] = [
   {
     initials: 'NA',
     name: 'Nadeem Akhter',
-    role_en: 'CTO',
-    role_ar: 'الرئيس التنفيذي للتكنولوجيا',
+    role_en: 'Chief Technology Officer',
+    role_ar: 'الرئيس التقني',
     bio_en: 'C# & .NET specialist with a background in computational linguistics and distributed systems. Built production RAG systems serving millions of queries.',
     bio_ar: 'متخصص في لغة C# ومنصة .NET ولديه خلفية في اللغويات الحاسوبية والأنظمة الموزعة. قام ببناء أنظمة RAG إنتاجية تخدم ملايين الاستعلامات.',
     avatarGradient: 'from-[#052e16] to-[#0d2b1a]',
@@ -37,8 +37,8 @@ const TEAM: TeamMember[] = [
   {
     initials: 'JA',
     name: 'Jainish Ali',
-    role_en: 'Head of Engineering',
-    role_ar: 'رئيس قسم الهندسة البرمجية',
+    role_en: 'Solution Architect',
+    role_ar: 'مهندس حلول',
     bio_en: 'Full-stack architect specializing in Next.js and Node.js at scale. Led engineering teams of 20+ at fast-growing SaaS companies across two continents.',
     bio_ar: 'مهندس حلول متكاملة (Full-stack) متخصص في تقنيات Next.js و Node.js على نطاق واسع. قاد فرق هندسية تضم أكثر من 20 مطوراً في شركات SaaS سريعة النمو عبر قارتين.',
     avatarGradient: 'from-[#073d1a] to-[#0a1f12]',
@@ -46,8 +46,8 @@ const TEAM: TeamMember[] = [
   {
     initials: 'VS',
     name: 'Vijay Sharma',
-    role_en: 'UI Developer',
-    role_ar: 'مطور واجهات المستخدم',
+    role_en: 'Project Manager',
+    role_ar: 'مدير المشاريع',
     bio_en: 'UI developer with a background in UX/UI design. Specialized in React, Next.js, and Tailwind CSS. Built production RAG systems serving millions of queries.',
     bio_ar: 'مطور واجهات مستخدم مع خلفية في تصميم تجربة وواجهة المستخدم (UX/UI). متخصص في مكتبة React وإطار عمل Next.js وتقنية Tailwind CSS.',
     avatarGradient: 'from-[#041a0b] to-[#0f2318]',
@@ -107,7 +107,7 @@ export function TeamSection() {
                 <p className="mb-3 text-xs font-light leading-relaxed text-corematrix-textMuted">
                   {language === 'ar' ? member.bio_ar : member.bio_en}
                 </p>
-                <div className="flex gap-2">
+                {/* <div className="flex gap-2">
                   <a
                     href={siteConfig.linkedin}
                     target="_blank"
@@ -135,7 +135,7 @@ export function TeamSection() {
                   >
                     gh
                   </a>
-                </div>
+                </div> */}
               </div>
             </article>
           ))}

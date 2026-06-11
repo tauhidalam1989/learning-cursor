@@ -5,6 +5,29 @@ import { useLanguage } from '@/context/LanguageContext';
 
 export type LocationDetail = { icon: string; text: string };
 
+const LOCATION_THEMES = [
+  {
+    iconColor: 'text-amber-400',
+    iconBg: 'bg-amber-950/20 border-amber-500/20',
+  },
+  {
+    iconColor: 'text-emerald-400',
+    iconBg: 'bg-emerald-950/20 border-emerald-500/20',
+  },
+  {
+    iconColor: 'text-sky-400',
+    iconBg: 'bg-sky-950/20 border-sky-500/20',
+  },
+  {
+    iconColor: 'text-cyan-400',
+    iconBg: 'bg-cyan-950/20 border-cyan-500/20',
+  },
+  {
+    iconColor: 'text-purple-400',
+    iconBg: 'bg-purple-950/20 border-purple-500/20',
+  },
+];
+
 export function LocationSection() {
   const { t } = useLanguage();
 
@@ -56,7 +79,7 @@ export function LocationSection() {
               <div className="map-ring map-ring-2" aria-hidden />
               <div className="map-ring map-ring-3" aria-hidden />
               <span
-                className="relative z-10 float-anim text-4xl text-corematrix-green400"
+                className="relative z-10 float-anim text-4xl text-sky-400"
                 aria-hidden
               >
                 <i className="fas fa-map-marker-alt" />
@@ -84,16 +107,19 @@ export function LocationSection() {
               )}
             </p>
             <ul className="mt-6 space-y-4">
-              {LOCATION_DETAILS.map((d) => (
-                <li key={d.text} className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-corematrix-green700/[0.15] bg-corematrix-green900/20 text-sm text-corematrix-green400">
-                    <i className={d.icon} aria-hidden="true" />
-                  </div>
-                  <span className="text-sm text-corematrix-textSecondary">
-                    {d.text}
-                  </span>
-                </li>
-              ))}
+              {LOCATION_DETAILS.map((d, idx) => {
+                const theme = LOCATION_THEMES[idx % LOCATION_THEMES.length];
+                return (
+                  <li key={d.text} className="flex items-center gap-3">
+                    <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border text-sm ${theme.iconBg} ${theme.iconColor}`}>
+                      <i className={d.icon} aria-hidden="true" />
+                    </div>
+                    <span className="text-sm text-corematrix-textSecondary">
+                      {d.text}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

@@ -8,13 +8,53 @@ import { siteConfig } from '@/config/site';
 import { breadcrumbJsonLd } from '@/lib/seo/jsonld';
 import { useLanguage } from '@/context/LanguageContext';
 
-function BodySection({ heading, body }: { heading: string; body: string }) {
+const TAG_THEMES = [
+  'text-cyan-400 bg-cyan-950/20 border-cyan-800/30 hover:border-cyan-500/40',
+  'text-emerald-400 bg-emerald-950/20 border-emerald-800/30 hover:border-emerald-500/40',
+  'text-sky-400 bg-sky-950/20 border-sky-800/30 hover:border-sky-500/40',
+  'text-amber-400 bg-amber-950/20 border-amber-800/30 hover:border-amber-500/40',
+  'text-purple-400 bg-purple-950/20 border-purple-800/30 hover:border-purple-500/40',
+  'text-rose-400 bg-rose-950/20 border-rose-800/30 hover:border-rose-500/40',
+  'text-teal-400 bg-teal-950/20 border-teal-800/30 hover:border-teal-500/40',
+  'text-indigo-400 bg-indigo-950/20 border-indigo-800/30 hover:border-indigo-500/40',
+];
+
+const BODY_SECTION_THEMES = [
+  {
+    card: 'border-cyan-500/20 bg-cyan-950/10 hover:border-cyan-400/50 hover:bg-cyan-950/20 shadow-[0_4px_20px_rgba(6,182,212,0.05)]',
+    titleColor: 'text-cyan-400 group-hover:text-cyan-300 transition-colors duration-300',
+    bodyColor: 'text-cyan-300/70 group-hover:text-cyan-200/90 transition-colors duration-300',
+  },
+  {
+    card: 'border-emerald-500/20 bg-emerald-950/10 hover:border-emerald-400/50 hover:bg-emerald-950/20 shadow-[0_4px_20px_rgba(16,185,129,0.05)]',
+    titleColor: 'text-emerald-400 group-hover:text-emerald-300 transition-colors duration-300',
+    bodyColor: 'text-emerald-300/70 group-hover:text-emerald-200/90 transition-colors duration-300',
+  },
+  {
+    card: 'border-sky-500/20 bg-sky-950/10 hover:border-sky-400/50 hover:bg-sky-950/20 shadow-[0_4px_20px_rgba(14,165,233,0.05)]',
+    titleColor: 'text-sky-400 group-hover:text-sky-300 transition-colors duration-300',
+    bodyColor: 'text-sky-300/70 group-hover:text-sky-200/90 transition-colors duration-300',
+  },
+  {
+    card: 'border-purple-500/20 bg-purple-950/10 hover:border-purple-400/50 hover:bg-purple-950/20 shadow-[0_4px_20px_rgba(168,85,247,0.05)]',
+    titleColor: 'text-purple-400 group-hover:text-purple-300 transition-colors duration-300',
+    bodyColor: 'text-purple-300/70 group-hover:text-purple-200/90 transition-colors duration-300',
+  },
+];
+
+interface BodySectionTheme {
+  card: string;
+  titleColor: string;
+  bodyColor: string;
+}
+
+function BodySection({ heading, body, theme }: { heading: string; body: string; theme: BodySectionTheme }) {
   return (
-    <article className="rounded-2xl border border-corematrix-border bg-corematrix-card2 p-6 sm:p-8">
-      <h2 className="font-display text-xl font-bold text-corematrix-textPrimary sm:text-2xl">
+    <article className={`group rounded-2xl border p-6 sm:p-8 transition-all duration-300 ${theme.card}`}>
+      <h2 className={`font-display text-xl font-bold sm:text-2xl ${theme.titleColor}`}>
         {heading}
       </h2>
-      <p className="mt-4 text-base leading-relaxed text-corematrix-textSecondary">{body}</p>
+      <p className={`mt-4 text-base leading-relaxed ${theme.bodyColor}`}>{body}</p>
     </article>
   );
 }
@@ -159,21 +199,25 @@ export function ServiceLandingPage({ config: cfg }: { config: ServiceLandingConf
               <div>
                 <p className="section-label text-corematrix-green400">{t('Stack & focus', 'التقنيات والتركيز')}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  {cfg.stackTags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded border border-corematrix-border bg-corematrix-card2 px-2 py-0.5 font-mono text-[0.62rem] font-semibold text-corematrix-textDim"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  {cfg.stackTags.map((tag, tagIdx) => {
+                    const tagTheme = TAG_THEMES[tagIdx % TAG_THEMES.length];
+                    return (
+                      <span
+                        key={tag}
+                        className={`rounded border px-2 py-0.5 font-mono text-[0.62rem] font-semibold transition-all duration-300 ${tagTheme}`}
+                      >
+                        {tag}
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
 
-              {cfg.sections.map((s) => {
+              {cfg.sections.map((s, idx) => {
                 const heading = isAr ? (s.headingAr || s.heading) : s.heading;
                 const body = isAr ? (s.bodyAr || s.body) : s.body;
-                return <BodySection key={heading} heading={heading} body={body} />;
+                const theme = BODY_SECTION_THEMES[idx % BODY_SECTION_THEMES.length];
+                return <BodySection key={heading} heading={heading} body={body} theme={theme} />;
               })}
             </div>
 

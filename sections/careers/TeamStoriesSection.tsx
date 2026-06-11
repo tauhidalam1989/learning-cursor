@@ -39,6 +39,36 @@ const tagTranslations: Record<string, string> = {
   'Async Work': 'عمل غير متزامن',
 };
 
+const STORY_THEMES = [
+  {
+    // Purple
+    avatarText: 'text-purple-400',
+    avatarBg: 'from-purple-950/60 to-corematrix-card2',
+    nameColor: 'text-purple-400 group-hover:text-purple-300',
+    quoteBorder: 'border-purple-500/30',
+    hoverClass: 'hover:border-purple-500/35 hover:shadow-[0_0_35px_rgba(168,85,247,0.08)]',
+    tagClass: 'border-purple-500/15 bg-purple-950/20 text-purple-400',
+  },
+  {
+    // Sky
+    avatarText: 'text-sky-400',
+    avatarBg: 'from-sky-950/60 to-corematrix-card2',
+    nameColor: 'text-sky-400 group-hover:text-sky-300',
+    quoteBorder: 'border-sky-500/30',
+    hoverClass: 'hover:border-sky-500/35 hover:shadow-[0_0_35px_rgba(14,165,233,0.08)]',
+    tagClass: 'border-sky-500/15 bg-sky-950/20 text-sky-400',
+  },
+  {
+    // Rose
+    avatarText: 'text-rose-400',
+    avatarBg: 'from-rose-950/60 to-corematrix-card2',
+    nameColor: 'text-rose-400 group-hover:text-rose-300',
+    quoteBorder: 'border-rose-500/30',
+    hoverClass: 'hover:border-rose-500/35 hover:shadow-[0_0_35px_rgba(244,63,94,0.08)]',
+    tagClass: 'border-rose-500/15 bg-rose-950/20 text-rose-400',
+  },
+];
+
 export function TeamStoriesSection() {
   const { t } = useLanguage();
 
@@ -60,40 +90,43 @@ export function TeamStoriesSection() {
         />
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {TEAM_STORIES.map((story) => (
-            <div
-              key={story.name}
-              className="reveal overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-card transition-all duration-300 hover:-translate-y-1 hover:border-corematrix-border2"
-            >
-              <div className="relative h-28 overflow-hidden border-b border-corematrix-border bg-gradient-to-br from-corematrix-green900/60 to-corematrix-card2">
-                {/* TODO: Replace with <Image src={story.avatar} alt={story.name} fill className="object-cover" /> */}
-                <span className="absolute inset-0 flex items-center justify-center font-display text-3xl font-extrabold text-corematrix-green700">
-                  {story.initials}
-                </span>
-              </div>
-              <div className="p-6">
-                <p className="font-display text-sm font-bold text-corematrix-textPrimary">
-                  {t(story.name, nameTranslations[story.name] ?? story.name)}
-                </p>
-                <p className="text-xs text-corematrix-textDim">
-                  {t(story.role, roleTranslations[story.role] ?? story.role)} · {t('Joined', 'انضم في')} {story.joinedYear}
-                </p>
-                <blockquote className="mt-4 border-l-4 border-corematrix-green700 pl-4 text-sm italic text-corematrix-textSecondary">
-                  &quot;{t(story.quote, quoteTranslations[story.quote] ?? story.quote)}&quot;
-                </blockquote>
-                <div className="mt-4 flex flex-wrap gap-1.5">
-                  {story.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-corematrix-border bg-corematrix-card2 px-2.5 py-0.5 font-mono text-[0.68rem] text-corematrix-textDim"
-                    >
-                      {t(tag, tagTranslations[tag] ?? tag)}
-                    </span>
-                  ))}
+          {TEAM_STORIES.map((story, idx) => {
+            const theme = STORY_THEMES[idx % STORY_THEMES.length];
+            return (
+              <div
+                key={story.name}
+                className={`group reveal overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-card transition-all duration-300 hover:-translate-y-1 ${theme.hoverClass}`}
+              >
+                <div className={`relative h-28 overflow-hidden border-b border-corematrix-border bg-gradient-to-br ${theme.avatarBg}`}>
+                  {/* TODO: Replace with <Image src={story.avatar} alt={story.name} fill className="object-cover" /> */}
+                  <span className={`absolute inset-0 flex items-center justify-center font-display text-3xl font-extrabold transition-all duration-300 ${theme.avatarText}`}>
+                    {story.initials}
+                  </span>
+                </div>
+                <div className="p-6">
+                  <p className={`font-display text-sm font-bold transition-all duration-300 ${theme.nameColor}`}>
+                    {t(story.name, nameTranslations[story.name] ?? story.name)}
+                  </p>
+                  <p className="text-xs text-corematrix-textDim">
+                    {t(story.role, roleTranslations[story.role] ?? story.role)} · {t('Joined', 'انضم في')} {story.joinedYear}
+                  </p>
+                  <blockquote className={`mt-4 border-l-4 pl-4 text-sm italic text-corematrix-textSecondary transition-all duration-300 ${theme.quoteBorder}`}>
+                    &quot;{t(story.quote, quoteTranslations[story.quote] ?? story.quote)}&quot;
+                  </blockquote>
+                  <div className="mt-4 flex flex-wrap gap-1.5">
+                    {story.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className={`rounded-full border px-2.5 py-0.5 font-mono text-[0.68rem] transition-all duration-300 ${theme.tagClass}`}
+                      >
+                        {t(tag, tagTranslations[tag] ?? tag)}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </Container>
     </section>

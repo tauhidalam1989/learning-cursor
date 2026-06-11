@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
+import heroAiRobot from '@/public/images/hero-ai-robot.png';
+
 
 export function HeroSection() {
   const { t } = useLanguage();
@@ -98,10 +100,10 @@ export function HeroSection() {
             </div>
           </div>
 
-          <div className="relative flex w-full min-w-0 justify-center lg:justify-end">
+          <div className="relative flex w-full min-w-0 justify-center lg:justify-end lg:-mt-28">
             <div className="relative w-full max-w-[520px]">
               <Image
-                src="/images/hero-ai-robot.png"
+                src={heroAiRobot}
                 alt="Stylized AI robot on a glowing platform with holographic charts and graphs"
                 width={1024}
                 height={682}

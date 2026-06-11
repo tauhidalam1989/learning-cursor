@@ -10,6 +10,9 @@ type Feature = {
   title_ar: string;
   body_en: string;
   body_ar: string;
+  iconBg: string;
+  iconColor: string;
+  textColor: string;
 };
 
 const FEATURES: Feature[] = [
@@ -18,30 +21,45 @@ const FEATURES: Feature[] = [
     title_ar: 'الهندسة المرتكزة على الذكاء الاصطناعي',
     body_en: 'Every project built with intelligent capabilities in mind from day one.',
     body_ar: 'كل مشروع يتم بناؤه مع وضع القدرات الذكية في الاعتبار منذ اليوم الأول.',
+    iconBg: 'bg-purple-700/30',
+    iconColor: 'text-purple-400',
+    textColor: 'text-purple-300/90',
   },
   {
     title_en: "Next.js & Modern Stack",
     title_ar: "بنية Next.js والتقنيات الحديثة",
     body_en: "We use the same tech stack the world's best products run on — Next.js, TypeScript, Python.",
     body_ar: "نحن نستخدم نفس حزمة التقنيات التي تعمل عليها أفضل المنتجات في العالم — Next.js و TypeScript و Python.",
+    iconBg: 'bg-sky-700/30',
+    iconColor: 'text-sky-400',
+    textColor: 'text-sky-300/90',
   },
   {
     title_en: 'Business-Outcome Focused',
     title_ar: 'التركيز على نتائج الأعمال',
     body_en: 'We measure success by your growth metrics, not just code delivery milestones.',
     body_ar: 'نحن نقيس النجاح بمقاييس نموك، وليس فقط بمراحل تسليم الكود.',
+    iconBg: 'bg-amber-700/30',
+    iconColor: 'text-amber-400',
+    textColor: 'text-amber-300/90',
   },
   {
     title_en: 'Transparent & Agile',
     title_ar: 'الشفافية والمرونة',
     body_en: 'Weekly sprint demos, shared dashboards, no black-box development ever.',
     body_ar: 'عروض أسبوعية لنتائج العمل، لوحات معلومات مشتركة، لا يوجد تطوير غامض على الإطلاق.',
+    iconBg: 'bg-rose-700/30',
+    iconColor: 'text-rose-400',
+    textColor: 'text-rose-300/90',
   },
   {
     title_en: 'End-to-End Delivery',
     title_ar: 'التسليم من البداية إلى النهاية',
     body_en: 'Strategy → Design → Development → Launch → Ongoing Support. We own it all.',
     body_ar: 'الاستراتيجية ← التصميم ← التطوير ← الإطلاق ← الدعم المستمر. نحن نتولى كل شيء.',
+    iconBg: 'bg-teal-700/30',
+    iconColor: 'text-teal-400',
+    textColor: 'text-teal-300/90',
   },
 ];
 
@@ -92,11 +110,11 @@ export function WhyCorematrixSection() {
               {FEATURES.map((f) => (
                 <div key={f.title_en} className="flex items-start gap-3">
                   <div
-                    className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-corematrix-green700/30"
+                    className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${f.iconBg}`}
                     aria-hidden
                   >
                     <svg
-                      className="h-3.5 w-3.5 text-corematrix-green400"
+                      className={`h-3.5 w-3.5 ${f.iconColor}`}
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -109,7 +127,7 @@ export function WhyCorematrixSection() {
                     <h3 className="font-display font-semibold text-corematrix-textPrimary">
                       {language === 'ar' ? f.title_ar : f.title_en}
                     </h3>
-                    <p className="mt-0.5 text-sm leading-relaxed text-corematrix-textSecondary">
+                    <p className={`mt-0.5 text-sm leading-relaxed ${f.textColor}`}>
                       {language === 'ar' ? f.body_ar : f.body_en}
                     </p>
                   </div>

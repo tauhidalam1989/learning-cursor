@@ -66,7 +66,7 @@ export function BlogCategoryNav() {
     <nav
       role="tablist"
       aria-label="Blog categories"
-      className="sticky top-[68px] z-50 border-b border-corematrix-border bg-corematrix-bg0"
+      className="sticky top-[68px] z-40 border-b border-corematrix-border bg-corematrix-bg0"
     >
       <div className="overflow-x-auto scrollbar-hide">
         <div className="flex min-w-max">

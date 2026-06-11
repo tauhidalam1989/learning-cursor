@@ -4,7 +4,16 @@ import { Container } from '@/components/ui/Container';
 import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { useLanguage } from '@/context/LanguageContext';
 
-type MvvCard = { icon: string; title_en: string; title_ar: string; body_en: string; body_ar: string };
+type MvvCard = {
+  icon: string;
+  title_en: string;
+  title_ar: string;
+  body_en: string;
+  body_ar: string;
+  iconColor: string;
+  iconBg: string;
+  glowLine: string;
+};
 
 const MVV_CARDS: MvvCard[] = [
   {
@@ -13,6 +22,9 @@ const MVV_CARDS: MvvCard[] = [
     title_ar: 'مهمتنا',
     body_en: 'To design, build, and deploy intelligent digital solutions that create tangible, measurable business value — empowering startups and enterprises to compete in an AI-driven world.',
     body_ar: 'تصميم وبناء ونشر حلول رقمية ذكية تخلق قيمة تجارية ملموسة وقابلة للقياس — لتمكين الشركات الناشئة والمؤسسات من المنافسة في عالم يقوده الذكاء الاصطناعي.',
+    iconColor: 'text-purple-400',
+    iconBg: 'bg-purple-900/40 border-purple-700/20',
+    glowLine: 'via-purple-500',
   },
   {
     icon: 'fas fa-compass',
@@ -20,6 +32,9 @@ const MVV_CARDS: MvvCard[] = [
     title_ar: 'رؤيتنا',
     body_en: "To be the world's most trusted AI-first engineering partner — where technical excellence meets strategic thinking, and every solution we ship drives real transformation.",
     body_ar: 'أن نكون شريك الهندسة الرقمية الأول والأكثر ثقة عالمياً في الذكاء الاصطناعي — حيث يلتقي التميز التقني مع التفكير الاستراتيجي، وحيث يقود كل حل نشحنه تحولاً حقيقياً.',
+    iconColor: 'text-amber-400',
+    iconBg: 'bg-amber-900/40 border-amber-700/20',
+    glowLine: 'via-amber-500',
   },
   {
     icon: 'fas fa-lightbulb',
@@ -27,6 +42,9 @@ const MVV_CARDS: MvvCard[] = [
     title_ar: 'هدفنا الأسمى',
     body_en: "Technology for its own sake solves nothing. We exist to bridge the gap between cutting-edge AI capability and the business problems that actually matter to real people.",
     body_ar: 'التكنولوجيا لأجل التكنولوجيا لا تحل شيئاً. نحن موجودون لسد الفجوة بين قدرات الذكاء الاصطناعي المتطورة ومشكلات الأعمال التي تهم الناس الحقيقيين بالفعل.',
+    iconColor: 'text-cyan-400',
+    iconBg: 'bg-cyan-900/40 border-cyan-700/20',
+    glowLine: 'via-cyan-500',
   },
 ];
 
@@ -53,8 +71,8 @@ export function MissionVisionSection() {
               key={card.title_en}
               className="group relative overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-card p-8 transition-all duration-300 card-glow hover:-translate-y-1 reveal"
             >
-              <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-corematrix-green700 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-              <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-[14px] border border-corematrix-green700/20 bg-corematrix-green900/40 text-xl text-corematrix-green400">
+              <div className={`absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent ${card.glowLine} to-transparent opacity-0 transition-opacity group-hover:opacity-100`} />
+              <div className={`mb-5 flex h-14 w-14 items-center justify-center rounded-[14px] border ${card.iconBg} text-xl ${card.iconColor}`}>
                 <i className={card.icon} aria-hidden="true" />
               </div>
               <h3 className="font-display text-lg font-semibold text-corematrix-textPrimary">

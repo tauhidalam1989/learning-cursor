@@ -5,7 +5,15 @@ import { Container } from '@/components/ui/Container';
 import { MarketingSectionHeader } from '@/components/shared/MarketingSectionHeader';
 import { useLanguage } from '@/context/LanguageContext';
 
-type CultureItem = { icon: string; title_en: string; title_ar: string; body_en: string; body_ar: string };
+type CultureItem = {
+  icon: string;
+  title_en: string;
+  title_ar: string;
+  body_en: string;
+  body_ar: string;
+  iconColor: string;
+  iconBg: string;
+};
 
 const CULTURE_ITEMS: CultureItem[] = [
   {
@@ -14,6 +22,8 @@ const CULTURE_ITEMS: CultureItem[] = [
     title_ar: 'ميزانية التعلم والتدريب',
     body_en: 'Every engineer gets a personal learning budget for courses, conferences, and experiments.',
     body_ar: 'يحصل كل مهندس لدينا على ميزانية تعلم شخصية مخصصة للدورات والمؤتمرات والتجارب التقنية.',
+    iconColor: 'text-purple-400',
+    iconBg: 'bg-purple-900/40 border-purple-700/20',
   },
   {
     icon: 'fas fa-globe',
@@ -21,6 +31,8 @@ const CULTURE_ITEMS: CultureItem[] = [
     title_ar: 'العمل عن بعد أولاً',
     body_en: 'Fully remote with async-first communication. Work from anywhere, overlap where it matters.',
     body_ar: 'بيئة عمل تعتمد تماماً عن بعد مع اتصالات غير متزامنة. اعمل من أي مكان وتواجد حيثما يلزم.',
+    iconColor: 'text-cyan-400',
+    iconBg: 'bg-cyan-900/40 border-cyan-700/20',
   },
   {
     icon: 'fas fa-rocket',
@@ -28,6 +40,8 @@ const CULTURE_ITEMS: CultureItem[] = [
     title_ar: 'ثقافة المسؤولية والملكّية',
     body_en: 'Engineers own features end to end — from architecture decisions to production monitoring.',
     body_ar: 'يمتلك مهندسونا الميزات من البداية إلى النهاية — بدءاً من قرارات البنية الهندسية إلى مراقبة الأنظمة الإنتاجية.',
+    iconColor: 'text-orange-400',
+    iconBg: 'bg-orange-900/40 border-orange-700/20',
   },
   {
     icon: 'fas fa-chart-line',
@@ -35,6 +49,8 @@ const CULTURE_ITEMS: CultureItem[] = [
     title_ar: 'الشفافية هي الأصل',
     body_en: 'Company metrics, client feedback, and engineering decisions are shared openly across the team.',
     body_ar: 'تتم مشاركة مؤشرات الشركة، وآراء وملاحظات العملاء، والقرارات الهندسية بشكل علني عبر كامل الفريق.',
+    iconColor: 'text-sky-400',
+    iconBg: 'bg-sky-900/40 border-sky-700/20',
   },
 ];
 
@@ -64,7 +80,7 @@ export function CultureSection() {
                   key={item.title_en}
                   className="reveal rounded-2xl border border-corematrix-border bg-corematrix-card p-6 transition-all hover:-translate-y-0.5 hover:border-corematrix-border2"
                 >
-                  <span className="shrink-0 flex h-9 w-9 items-center justify-center rounded-lg border border-corematrix-green700/20 bg-corematrix-green900/40 text-base text-corematrix-green400" aria-hidden="true">
+                  <span className={`shrink-0 flex h-9 w-9 items-center justify-center rounded-lg border text-base ${item.iconBg} ${item.iconColor}`} aria-hidden="true">
                     <i className={item.icon} />
                   </span>
                   <h3 className="mt-3 font-display font-semibold text-corematrix-textPrimary">
@@ -100,7 +116,7 @@ export function CultureSection() {
                 {t("We're actively hiring — ", "نحن نوظف بنشاط حالياً — ")}{' '}
                 <Link
                   href="/careers"
-                  className="font-semibold text-corematrix-green400 hover:underline"
+                  className="font-semibold text-yellow-400 hover:underline"
                 >
                   {t("View open roles →", "عرض الوظائف الشاغرة ←")}
                 </Link>

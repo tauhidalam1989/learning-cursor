@@ -45,7 +45,7 @@ export function ServiceFilterNav() {
   return (
     <nav
       aria-label="Filter services"
-      className="sticky top-[68px] z-50 border-y border-corematrix-border bg-corematrix-bg0 py-6"
+      className="sticky top-[68px] z-40 border-y border-corematrix-border bg-corematrix-bg0 py-6"
     >
       <Container className="flex flex-wrap items-center gap-3">
         <span className="mr-2 font-display text-[0.68rem] font-bold uppercase tracking-[0.12em] text-corematrix-textDim">

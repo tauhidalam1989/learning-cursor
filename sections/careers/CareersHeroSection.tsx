@@ -288,7 +288,7 @@ export function CareersHeroSection() {
                     className={`group flex items-center justify-between gap-4 rounded-xl border p-3.5 transition-all duration-300 hover:translate-x-1 ${theme.cardBg} ${theme.cardBorder}`}
                   >
                     <div className="flex items-center gap-3">
-                      <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border text-sm transition-all duration-300 group-hover:scale-105 ${theme.iconBg} ${theme.iconColor}`} aria-hidden="true">
+                      <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border text-sm transition-all duration-300 group-hover:scale-105 group-hover:text-white ${theme.iconBg} ${theme.iconColor}`} aria-hidden="true">
                         <i className={r.icon} />
                       </span>
                       <div>
@@ -317,7 +317,7 @@ export function CareersHeroSection() {
             </ul>
             <Link
               href="#open-roles"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-corematrix-green400 transition hover:gap-3"
+              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-yellow-400 hover:text-yellow-300 transition hover:gap-3"
             >
               {t(
                 `View All ${roles.length} Open Positions →`,
@@ -326,7 +326,7 @@ export function CareersHeroSection() {
             </Link>
           </div>
 
-          <div className="absolute -bottom-5 -left-3 float-anim rounded-xl border border-cyan-500/20 bg-cyan-950/40 backdrop-blur-md px-4 py-3 shadow-[0_12px_40px_rgba(6,182,212,0.1)] transition-all duration-300 hover:border-cyan-500/40 hover:bg-cyan-950/60">
+          <div className="absolute -bottom-10 -left-3 float-anim rounded-xl border border-cyan-500/20 bg-cyan-950/40 backdrop-blur-md px-4 py-3 shadow-[0_12px_40px_rgba(6,182,212,0.1)] transition-all duration-300 hover:border-cyan-500/40 hover:bg-cyan-950/60">
             <div className="flex items-center gap-3">
               <span className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(6,182,212,0.6)] dot-pulse" />
               <div>

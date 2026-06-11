@@ -36,6 +36,57 @@ const benefitDescTranslations: Record<string, string> = {
     'فريق عمل موزع بالكامل. تم بناء عملياتنا للعمل غير المتزامن — وليس كفكرة ثانوية مضافة.',
 };
 
+const BENEFIT_THEMES = [
+  {
+    // Purple
+    iconColor: 'text-purple-400',
+    titleColor: 'text-purple-400 group-hover:text-purple-300',
+    hoverBg: 'hover:bg-purple-950/20',
+  },
+  {
+    // Sky
+    iconColor: 'text-sky-400',
+    titleColor: 'text-sky-400 group-hover:text-sky-300',
+    hoverBg: 'hover:bg-sky-950/20',
+  },
+  {
+    // Amber
+    iconColor: 'text-amber-400',
+    titleColor: 'text-amber-400 group-hover:text-amber-300',
+    hoverBg: 'hover:bg-amber-950/20',
+  },
+  {
+    // Rose
+    iconColor: 'text-rose-400',
+    titleColor: 'text-rose-400 group-hover:text-rose-300',
+    hoverBg: 'hover:bg-rose-950/20',
+  },
+  {
+    // Teal
+    iconColor: 'text-teal-400',
+    titleColor: 'text-teal-400 group-hover:text-teal-300',
+    hoverBg: 'hover:bg-teal-950/20',
+  },
+  {
+    // Indigo
+    iconColor: 'text-indigo-400',
+    titleColor: 'text-indigo-400 group-hover:text-indigo-300',
+    hoverBg: 'hover:bg-indigo-950/20',
+  },
+  {
+    // Orange
+    iconColor: 'text-orange-400',
+    titleColor: 'text-orange-400 group-hover:text-orange-300',
+    hoverBg: 'hover:bg-orange-950/20',
+  },
+  {
+    // Emerald
+    iconColor: 'text-emerald-400',
+    titleColor: 'text-emerald-400 group-hover:text-emerald-300',
+    hoverBg: 'hover:bg-emerald-950/20',
+  },
+];
+
 export function BenefitsSection() {
   const { t } = useLanguage();
 
@@ -57,22 +108,25 @@ export function BenefitsSection() {
         />
 
         <div className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-border sm:grid-cols-4">
-          {BENEFITS.map((b) => (
-            <div
-              key={b.title}
-              className="bg-corematrix-card p-8 transition-colors hover:bg-corematrix-card2"
-            >
-              <span className="mb-4 block text-2xl text-corematrix-green400" aria-hidden>
-                <i className={b.icon} />
-              </span>
-              <h3 className="mb-2 font-display text-sm font-bold text-corematrix-textPrimary">
-                {t(b.title, benefitTitleTranslations[b.title] ?? b.title)}
-              </h3>
-              <p className="text-xs font-light leading-snug text-corematrix-textMuted">
-                {t(b.description, benefitDescTranslations[b.description] ?? b.description)}
-              </p>
-            </div>
-          ))}
+          {BENEFITS.map((b, idx) => {
+            const theme = BENEFIT_THEMES[idx % BENEFIT_THEMES.length];
+            return (
+              <div
+                key={b.title}
+                className={`group bg-corematrix-card p-8 transition-colors duration-300 ${theme.hoverBg}`}
+              >
+                <span className={`mb-4 block text-2xl transition-colors duration-300 ${theme.iconColor}`} aria-hidden>
+                  <i className={b.icon} />
+                </span>
+                <h3 className={`mb-2 font-display text-sm font-bold transition-colors duration-300 ${theme.titleColor}`}>
+                  {t(b.title, benefitTitleTranslations[b.title] ?? b.title)}
+                </h3>
+                <p className="text-xs font-light leading-snug text-corematrix-textMuted">
+                  {t(b.description, benefitDescTranslations[b.description] ?? b.description)}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </Container>
     </section>
