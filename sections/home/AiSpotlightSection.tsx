@@ -128,7 +128,7 @@ export function AiSpotlightSection() {
               {t("Explore AI Services →", "استكشف خدمات الذكاء الاصطناعي ←")}
             </Link>
           </div>
-          <div className="reveal reveal-delay-2 lg:sticky lg:top-28 flex w-full min-w-0 justify-center lg:justify-end lg:-mt-40">
+          <div className="reveal reveal-delay-2 lg:sticky lg:top-28 flex w-full min-w-0 justify-center lg:justify-end lg:-mt-8">
             <div className="w-full max-w-[540px] min-w-0">
               <Image
                 src={aiSpotlightIllustration}

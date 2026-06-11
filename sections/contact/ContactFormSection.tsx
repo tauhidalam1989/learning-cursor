@@ -97,7 +97,7 @@ export function ContactFormSection() {
       value: siteConfig.phone,
       href: siteConfig.phoneTel,
     },
-    { icon: 'fas fa-globe', label: t('Location', 'الموقع'), value: t(siteConfig.location, 'عن بعد / عالمي') },
+    { icon: 'fas fa-globe', label: t('Location', 'الموقع'), value: t(siteConfig.location, 'الدور الأول، مكتب سوبر، شارع صعدة،\nالدريهمية، الرياض 12791') },
     { icon: 'fas fa-clock', label: t('Response Time', 'وقت الاستجابة'), value: t('Within 24 hours on business days', 'في غضون 24 ساعة في أيام العمل') },
   ];
 
@@ -311,7 +311,7 @@ export function ContactFormSection() {
                 const theme = DETAILS_THEMES[idx % DETAILS_THEMES.length];
                 return (
                   <div key={d.label} className="space-y-1">
-                    <p className="flex items-center gap-2 text-xs font-bold text-corematrix-textDim">
+                    <p className="flex items-center gap-2 text-xs font-bold text-white/90">
                       <span className={`text-sm ${theme.iconColor}`} aria-hidden>
                         <i className={d.icon} />
                       </span>
@@ -321,12 +321,12 @@ export function ContactFormSection() {
                       {d.href ? (
                         <a
                           href={d.href}
-                          className={`text-sm text-corematrix-textSecondary transition-colors ${theme.hoverText}`}
+                          className={`text-sm text-white/70 whitespace-pre-line transition-colors ${theme.hoverText}`}
                         >
                           {d.value}
                         </a>
                       ) : (
-                        <p className="text-sm text-corematrix-textSecondary">{d.value}</p>
+                        <p className="text-sm text-white/70 whitespace-pre-line">{d.value}</p>
                       )}
                     </div>
                   </div>

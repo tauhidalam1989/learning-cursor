@@ -17,7 +17,7 @@ export const siteConfig = {
   twitter: 'https://twitter.com/corematrix',
   instagram: 'https://instagram.com/corematrix',
   facebook: 'https://facebook.com/corematrix',
-  location: 'Remote-First · Available Globally',
+  location: '1st Floor, Super Office, Sayda Street,\nAd Duraihimiyah, Riyadh 12791',
   foundedYear: 2019,
   currentYear: new Date().getFullYear(),
 } as const;
