@@ -51,46 +51,16 @@ export function LocationSection() {
       <Container>
         <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
           <div className="relative h-[340px] overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-card">
-            <div
-              className="pointer-events-none absolute inset-0 opacity-30"
-              aria-hidden
-            >
-              <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <pattern
-                    id="map-grid"
-                    width="40"
-                    height="40"
-                    patternUnits="userSpaceOnUse"
-                  >
-                    <path
-                      d="M 40 0 L 0 0 0 40"
-                      fill="none"
-                      stroke="#1a3525"
-                      strokeWidth="1"
-                    />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#map-grid)" />
-              </svg>
-            </div>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <div className="map-ring map-ring-1" aria-hidden />
-              <div className="map-ring map-ring-2" aria-hidden />
-              <div className="map-ring map-ring-3" aria-hidden />
-              <span
-                className="relative z-10 float-anim text-4xl text-sky-400"
-                aria-hidden
-              >
-                <i className="fas fa-map-marker-alt" />
-              </span>
-              <p className="mt-3 font-display text-sm font-bold text-corematrix-textPrimary">
-                {t('Remote-First', 'العمل عن بعد أولاً')}
-              </p>
-              <p className="text-xs text-corematrix-textMuted">
-                {t('Team across multiple time zones', 'فريق عمل موزع عبر مناطق زمنية متعددة')}
-              </p>
-            </div>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d231637.65715450005!2d46.36683473977439!3d24.886436490787712!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2eefc4386172a1%3A0xce82245f54f7e4db!2sSuper%20Office!5e0!3m2!1sen!2sin!4v1781181208217!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title={t('Google Map - Super Office Riyadh', 'خريطة جوجل - مكتب سوبر بالرياض')}
+            />
           </div>
 
           <div className="reveal">
