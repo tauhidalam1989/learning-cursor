@@ -15,7 +15,7 @@ function parseArrayToString(val: any): string {
     try {
       const parsed = JSON.parse(val);
       if (Array.isArray(parsed)) return parsed.join(', ');
-    } catch (e) {}
+    } catch (e) { }
     return val;
   }
   return '';
@@ -42,7 +42,7 @@ export default function AdminPortal() {
     confirmText: 'Delete',
     cancelText: 'Cancel',
     isDanger: true,
-    onConfirm: () => {},
+    onConfirm: () => { },
   });
 
   const triggerConfirm = (
@@ -517,7 +517,7 @@ export default function AdminPortal() {
 
     try {
       const data = new FormData();
-      
+
       // Append standard values
       Object.entries(serviceForm).forEach(([key, value]) => {
         if (key !== 'id' && value !== null && value !== undefined) {
@@ -978,7 +978,7 @@ export default function AdminPortal() {
       <aside className="w-64 border-r border-corematrix-border bg-corematrix-bg1/90 backdrop-blur-md p-6 flex flex-col justify-between shrink-0 h-screen sticky top-0">
         <div className="flex flex-col flex-1 min-h-0">
           <div className="flex items-center mb-10 pb-4 border-b border-corematrix-border shrink-0">
-            <Image src="/images/logo.png" alt="Corematrix Logo" width={140} height={35} className="h-8 w-auto object-contain" />
+            <Image src="/images/logo.svg" alt="Corematrix Logo" width={140} height={35} className="h-8 w-auto object-contain" />
           </div>
 
           {/* User Profile Info Badge */}
@@ -989,10 +989,10 @@ export default function AdminPortal() {
             <div className="overflow-hidden">
               <p className="text-xs font-semibold truncate max-w-[130px]">{userUsername}</p>
               <span className={`inline-block text-[9px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 rounded mt-0.5 ${userRole === 'admin'
-                  ? 'bg-red-500/20 text-red-400 border border-red-500/20'
-                  : userRole === 'editor'
-                    ? 'bg-blue-500/20 text-blue-400 border border-blue-500/20'
-                    : 'bg-amber-500/20 text-amber-400 border border-amber-500/20'
+                ? 'bg-red-500/20 text-red-400 border border-red-500/20'
+                : userRole === 'editor'
+                  ? 'bg-blue-500/20 text-blue-400 border border-blue-500/20'
+                  : 'bg-amber-500/20 text-amber-400 border border-amber-500/20'
                 }`}>
                 {userRole}
               </span>
@@ -1967,11 +1967,10 @@ export default function AdminPortal() {
                         key={tab.id}
                         type="button"
                         onClick={() => setModalSubTab(tab.id)}
-                        className={`flex-shrink-0 px-4 py-2 rounded-lg font-semibold text-xs transition-all cursor-pointer ${
-                          modalSubTab === tab.id 
-                            ? 'bg-corematrix-green700 text-white shadow' 
+                        className={`flex-shrink-0 px-4 py-2 rounded-lg font-semibold text-xs transition-all cursor-pointer ${modalSubTab === tab.id
+                            ? 'bg-corematrix-green700 text-white shadow'
                             : 'text-corematrix-textMuted hover:text-corematrix-textPrimary'
-                        }`}
+                          }`}
                       >
                         {tab.label}
                       </button>
@@ -3825,10 +3824,10 @@ export default function AdminPortal() {
                             </td>
                             <td className="py-3.5 px-4">
                               <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold ${usr.role === 'admin'
-                                  ? 'bg-red-950/40 text-red-400 border border-red-700/30'
-                                  : usr.role === 'editor'
-                                    ? 'bg-blue-950/40 text-blue-400 border border-blue-700/30'
-                                    : 'bg-amber-950/40 text-amber-400 border border-amber-700/30'
+                                ? 'bg-red-950/40 text-red-400 border border-red-700/30'
+                                : usr.role === 'editor'
+                                  ? 'bg-blue-950/40 text-blue-400 border border-blue-700/30'
+                                  : 'bg-amber-950/40 text-amber-400 border border-amber-700/30'
                                 }`}>
                                 <span className={`h-1.5 w-1.5 rounded-full ${usr.role === 'admin' ? 'bg-red-400' : usr.role === 'editor' ? 'bg-blue-400' : 'bg-amber-400'
                                   }`} />
@@ -3865,8 +3864,8 @@ export default function AdminPortal() {
                                   disabled={isSelf}
                                   onClick={() => deleteUser(usr.id)}
                                   className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition cursor-pointer ${isSelf
-                                      ? 'border-gray-500/10 text-gray-500 cursor-not-allowed opacity-40'
-                                      : 'bg-red-950/20 border-red-700/20 text-red-400 hover:bg-red-900/30'
+                                    ? 'border-gray-500/10 text-gray-500 cursor-not-allowed opacity-40'
+                                    : 'bg-red-950/20 border-red-700/20 text-red-400 hover:bg-red-900/30'
                                     }`}
                                   title={isSelf ? 'Cannot delete your own account' : 'Delete user'}
                                 >

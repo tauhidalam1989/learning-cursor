@@ -50,7 +50,7 @@ export function Navbar() {
           {/* Logo */}
           <div className="flex items-center gap-6">
             <Link href="/" aria-label={t('Go to homepage', 'الذهاب إلى الصفحة الرئيسية')} className="flex items-center">
-              <Image src="/images/logo.png" alt={t('Corematrix logo', 'شعار كورماتريكس')} width={180} height={40} priority />
+              <Image src="/images/logo.svg" alt={t('Corematrix logo', 'شعار كورماتريكس')} width={180} height={40} priority />
             </Link>
           </div>
 
@@ -100,22 +100,20 @@ export function Navbar() {
               <button
                 type="button"
                 onClick={() => setLanguage('en')}
-                className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  language === 'en'
+                className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${language === 'en'
                     ? 'bg-[#149253] text-white shadow-sm'
                     : 'text-white/60 hover:text-white'
-                }`}
+                  }`}
               >
                 EN
               </button>
               <button
                 type="button"
                 onClick={() => setLanguage('ar')}
-                className={`rounded-full px-3 py-1 text-xs font-bold tracking-wider transition-all cursor-pointer ${
-                  language === 'ar'
+                className={`rounded-full px-3 py-1 text-xs font-bold tracking-wider transition-all cursor-pointer ${language === 'ar'
                     ? 'bg-[#149253] text-white shadow-sm'
                     : 'text-white/60 hover:text-white'
-                }`}
+                  }`}
               >
                 عربي
               </button>
@@ -165,19 +163,17 @@ export function Navbar() {
       {/* Mobile menu panel (Slide-out Drawer) */}
       <div
         id="mobile-nav-menu"
-        className={`fixed top-0 bottom-0 z-50 w-[85%] max-w-sm bg-gradient-to-b from-[#02140f] to-[#041f18] shadow-2xl transition-transform duration-300 ease-in-out lg:hidden flex flex-col ${
-          menuOpen ? 'opacity-100 pointer-events-auto' : 'pointer-events-none'
-        } ${
-          language === 'ar'
+        className={`fixed top-0 bottom-0 z-50 w-[85%] max-w-sm bg-gradient-to-b from-[#02140f] to-[#041f18] shadow-2xl transition-transform duration-300 ease-in-out lg:hidden flex flex-col ${menuOpen ? 'opacity-100 pointer-events-auto' : 'pointer-events-none'
+          } ${language === 'ar'
             ? `right-0 ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`
             : `left-0 ${menuOpen ? 'translate-x-0' : '-translate-x-full'}`
-        }`}
+          }`}
         aria-hidden={!menuOpen}
       >
         {/* Drawer Header: Logo + Close button */}
         <div className="flex h-20 items-center justify-between px-6 border-b border-white/5 flex-shrink-0">
           <Link href="/" onClick={closeMenu} className="flex items-center">
-            <Image src="/images/logo.png" alt={t('Corematrix logo', 'شعار كورماتريكس')} width={150} height={35} priority />
+            <Image src="/images/logo.svg" alt={t('Corematrix logo', 'شعار كورماتريكس')} width={150} height={35} priority />
           </Link>
           <button
             type="button"
@@ -230,11 +226,10 @@ export function Navbar() {
                   setLanguage('en');
                   closeMenu();
                 }}
-                className={`rounded-full px-5 py-1.5 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  language === 'en'
+                className={`rounded-full px-5 py-1.5 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${language === 'en'
                     ? 'bg-[#149253] text-white shadow-sm'
                     : 'text-white/60 hover:text-white'
-                }`}
+                  }`}
               >
                 EN
               </button>
@@ -244,11 +239,10 @@ export function Navbar() {
                   setLanguage('ar');
                   closeMenu();
                 }}
-                className={`rounded-full px-5 py-1.5 text-xs font-bold tracking-wider transition-all cursor-pointer ${
-                  language === 'ar'
+                className={`rounded-full px-5 py-1.5 text-xs font-bold tracking-wider transition-all cursor-pointer ${language === 'ar'
                     ? 'bg-[#149253] text-white shadow-sm'
                     : 'text-white/60 hover:text-white'
-                }`}
+                  }`}
               >
                 عربي
               </button>

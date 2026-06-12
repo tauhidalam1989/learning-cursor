@@ -94,11 +94,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // 2. Prepare Logo Inline Attachment
     let logoAttachment: any = null;
-    const logoPath = path.join(process.cwd(), 'public', 'images', 'logo.png');
+    const logoPath = path.join(process.cwd(), 'public', 'images', 'logo.svg');
     if (fs.existsSync(logoPath)) {
       try {
         logoAttachment = {
-          filename: 'logo.png',
+          filename: 'logo.svg',
           content: fs.readFileSync(logoPath),
           cid: 'corematrix-logo', // Referenced via <img src="cid:corematrix-logo" />
         };

@@ -15,7 +15,7 @@ export default function NotFoundClient() {
       <nav className="fixed top-0 left-0 right-0 z-50 flex h-[68px] items-center justify-between border-b border-corematrix-border/40 bg-corematrix-bg0/85 px-8 backdrop-blur-xl">
         <Link href="/" className="flex items-center gap-2.5" aria-label="Go to homepage">
           <Image
-            src="/images/logo.png"
+            src="/images/logo.svg"
             alt="Corematrix logo"
             width={140}
             height={32}

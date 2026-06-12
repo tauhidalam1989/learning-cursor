@@ -220,7 +220,7 @@ export function dynamicServiceJsonLd(service: {
   const url = `${baseUrl}/services/${service.detailSlug}`;
   const image = service.heroImage
     ? (service.heroImage.startsWith('http') ? service.heroImage : `${service.heroImage.startsWith('/') ? '' : '/'}${service.heroImage}`)
-    : `${baseUrl}/images/logo.png`;
+    : `${baseUrl}/images/logo.svg`;
 
   return {
     '@context': 'https://schema.org',
@@ -233,7 +233,7 @@ export function dynamicServiceJsonLd(service: {
       '@type': 'Organization',
       name: siteConfig.name,
       url: baseUrl,
-      logo: `${baseUrl}/images/logo.png`,
+      logo: `${baseUrl}/images/logo.svg`,
     },
   } as const;
 }
@@ -251,7 +251,7 @@ export function dynamicArticleJsonLd(post: {
   const url = `${baseUrl}/blog/${post.slug}`;
   const image = post.coverImage
     ? (post.coverImage.startsWith('http') ? post.coverImage : `${post.coverImage.startsWith('/') ? '' : '/'}${post.coverImage}`)
-    : `${baseUrl}/images/logo.png`;
+    : `${baseUrl}/images/logo.svg`;
 
   const datePub = post.publishedAt ? new Date(post.publishedAt).toISOString() : new Date().toISOString();
   const dateMod = post.updatedAt ? new Date(post.updatedAt).toISOString() : datePub;
@@ -275,7 +275,7 @@ export function dynamicArticleJsonLd(post: {
       url: baseUrl,
       logo: {
         '@type': 'ImageObject',
-        url: `${baseUrl}/images/logo.png`,
+        url: `${baseUrl}/images/logo.svg`,
       },
     },
     mainEntityOfPage: {
@@ -313,7 +313,7 @@ export function jobPostingJsonLd(job: {
       '@type': 'Organization',
       name: siteConfig.name,
       url: baseUrl,
-      logo: `${baseUrl}/images/logo.png`,
+      logo: `${baseUrl}/images/logo.svg`,
     },
     jobLocation: {
       '@type': 'Place',

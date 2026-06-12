@@ -50,12 +50,13 @@ export function LocationSection() {
     >
       <Container>
         <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
-          <div className="relative h-[340px] overflow-hidden rounded-2xl border border-corematrix-border bg-corematrix-card">
+          <div className="relative h-[340px] overflow-hidden rounded-2xl border border-corematrix-green700/30 bg-corematrix-card p-3">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d231637.65715450005!2d46.36683473977439!3d24.886436490787712!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2eefc4386172a1%3A0xce82245f54f7e4db!2sSuper%20Office!5e0!3m2!1sen!2sin!4v1781181208217!5m2!1sen!2sin"
               width="100%"
               height="100%"
-              style={{ border: 0 }}
+              className="rounded-xl border border-corematrix-border/50"
+              style={{ border: 0, filter: 'grayscale(1) invert(0.92) sepia(0.8) saturate(2.5) hue-rotate(85deg) contrast(1.15) brightness(0.95)' }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

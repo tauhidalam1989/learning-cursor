@@ -8,7 +8,7 @@ export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? '
 const siteName = 'Marketing Website';
 
 /** Default OG image when no page-specific image is provided. Falls back to logo if og-default.png is missing. */
-const defaultOgImage = `${siteUrl}/images/logo.png`;
+const defaultOgImage = `${siteUrl}/images/logo.svg`;
 
 /**
  * Default metadata for the entire site. Used by the root layout.
@@ -121,9 +121,9 @@ export function createPageMetadata(config: PageMetadataConfig): Metadata {
     },
     robots: noindex || nofollow
       ? {
-          index: !noindex,
-          follow: !nofollow,
-        }
+        index: !noindex,
+        follow: !nofollow,
+      }
       : undefined,
   };
 

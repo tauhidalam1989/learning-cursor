@@ -20,7 +20,7 @@ export function NotFoundMiniFooter() {
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-corematrix-border pb-5 mb-5">
           <Link href="/" aria-label="Go to homepage">
             <Image
-              src="/images/logo.png"
+              src="/images/logo.svg"
               alt="Corematrix logo"
               width={120}
               height={28}
