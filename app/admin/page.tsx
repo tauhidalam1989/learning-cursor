@@ -1092,7 +1092,29 @@ export default function AdminPortal() {
   const getPortfolioMediaUrl = (url: string | null | undefined) => {
     if (!url) return '';
     if (url.startsWith('http://') || url.startsWith('https://')) return url;
-    const apiOrigin = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+
+    const isProdClient = typeof window !== 'undefined' && 
+      window.location.hostname !== 'localhost' && 
+      window.location.hostname !== '127.0.0.1';
+
+    let apiOrigin = process.env.NEXT_PUBLIC_API_URL || '';
+
+    // If in production client but API points to localhost, ignore it and use relative path
+    if (isProdClient && (!apiOrigin || apiOrigin.includes('localhost') || apiOrigin.includes('127.0.0.1'))) {
+      return `${url.startsWith('/') ? '' : '/'}${url}`;
+    }
+
+    if (!apiOrigin) {
+      apiOrigin = typeof window !== 'undefined' 
+        ? '' 
+        : (process.env.NEXT_PUBLIC_SITE_URL || 'https://corematrixs.com');
+    }
+
+    // If we end up with no origin (e.g. client side relative path)
+    if (!apiOrigin) {
+      return `${url.startsWith('/') ? '' : '/'}${url}`;
+    }
+
     return `${apiOrigin.replace(/\/$/, '')}${url.startsWith('/') ? '' : '/'}${url}`;
   };
 
@@ -4251,7 +4273,7 @@ export default function AdminPortal() {
                           {[
                             { key: 'instagram', icon: 'fab fa-instagram', placeholder: 'https://instagram.com/...' },
                             { key: 'facebook', icon: 'fab fa-facebook-f', placeholder: 'https://facebook.com/...' },
-                            { key: 'twitter', icon: 'fab fa-x-twitter', placeholder: 'https://x.com/...' },
+                            { key: 'twitter', icon: 'fa-brands fa-x-twitter', placeholder: 'https://x.com/...' },
                             { key: 'linkedin', icon: 'fab fa-linkedin-in', placeholder: 'https://linkedin.com/in/...' },
                             { key: 'email', icon: 'fas fa-envelope', placeholder: 'contact@corematrix.co' },
                             { key: 'phone', icon: 'fas fa-phone', placeholder: '+1 234 567 8900' },

@@ -170,9 +170,9 @@ export function ContactFormSection() {
 
   const canProceedStep1 = Boolean(
     formData.firstName.trim() &&
-      formData.lastName.trim() &&
-      formData.email.trim() &&
-      /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(formData.email)
+    formData.lastName.trim() &&
+    formData.email.trim() &&
+    /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(formData.email)
   );
 
   const canProceedStep2 = formData.services.length > 0 && formData.timeline;
@@ -362,13 +362,12 @@ export function ContactFormSection() {
                     {a.day} · {a.time}
                   </span>
                   <span
-                    className={`h-2 w-2 rounded-full ${
-                      a.status === 'available'
+                    className={`h-2 w-2 rounded-full ${a.status === 'available'
                         ? 'bg-corematrix-green400 dot-pulse'
                         : a.status === 'limited'
                           ? 'bg-yellow-400'
                           : 'bg-red-400'
-                    }`}
+                      }`}
                     aria-hidden
                   />
                 </div>
@@ -387,13 +386,12 @@ export function ContactFormSection() {
                 {steps.map((s, i) => (
                   <div key={s.n} className="flex items-center">
                     <div
-                      className={`flex h-9 w-9 items-center justify-center rounded-full border-2 font-display text-sm font-bold transition-all ${
-                        step > s.n
+                      className={`flex h-9 w-9 items-center justify-center rounded-full border-2 font-display text-sm font-bold transition-all ${step > s.n
                           ? 'border-corematrix-green700 bg-corematrix-green900 text-corematrix-green400'
                           : step === s.n
                             ? 'border-corematrix-green500 bg-corematrix-green700 text-white'
                             : 'border-corematrix-border2 bg-corematrix-card2 text-corematrix-green400'
-                      }`}
+                        }`}
                     >
                       {step > s.n ? <i className="fas fa-check text-xs" /> : s.n}
                     </div>
@@ -402,9 +400,8 @@ export function ContactFormSection() {
                     </span>
                     {i < steps.length - 1 && (
                       <div
-                        className={`mx-2 h-px w-6 sm:w-8 ${
-                          step > s.n ? 'bg-corematrix-green700' : 'bg-corematrix-border2'
-                        }`}
+                        className={`mx-2 h-px w-6 sm:w-8 ${step > s.n ? 'bg-corematrix-green700' : 'bg-corematrix-border2'
+                          }`}
                       />
                     )}
                   </div>
@@ -533,11 +530,10 @@ export function ContactFormSection() {
                           key={s.key}
                           type="button"
                           onClick={() => toggleService(s.key)}
-                          className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium transition-all ${
-                            formData.services.includes(s.key)
+                          className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium transition-all ${formData.services.includes(s.key)
                               ? 'border-corematrix-green400/30 bg-corematrix-green900/20 text-corematrix-green400 font-semibold'
                               : 'border-corematrix-border bg-corematrix-card2 text-corematrix-textMuted hover:border-corematrix-border2 hover:text-corematrix-textPrimary'
-                          }`}
+                            }`}
                         >
                           <i className={s.icon} aria-hidden="true" />
                           <span>{t(s.en, s.ar)}</span>
@@ -555,11 +551,10 @@ export function ContactFormSection() {
                           key={tItem.key}
                           type="button"
                           onClick={() => update({ timeline: tItem.key })}
-                          className={`rounded-xl border p-4 text-left transition-all ${
-                            formData.timeline === tItem.key
+                          className={`rounded-xl border p-4 text-left transition-all ${formData.timeline === tItem.key
                               ? 'border-corematrix-green400/25 bg-corematrix-green900/20 shadow-[0_0_16px_rgba(34,197,94,0.07)]'
                               : 'border-corematrix-border bg-corematrix-card2 hover:border-corematrix-border2'
-                          }`}
+                            }`}
                         >
                           <span className="text-xl text-corematrix-green400" aria-hidden>
                             <i className={tItem.icon} />

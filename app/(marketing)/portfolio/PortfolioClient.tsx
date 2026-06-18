@@ -39,7 +39,29 @@ interface PortfolioClientProps {
 const getMediaUrl = (url: string | null | undefined) => {
   if (!url) return '';
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
-  const apiOrigin = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+
+  const isProdClient = typeof window !== 'undefined' && 
+    window.location.hostname !== 'localhost' && 
+    window.location.hostname !== '127.0.0.1';
+
+  let apiOrigin = process.env.NEXT_PUBLIC_API_URL || '';
+
+  // If in production client but API points to localhost, ignore it and use relative path
+  if (isProdClient && (!apiOrigin || apiOrigin.includes('localhost') || apiOrigin.includes('127.0.0.1'))) {
+    return `${url.startsWith('/') ? '' : '/'}${url}`;
+  }
+
+  if (!apiOrigin) {
+    apiOrigin = typeof window !== 'undefined' 
+      ? '' 
+      : (process.env.NEXT_PUBLIC_SITE_URL || 'https://corematrixs.com');
+  }
+
+  // If we end up with no origin (e.g. client side relative path)
+  if (!apiOrigin) {
+    return `${url.startsWith('/') ? '' : '/'}${url}`;
+  }
+
   return `${apiOrigin.replace(/\/$/, '')}${url.startsWith('/') ? '' : '/'}${url}`;
 };
 
@@ -719,7 +741,7 @@ export default function PortfolioClient({ portfolioData }: PortfolioClientProps)
                     className="flex flex-col items-center gap-2 group"
                   >
                     <div className="w-12 h-12 rounded-full bg-black hover:bg-zinc-900 border border-corematrix-border text-white flex items-center justify-center text-lg transition-all shadow-md shrink-0">
-                      <i className="fab fa-x-twitter"></i>
+                      <i className="fa-brands fa-x-twitter"></i>
                     </div>
                     <span className="text-[10px] font-bold text-corematrix-textMuted uppercase tracking-tight">
                       X
