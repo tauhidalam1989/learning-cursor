@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 
-type Tab = 'overview' | 'services' | 'blogs' | 'careers' | 'applications' | 'categories' | 'newsletter' | 'settings' | 'users';
+type Tab = 'overview' | 'services' | 'blogs' | 'careers' | 'applications' | 'categories' | 'newsletter' | 'portfolio' | 'settings' | 'users';
 
 function parseArrayToString(val: any): string {
   if (!val) return '';
@@ -88,6 +88,40 @@ export default function AdminPortal() {
   const [applications, setApplications] = useState<any[]>([]);
   const [serviceCategories, setServiceCategories] = useState<any[]>([]);
   const [newsletters, setNewsletters] = useState<any[]>([]);
+
+  // Portfolio States
+  const [portfolioProfile, setPortfolioProfile] = useState<any>(null);
+  const [portfolioItems, setPortfolioItems] = useState<any[]>([]);
+  const [portfolioLoading, setPortfolioLoading] = useState(false);
+  const [portfolioProfileForm, setPortfolioProfileForm] = useState({
+    companyName: '',
+    title: '',
+    instagram: '',
+    facebook: '',
+    twitter: '',
+    linkedin: '',
+    email: '',
+    phone: '',
+    bottomCtaText: '',
+    bottomCtaLink: '',
+  });
+  const [portfolioProfileLogoFile, setPortfolioProfileLogoFile] = useState<File | null>(null);
+  const [portfolioProfileError, setPortfolioProfileError] = useState<string | null>(null);
+  const [portfolioProfileSuccess, setPortfolioProfileSuccess] = useState<string | null>(null);
+  const [portfolioProfileSaving, setPortfolioProfileSaving] = useState(false);
+  const [showPortfolioItemModal, setShowPortfolioItemModal] = useState(false);
+  const [portfolioItemForm, setPortfolioItemForm] = useState({
+    id: '',
+    title: '',
+    link: '',
+    order: 0,
+    isActive: true,
+  });
+  const [portfolioItemImageFile, setPortfolioItemImageFile] = useState<File | null>(null);
+  const [portfolioItemAttachFile, setPortfolioItemAttachFile] = useState<File | null>(null);
+  const [portfolioItemError, setPortfolioItemError] = useState<string | null>(null);
+  const [portfolioItemSuccess, setPortfolioItemSuccess] = useState<string | null>(null);
+  const [portfolioItemSaving, setPortfolioItemSaving] = useState(false);
 
   // Category Edit Form States
   const [categoryForm, setCategoryForm] = useState({
@@ -343,6 +377,12 @@ export default function AdminPortal() {
       setActiveTab('overview');
     }
   }, [activeTab, userRole]);
+
+  useEffect(() => {
+    if (activeTab === 'portfolio' && token) {
+      fetchPortfolioData();
+    }
+  }, [activeTab, token]);
 
   const fetchUsers = async () => {
     if (!token) return;
@@ -903,6 +943,159 @@ export default function AdminPortal() {
     );
   };
 
+  // PORTFOLIO CRUD
+  const fetchPortfolioData = async () => {
+    if (!token) return;
+    setPortfolioLoading(true);
+    try {
+      const headers = { Authorization: `Bearer ${token}` };
+      const [profileRes, itemsRes] = await Promise.all([
+        fetch('/api/portfolio/profile', { headers }),
+        fetch('/api/portfolio/items', { headers }),
+      ]);
+      if (profileRes.ok) {
+        const pJson = await profileRes.json();
+        // Backend returns { success: true, data: profile }
+        const pData = pJson.data ?? pJson;
+        setPortfolioProfile(pData);
+        setPortfolioProfileForm({
+          companyName: pData.companyName || '',
+          title: pData.title || '',
+          instagram: pData.instagram || '',
+          facebook: pData.facebook || '',
+          twitter: pData.twitter || '',
+          linkedin: pData.linkedin || '',
+          email: pData.email || '',
+          phone: pData.phone || '',
+          bottomCtaText: pData.bottomCtaText || '',
+          bottomCtaLink: pData.bottomCtaLink || '',
+        });
+      }
+      if (itemsRes.ok) {
+        const iData = await itemsRes.json();
+        setPortfolioItems(Array.isArray(iData) ? iData : []);
+      }
+    } catch (err) {
+      console.error('Failed to fetch portfolio data:', err);
+    } finally {
+      setPortfolioLoading(false);
+    }
+  };
+
+  const handlePortfolioProfileSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPortfolioProfileError(null);
+    setPortfolioProfileSuccess(null);
+    setPortfolioProfileSaving(true);
+    try {
+      const fd = new FormData();
+      Object.entries(portfolioProfileForm).forEach(([k, v]) => fd.append(k, v as string));
+      if (portfolioProfileLogoFile) fd.append('portfolioLogo', portfolioProfileLogoFile);
+      const res = await fetch('/api/portfolio/profile', {
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${token}` },
+        body: fd,
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.message || 'Save failed');
+      // Backend returns { success, message, data: profile }
+      setPortfolioProfile(json.data ?? json);
+      setPortfolioProfileLogoFile(null);
+      setPortfolioProfileSuccess('Portfolio profile saved successfully!');
+      setTimeout(() => setPortfolioProfileSuccess(null), 3000);
+    } catch (err: any) {
+      setPortfolioProfileError(err.message || 'Failed to save profile.');
+    } finally {
+      setPortfolioProfileSaving(false);
+    }
+  };
+
+  const openNewPortfolioItem = () => {
+    setPortfolioItemForm({ id: '', title: '', link: '', order: portfolioItems.length, isActive: true });
+    setPortfolioItemImageFile(null);
+    setPortfolioItemAttachFile(null);
+    setPortfolioItemError(null);
+    setPortfolioItemSuccess(null);
+    setShowPortfolioItemModal(true);
+  };
+
+  const openEditPortfolioItem = (item: any) => {
+    setPortfolioItemForm({
+      id: item.id,
+      title: item.title || '',
+      link: item.link || '',
+      order: item.order ?? 0,
+      isActive: item.isActive !== false,
+    });
+    setPortfolioItemImageFile(null);
+    setPortfolioItemAttachFile(null);
+    setPortfolioItemError(null);
+    setPortfolioItemSuccess(null);
+    setShowPortfolioItemModal(true);
+  };
+
+  const handlePortfolioItemSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPortfolioItemError(null);
+    setPortfolioItemSuccess(null);
+    setPortfolioItemSaving(true);
+    try {
+      const fd = new FormData();
+      fd.append('title', portfolioItemForm.title);
+      fd.append('link', portfolioItemForm.link);
+      fd.append('order', String(portfolioItemForm.order));
+      fd.append('isActive', portfolioItemForm.isActive ? 'true' : 'false');
+      if (portfolioItemImageFile) fd.append('image', portfolioItemImageFile);
+      if (portfolioItemAttachFile) fd.append('attachment', portfolioItemAttachFile);
+
+      const isEdit = !!portfolioItemForm.id;
+      const url = isEdit ? `/api/portfolio/items/${portfolioItemForm.id}` : '/api/portfolio/items';
+      const method = isEdit ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { Authorization: `Bearer ${token}` },
+        body: fd,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Save failed');
+      setPortfolioItemSuccess(isEdit ? 'Item updated!' : 'Item created!');
+      fetchPortfolioData();
+      setTimeout(() => setShowPortfolioItemModal(false), 1200);
+    } catch (err: any) {
+      setPortfolioItemError(err.message || 'Failed to save item.');
+    } finally {
+      setPortfolioItemSaving(false);
+    }
+  };
+
+  const deletePortfolioItem = (id: string) => {
+    triggerConfirm(
+      'Delete Portfolio Item',
+      'Are you sure you want to delete this portfolio link item?',
+      async () => {
+        try {
+          const res = await fetch(`/api/portfolio/items/${id}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (res.ok) {
+            fetchPortfolioData();
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    );
+  };
+
+  const getPortfolioMediaUrl = (url: string | null | undefined) => {
+    if (!url) return '';
+    if (url.startsWith('http://') || url.startsWith('https://')) return url;
+    const apiOrigin = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    return `${apiOrigin.replace(/\/$/, '')}${url.startsWith('/') ? '' : '/'}${url}`;
+  };
+
   if (!mounted) return null;
 
   // --- LOGIN WORKSPACE ---
@@ -1008,6 +1201,7 @@ export default function AdminPortal() {
               { id: 'careers', label: 'Careers Desk', icon: 'fas fa-briefcase' },
               { id: 'applications', label: 'Applications', icon: 'fas fa-users' },
               { id: 'newsletter', label: 'Newsletter', icon: 'fas fa-envelope' },
+              { id: 'portfolio', label: 'Portfolio Manager', icon: 'fas fa-layer-group' },
               { id: 'users', label: 'Users', icon: 'fas fa-user-shield' },
               { id: 'settings', label: 'Settings', icon: 'fas fa-cog' },
             ].filter(t => t.id !== 'users' || userRole === 'admin').map((t) => (
@@ -3974,6 +4168,332 @@ export default function AdminPortal() {
                         className="px-5 py-2 text-sm font-semibold rounded-lg bg-corematrix-green700 hover:bg-corematrix-green500 transition cursor-pointer text-white disabled:opacity-50"
                       >
                         {userFormLoading ? 'Saving...' : userForm.id ? 'Save Changes' : 'Create User'}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* PORTFOLIO TAB */}
+        {activeTab === 'portfolio' && (
+          <div>
+            <div className="flex items-center justify-between mb-8">
+              <h1 style={{ fontFamily: 'var(--font-display)' }} className="text-3xl font-extrabold tracking-tight uppercase">
+                Portfolio Manager
+              </h1>
+              <a href="/portfolio" target="_blank" rel="noreferrer" className="text-xs text-corematrix-green400 hover:text-corematrix-green300 font-semibold flex items-center gap-1.5">
+                <i className="fas fa-external-link-alt" /> View Live Portfolio
+              </a>
+            </div>
+
+            {portfolioLoading ? (
+              <div className="flex items-center justify-center h-48">
+                <i className="fas fa-spinner animate-spin text-corematrix-green400 text-2xl" />
+                <span className="ml-3 text-corematrix-textMuted text-sm">Loading portfolio data...</span>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
+
+                {/* Left: Profile Editor */}
+                <div className="xl:col-span-2">
+                  <div className="rounded-2xl border border-corematrix-border bg-corematrix-card p-6 shadow-xl">
+                    <h2 style={{ fontFamily: 'var(--font-display)' }} className="text-lg font-bold uppercase tracking-wider mb-6 pb-4 border-b border-corematrix-border flex items-center gap-2">
+                      <i className="fas fa-id-card text-corematrix-green400" /> Profile Settings
+                    </h2>
+                    <form onSubmit={handlePortfolioProfileSave} className="space-y-4">
+
+                      {/* Logo Preview + Upload */}
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className="w-20 h-20 rounded-2xl bg-corematrix-bg2 border border-corematrix-border flex items-center justify-center overflow-hidden shrink-0">
+                          {portfolioProfileLogoFile ? (
+                            <img src={URL.createObjectURL(portfolioProfileLogoFile)} alt="Logo preview" className="w-full h-full object-contain p-2" />
+                          ) : portfolioProfile?.logo ? (
+                            <img src={getPortfolioMediaUrl(portfolioProfile.logo)} alt="Logo" className="w-full h-full object-contain p-2" />
+                          ) : (
+                            <i className="fas fa-building text-2xl text-corematrix-textDim" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <label className="mb-1.5 block text-xs font-semibold text-corematrix-textMuted uppercase tracking-wider">Company Logo</label>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => setPortfolioProfileLogoFile(e.target.files?.[0] || null)}
+                            className="w-full text-xs text-corematrix-textMuted file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-corematrix-green900/30 file:text-corematrix-green400 file:text-xs file:font-semibold hover:file:bg-corematrix-green900/50 cursor-pointer"
+                          />
+                          <p className="text-[10px] text-corematrix-textDim mt-1">PNG, SVG, JPG recommended</p>
+                        </div>
+                      </div>
+
+                      {[
+                        { key: 'companyName', label: 'Company Name *', placeholder: 'Corematrix', required: true },
+                        { key: 'title', label: 'Tagline / Title', placeholder: 'AI & Software Development Co.' },
+                      ].map(({ key, label, placeholder, required }) => (
+                        <div key={key}>
+                          <label className="mb-1.5 block text-xs font-semibold text-corematrix-textMuted uppercase tracking-wider">{label}</label>
+                          <input
+                            type="text"
+                            required={!!required}
+                            value={(portfolioProfileForm as any)[key]}
+                            onChange={(e) => setPortfolioProfileForm({ ...portfolioProfileForm, [key]: e.target.value })}
+                            placeholder={placeholder}
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700 transition-all"
+                          />
+                        </div>
+                      ))}
+
+                      <div className="pt-2">
+                        <p className="text-xs font-semibold text-corematrix-textMuted uppercase tracking-wider mb-3">Social Links</p>
+                        <div className="space-y-3">
+                          {[
+                            { key: 'instagram', icon: 'fab fa-instagram', placeholder: 'https://instagram.com/...' },
+                            { key: 'facebook', icon: 'fab fa-facebook-f', placeholder: 'https://facebook.com/...' },
+                            { key: 'twitter', icon: 'fab fa-x-twitter', placeholder: 'https://x.com/...' },
+                            { key: 'linkedin', icon: 'fab fa-linkedin-in', placeholder: 'https://linkedin.com/in/...' },
+                            { key: 'email', icon: 'fas fa-envelope', placeholder: 'contact@corematrix.co' },
+                            { key: 'phone', icon: 'fas fa-phone', placeholder: '+1 234 567 8900' },
+                          ].map(({ key, icon, placeholder }) => (
+                            <div key={key} className="flex items-center gap-2">
+                              <div className="w-9 h-9 rounded-xl bg-corematrix-bg2 border border-corematrix-border flex items-center justify-center shrink-0">
+                                <i className={`${icon} text-corematrix-green400 text-sm`} />
+                              </div>
+                              <input
+                                type={key === 'email' ? 'email' : 'text'}
+                                value={(portfolioProfileForm as any)[key]}
+                                onChange={(e) => setPortfolioProfileForm({ ...portfolioProfileForm, [key]: e.target.value })}
+                                placeholder={placeholder}
+                                className="flex-1 rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-3 py-2.5 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700 transition-all"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="pt-2">
+                        <p className="text-xs font-semibold text-corematrix-textMuted uppercase tracking-wider mb-3">Bottom CTA Button (Optional)</p>
+                        <div className="space-y-3">
+                          <input
+                            type="text"
+                            value={portfolioProfileForm.bottomCtaText}
+                            onChange={(e) => setPortfolioProfileForm({ ...portfolioProfileForm, bottomCtaText: e.target.value })}
+                            placeholder="Button Label (e.g. Contact Us)"
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700 transition-all"
+                          />
+                          <input
+                            type="text"
+                            value={portfolioProfileForm.bottomCtaLink}
+                            onChange={(e) => setPortfolioProfileForm({ ...portfolioProfileForm, bottomCtaLink: e.target.value })}
+                            placeholder="Button URL (e.g. /contact)"
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700 transition-all"
+                          />
+                        </div>
+                      </div>
+
+                      {portfolioProfileError && (
+                        <p className="text-xs text-red-400 flex items-center gap-1.5"><i className="fas fa-exclamation-circle" /> {portfolioProfileError}</p>
+                      )}
+                      {portfolioProfileSuccess && (
+                        <p className="text-xs text-corematrix-green400 flex items-center gap-1.5"><i className="fas fa-check-circle" /> {portfolioProfileSuccess}</p>
+                      )}
+
+                      <button
+                        type="submit"
+                        disabled={portfolioProfileSaving}
+                        className="w-full rounded-xl bg-corematrix-green700 hover:bg-corematrix-green500 px-6 py-3 text-sm font-bold text-white transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer mt-2"
+                      >
+                        {portfolioProfileSaving && <i className="fas fa-spinner animate-spin" />}
+                        {portfolioProfileSaving ? 'Saving...' : 'Save Profile'}
+                      </button>
+                    </form>
+                  </div>
+                </div>
+
+                {/* Right: Portfolio Items Manager */}
+                <div className="xl:col-span-3">
+                  <div className="rounded-2xl border border-corematrix-border bg-corematrix-card p-6 shadow-xl">
+                    <div className="flex items-center justify-between mb-6 pb-4 border-b border-corematrix-border">
+                      <h2 style={{ fontFamily: 'var(--font-display)' }} className="text-lg font-bold uppercase tracking-wider flex items-center gap-2">
+                        <i className="fas fa-link text-corematrix-green400" /> Link Items ({portfolioItems.length})
+                      </h2>
+                      <button
+                        type="button"
+                        onClick={openNewPortfolioItem}
+                        className="flex items-center gap-2 rounded-xl bg-corematrix-green700 hover:bg-corematrix-green500 px-4 py-2 text-xs font-bold text-white transition cursor-pointer"
+                      >
+                        <i className="fas fa-plus" /> Add New Item
+                      </button>
+                    </div>
+
+                    {portfolioItems.length === 0 ? (
+                      <div className="py-16 text-center">
+                        <i className="fas fa-layer-group text-4xl text-corematrix-textDim mb-4 block" />
+                        <p className="text-corematrix-textMuted text-sm">No portfolio items yet. Add your first link!</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {[...portfolioItems].sort((a, b) => a.order - b.order).map((item) => (
+                          <div key={item.id} className="flex items-center gap-3 p-4 rounded-2xl border border-corematrix-border bg-corematrix-bg2 hover:border-corematrix-green700/30 transition-all group">
+                            {/* Thumbnail */}
+                            <div className="w-12 h-12 rounded-xl bg-corematrix-card border border-corematrix-border flex items-center justify-center overflow-hidden shrink-0">
+                              {item.image ? (
+                                <img src={getPortfolioMediaUrl(item.image)} alt="" className="w-full h-full object-cover" />
+                              ) : (
+                                <i className="fas fa-link text-corematrix-green400 text-sm" />
+                              )}
+                            </div>
+
+                            {/* Info */}
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-semibold text-corematrix-textPrimary truncate">{item.title}</p>
+                              <p className="text-[10px] text-corematrix-textMuted truncate mt-0.5">
+                                {item.link || (item.attachment ? 'Has attachment' : 'No link set')}
+                              </p>
+                            </div>
+
+                            {/* Status badge */}
+                            <span className={`shrink-0 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${item.isActive ? 'bg-corematrix-green900/30 text-corematrix-green400 border border-corematrix-green700/30' : 'bg-corematrix-bg1 text-corematrix-textDim border border-corematrix-border'}`}>
+                              {item.isActive ? 'Active' : 'Hidden'}
+                            </span>
+
+                            {/* Order badge */}
+                            <span className="shrink-0 text-[10px] text-corematrix-textDim font-bold w-6 text-center">#{item.order}</span>
+
+                            {/* Actions */}
+                            <div className="flex items-center gap-1 shrink-0">
+                              <button
+                                type="button"
+                                onClick={() => openEditPortfolioItem(item)}
+                                className="w-8 h-8 rounded-lg bg-corematrix-card border border-corematrix-border flex items-center justify-center text-corematrix-textMuted hover:text-corematrix-green400 hover:border-corematrix-green700/40 transition cursor-pointer"
+                              >
+                                <i className="fas fa-edit text-xs" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => deletePortfolioItem(item.id)}
+                                className="w-8 h-8 rounded-lg bg-corematrix-card border border-corematrix-border flex items-center justify-center text-corematrix-textMuted hover:text-red-400 hover:border-red-500/30 transition cursor-pointer"
+                              >
+                                <i className="fas fa-trash text-xs" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Portfolio Item Modal */}
+            {showPortfolioItemModal && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+                <div className="bg-corematrix-card rounded-3xl border border-corematrix-border w-full max-w-lg shadow-2xl overflow-hidden">
+                  <div className="px-6 py-5 border-b border-corematrix-border flex justify-between items-center bg-corematrix-bg2/50">
+                    <h3 style={{ fontFamily: 'var(--font-display)' }} className="text-sm font-bold uppercase tracking-wider">
+                      {portfolioItemForm.id ? 'Edit Link Item' : 'Add New Link Item'}
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => setShowPortfolioItemModal(false)}
+                      className="w-8 h-8 rounded-full bg-corematrix-bg1 border border-corematrix-border flex items-center justify-center text-corematrix-textMuted hover:text-corematrix-textPrimary transition cursor-pointer"
+                    >
+                      <i className="fas fa-times" />
+                    </button>
+                  </div>
+
+                  <form onSubmit={handlePortfolioItemSave} className="p-6 space-y-4">
+                    <div>
+                      <label className="mb-1.5 block text-xs font-semibold text-corematrix-textMuted uppercase tracking-wider">Title *</label>
+                      <input
+                        type="text"
+                        required
+                        value={portfolioItemForm.title}
+                        onChange={(e) => setPortfolioItemForm({ ...portfolioItemForm, title: e.target.value })}
+                        placeholder="e.g. Our Website, Download Brochure"
+                        className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700 transition-all"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-1.5 block text-xs font-semibold text-corematrix-textMuted uppercase tracking-wider">Link URL</label>
+                      <input
+                        type="text"
+                        value={portfolioItemForm.link}
+                        onChange={(e) => setPortfolioItemForm({ ...portfolioItemForm, link: e.target.value })}
+                        placeholder="https://..."
+                        className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700 transition-all"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="mb-1.5 block text-xs font-semibold text-corematrix-textMuted uppercase tracking-wider">Thumbnail Image</label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => setPortfolioItemImageFile(e.target.files?.[0] || null)}
+                          className="w-full text-xs text-corematrix-textMuted file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-corematrix-green900/30 file:text-corematrix-green400 file:text-xs file:font-semibold hover:file:bg-corematrix-green900/50 cursor-pointer"
+                        />
+                      </div>
+                      <div>
+                        <label className="mb-1.5 block text-xs font-semibold text-corematrix-textMuted uppercase tracking-wider">Attachment File</label>
+                        <input
+                          type="file"
+                          onChange={(e) => setPortfolioItemAttachFile(e.target.files?.[0] || null)}
+                          className="w-full text-xs text-corematrix-textMuted file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-corematrix-green900/30 file:text-corematrix-green400 file:text-xs file:font-semibold hover:file:bg-corematrix-green900/50 cursor-pointer"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="mb-1.5 block text-xs font-semibold text-corematrix-textMuted uppercase tracking-wider">Display Order</label>
+                        <input
+                          type="number"
+                          min={0}
+                          value={portfolioItemForm.order}
+                          onChange={(e) => setPortfolioItemForm({ ...portfolioItemForm, order: parseInt(e.target.value) || 0 })}
+                          className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700 transition-all"
+                        />
+                      </div>
+                      <div>
+                        <label className="mb-1.5 block text-xs font-semibold text-corematrix-textMuted uppercase tracking-wider">Visibility</label>
+                        <select
+                          value={portfolioItemForm.isActive ? 'true' : 'false'}
+                          onChange={(e) => setPortfolioItemForm({ ...portfolioItemForm, isActive: e.target.value === 'true' })}
+                          className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700 transition-all"
+                        >
+                          <option value="true">Active (Visible)</option>
+                          <option value="false">Hidden</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {portfolioItemError && (
+                      <p className="text-xs text-red-400 flex items-center gap-1.5"><i className="fas fa-exclamation-circle" /> {portfolioItemError}</p>
+                    )}
+                    {portfolioItemSuccess && (
+                      <p className="text-xs text-corematrix-green400 flex items-center gap-1.5"><i className="fas fa-check-circle" /> {portfolioItemSuccess}</p>
+                    )}
+
+                    <div className="flex gap-3 pt-2 border-t border-corematrix-border">
+                      <button
+                        type="button"
+                        onClick={() => setShowPortfolioItemModal(false)}
+                        className="flex-1 py-3 rounded-xl border border-corematrix-border bg-corematrix-bg1 hover:bg-corematrix-bg2 text-corematrix-textPrimary text-sm font-semibold transition cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={portfolioItemSaving}
+                        className="flex-1 py-3 rounded-xl bg-corematrix-green700 hover:bg-corematrix-green500 text-white text-sm font-bold transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        {portfolioItemSaving && <i className="fas fa-spinner animate-spin" />}
+                        {portfolioItemSaving ? 'Saving...' : portfolioItemForm.id ? 'Save Changes' : 'Create Item'}
                       </button>
                     </div>
                   </form>

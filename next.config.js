@@ -28,9 +28,26 @@ const nextConfig = {
     ],
   },
   async rewrites() {
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
     return [
       { source: '/admin/:path*', destination: '/api/payload/admin/:path*' },
       { source: '/admin', destination: '/api/payload/admin' },
+      // Proxy backend APIs to Express server
+      { source: '/api/services', destination: `${backendUrl}/api/services` },
+      { source: '/api/services/:path*', destination: `${backendUrl}/api/services/:path*` },
+      { source: '/api/service-categories', destination: `${backendUrl}/api/service-categories` },
+      { source: '/api/service-categories/:path*', destination: `${backendUrl}/api/service-categories/:path*` },
+      { source: '/api/auth/:path*', destination: `${backendUrl}/api/auth/:path*` },
+      { source: '/api/applications', destination: `${backendUrl}/api/applications` },
+      { source: '/api/applications/:path*', destination: `${backendUrl}/api/applications/:path*` },
+      { source: '/api/newsletters', destination: `${backendUrl}/api/newsletters` },
+      { source: '/api/newsletters/:path*', destination: `${backendUrl}/api/newsletters/:path*` },
+      { source: '/api/careers', destination: `${backendUrl}/api/careers` },
+      { source: '/api/careers/:path*', destination: `${backendUrl}/api/careers/:path*` },
+      { source: '/api/blogs', destination: `${backendUrl}/api/blogs` },
+      { source: '/api/blogs/:path*', destination: `${backendUrl}/api/blogs/:path*` },
+      { source: '/api/portfolio', destination: `${backendUrl}/api/portfolio` },
+      { source: '/api/portfolio/:path*', destination: `${backendUrl}/api/portfolio/:path*` },
     ];
   },
 };

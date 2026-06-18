@@ -551,12 +551,12 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
       </section>
 
       {/* SECTION 2: ABOUT */}
-      <section className="relative py-16 border-b border-corematrix-border overflow-hidden bg-corematrix-bg1/50">
+      <section className="relative py-16 border-b border-corematrix-border bg-corematrix-bg1/50">
         <div className="absolute top-1/2 left-0 h-[250px] w-[250px] rounded-full bg-corematrix-green900/5 blur-[90px] pointer-events-none" />
 
         <Container>
           <div className="mx-auto max-w-7xl">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
               {/* Left Column: Details & Pillars */}
               <div className="lg:col-span-7 text-start order-2 lg:order-1">
                 <SectionLabel>
@@ -598,14 +598,14 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
                 )}
               </div>
 
-              {/* Right Column: About Section Image */}
-              <div className="lg:col-span-5 order-1 lg:order-2 w-full">
-                <div className="relative group rounded-3xl overflow-hidden border border-corematrix-border bg-corematrix-card/20 p-2 shadow-xl hover:border-corematrix-green700/20 transition-all duration-300">
+              {/* Right Column: About Section Image — sticky while content scrolls */}
+              <div className="lg:col-span-5 order-1 lg:order-2">
+                <div className="sticky top-[160px] self-start">
                   {aboutSectionImageUrlResolved ? (
                     <img
                       src={aboutSectionImageUrlResolved}
                       alt={aboutImageAlt}
-                      className="w-full h-auto object-cover rounded-2xl group-hover:scale-[1.03] transition-all duration-500"
+                      className="w-full h-auto object-cover rounded-2xl"
                       loading="lazy"
                     />
                   ) : (
@@ -666,79 +666,19 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
 
       {/* SECTION 4: INDUSTRIES */}
       {industriesList && industriesList.length > 0 && (
-        <section className="relative py-16 border-b border-corematrix-border overflow-hidden bg-corematrix-bg1/30">
+        <section className="relative py-16 border-b border-corematrix-border bg-corematrix-bg1/30">
           <Container>
             <div className="mx-auto max-w-7xl">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                {/* Left side: Image/Illustration */}
-                <div className="lg:col-span-5 w-full">
-                  <div className="relative group rounded-3xl overflow-hidden border border-corematrix-border p-2 bg-corematrix-card/20 shadow-2xl hover:border-corematrix-green700/30 transition-all duration-300">
-                    {industriesImageUrlResolved ? (
-                      <img
-                        src={industriesImageUrlResolved}
-                        alt={industriesImgAlt || industriesTitle}
-                        className="w-full h-auto object-cover rounded-2xl group-hover:scale-[1.02] transition-all duration-500"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-80 sm:h-[400px] flex flex-col items-center justify-center rounded-2xl bg-transparent p-6 text-center text-corematrix-textDim relative overflow-hidden group/svg">
-                        {/* Background glowing accent */}
-                        <div className="absolute inset-0 bg-radial-gradient from-corematrix-green700/10 via-transparent to-transparent opacity-60 pointer-events-none" />
-
-                        <svg className="w-40 h-40 text-corematrix-green400/80 mb-6 animate-pulse duration-[3000ms] relative z-10 transition-transform group-hover/svg:scale-105 duration-500" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          {/* Hexagonal frame */}
-                          <polygon points="100,15 175,58 175,142 100,185 25,142 25,58" stroke="rgba(34, 197, 94, 0.2)" strokeWidth="1.5" strokeDasharray="6 4" fill="none" />
-
-                          {/* Inner glowing orb */}
-                          <circle cx="100" cy="100" r="32" fill="url(#gradCore)" filter="url(#glow)" />
-
-                          {/* Orbit paths */}
-                          <circle cx="100" cy="100" r="64" stroke="rgba(34, 197, 94, 0.15)" strokeWidth="1" strokeDasharray="3 3" />
-
-                          {/* Outer orbiting nodes */}
-                          <circle cx="100" cy="36" r="7" fill="#22c55e" />
-                          <circle cx="45" cy="132" r="5" fill="#16a34a" />
-                          <circle cx="155" cy="132" r="6" fill="#4ade80" />
-                          <circle cx="68" cy="155" r="7" fill="#22c55e" />
-                          <circle cx="132" cy="155" r="4" fill="#4ade80" />
-
-                          {/* Connecting lines */}
-                          <path d="M100 36 L100 68" stroke="#16a34a" strokeWidth="1.5" strokeDasharray="4 4" />
-                          <path d="M45 132 L72 112" stroke="#16a34a" strokeWidth="1.5" />
-                          <path d="M155 132 L128 112" stroke="#16a34a" strokeWidth="1.5" />
-
-                          {/* Encircling tech loops */}
-                          <path d="M100 15 A85 85 0 0 1 185 100" stroke="url(#gradLine1)" strokeWidth="2" strokeLinecap="round" />
-                          <path d="M100 185 A85 85 0 0 1 15 100" stroke="url(#gradLine2)" strokeWidth="2" strokeLinecap="round" />
-
-                          {/* Definitions */}
-                          <defs>
-                            <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                              <feGaussianBlur stdDeviation="8" result="blur" />
-                              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                            </filter>
-                            <linearGradient id="gradCore" x1="100" y1="68" x2="100" y2="132" gradientUnits="userSpaceOnUse">
-                              <stop offset="0%" stopColor="#4ade80" />
-                              <stop offset="100%" stopColor="#15803d" stopOpacity="0.8" />
-                            </linearGradient>
-                            <linearGradient id="gradLine1" x1="100" y1="15" x2="185" y2="100" gradientUnits="userSpaceOnUse">
-                              <stop offset="0%" stopColor="#22c55e" />
-                              <stop offset="100%" stopColor="transparent" />
-                            </linearGradient>
-                            <linearGradient id="gradLine2" x1="100" y1="185" x2="15" y2="100" gradientUnits="userSpaceOnUse">
-                              <stop offset="0%" stopColor="#22c55e" />
-                              <stop offset="100%" stopColor="transparent" />
-                            </linearGradient>
-                          </defs>
-                        </svg>
-
-                        <p className="text-xs font-mono text-corematrix-green400/80 uppercase tracking-widest relative z-10">{industriesImgAlt || 'Target Industries'}</p>
-                      </div>
-                    )}
-                    {/* Decorative border badge */}
-                    <div className="absolute top-6 start-6 rounded-lg bg-corematrix-green700/90 backdrop-blur-sm border border-corematrix-green500/30 px-3.5 py-1.5 text-[10px] font-bold text-white uppercase tracking-wider shadow-lg">
-                      {language === 'ar' ? 'القطاعات المستهدفة' : 'Target Industries'}
-                    </div>
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                {/* Left side: Image — sticky while content scrolls */}
+                <div className="lg:col-span-5">
+                  <div className="sticky top-[160px] self-start">
+                    <img
+                      src="/images/use-cases-image.png"
+                      alt={industriesImgAlt || 'Industries we support'}
+                      className="w-full h-auto object-cover rounded-2xl"
+                      loading="lazy"
+                    />
                   </div>
                 </div>
 

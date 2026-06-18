@@ -7,6 +7,16 @@ import { useLanguage } from '@/context/LanguageContext';
 
 export type FilterId = 'all' | string;
 
+/** Scrolls so the #services section sits just below the sticky filter bar */
+function scrollToServices() {
+  if (typeof window === 'undefined') return;
+  const section = document.getElementById('services');
+  if (!section) return;
+  const OFFSET = 160; // header (~68px) + filter nav (~85px) + 7px breathing room
+  const top = section.getBoundingClientRect().top + window.scrollY - OFFSET;
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+}
+
 export function ServiceFilterNav() {
   const { active: activeFilter, dispatch } = useFilterDispatch('serviceFilter');
   const { language, t } = useLanguage();
@@ -42,6 +52,12 @@ export function ServiceFilterNav() {
 
   const allLabel = t('All Services', 'كل الخدمات');
 
+  const handleFilter = (id: string) => {
+    dispatch(id);
+    // Small delay lets React re-render filtered cards before we scroll
+    setTimeout(scrollToServices, 50);
+  };
+
   return (
     <nav
       aria-label="Filter services"
@@ -53,7 +69,7 @@ export function ServiceFilterNav() {
         </span>
         <button
           type="button"
-          onClick={() => dispatch('all')}
+          onClick={() => handleFilter('all')}
           className={`cursor-pointer rounded-full border px-5 py-2 text-sm font-medium transition-all ${
             activeFilter === 'all'
               ? 'border-corematrix-green400/30 bg-corematrix-green900/20 font-semibold text-corematrix-green400'
@@ -66,7 +82,7 @@ export function ServiceFilterNav() {
           <button
             key={f.id}
             type="button"
-            onClick={() => dispatch(f.id)}
+            onClick={() => handleFilter(f.id)}
             className={`cursor-pointer rounded-full border px-5 py-2 text-sm font-medium transition-all ${
               activeFilter === f.id
                 ? 'border-corematrix-green400/30 bg-corematrix-green900/20 font-semibold text-corematrix-green400'

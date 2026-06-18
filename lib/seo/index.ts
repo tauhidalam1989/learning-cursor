@@ -56,9 +56,7 @@ export const defaultMetadata: Metadata = {
     },
   },
   verification: {
-    // Uncomment and set when you have verification IDs:
-    // google: 'google-site-verification-id',
-    // yandex: 'yandex-verification-id',
+    google: 'SMWJuB6-EHhVuiXTh2H3XijXg1sa9unDhNhg0Ay1A5E',
   },
   category: 'marketing',
 };

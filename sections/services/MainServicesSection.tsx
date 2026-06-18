@@ -102,7 +102,7 @@ export function MainServicesSection() {
 
           return (
             <div key={category.id} data-category={category.filterKey} className="mb-16 last:mb-0">
-              <div id={category.anchorId} className="scroll-mt-24" />
+              <div id={category.anchorId} className="scroll-mt-[160px]" />
               <div className="mb-6 flex items-center gap-4">
                 <span className="font-display text-[0.68rem] font-bold uppercase tracking-[0.15em] text-corematrix-green400">
                   {category.label}
