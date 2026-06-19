@@ -122,12 +122,6 @@ export function Navbar() {
 
           {/* Mobile area */}
           <div className="flex items-center gap-3 lg:hidden">
-            <Link
-              href={navCta.href}
-              className="rounded-md border border-[#149253] px-3 py-2 text-sm font-medium text-white hover:bg-[#149253]/8"
-            >
-              {t(navCta.label)}
-            </Link>
             <button
               type="button"
               className="inline-flex h-10 w-10 items-center justify-center rounded-md text-white/90 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#149253] focus-visible:ring-offset-2"
