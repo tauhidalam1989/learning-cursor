@@ -248,48 +248,62 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
 
   // 4. INDUSTRIES VARIABLES
   const industriesTitle = language === 'ar'
-    ? 'القطاعات التي نخدمها'
-    : 'Industries We Support';
+    ? (service.industriesSectionTitleAr || service.industriesSectionTitle || 'القطاعات التي نخدمها')
+    : (service.industriesSectionTitle || 'Industries We Support');
   const industriesDesc = language === 'ar'
-    ? 'نحن نبني حلولاً تقنية مخصصة تخدم البنى التحتية للمؤسسات والشركات عبر مختلف القطاعات الحيوية.'
-    : 'We engineer custom technological ecosystems that power core operations across primary business sectors.';
-  const industriesImageUrlResolved = ''; // Empty so we always fallback to the beautiful custom icon/illustration below
+    ? (service.industriesSectionDescriptionAr || service.industriesSectionDescription || 'نحن نبني حلولاً تقنية مخصصة تخدم البنى التحتية للمؤسسات والشركات عبر مختلف القطاعات الحيوية.')
+    : (service.industriesSectionDescription || 'We engineer custom technological ecosystems that power core operations across primary business sectors.');
+  const industriesImageUrlResolved = resolveServiceImage(service.industriesImage || '/images/use-cases-image.png');
   const industriesImgAlt = language === 'ar'
-    ? 'القطاعات الحيوية التي ندعمها'
-    : 'Critical industries we support';
+    ? (service.industriesImageAltAr || service.industriesImageAlt || 'القطاعات الحيوية التي ندعمها')
+    : (service.industriesImageAlt || 'Critical industries we support');
 
-  const industriesList = [
-    {
-      title: language === 'ar' ? 'التكنولوجيا المالية (FinTech)' : 'Financial Technology (FinTech)',
-      description: language === 'ar' ? 'بوابات مالية آمنة، وربط للعمليات المصرفية، وأنظمة فوترة تلقائية.' : 'Secure transactional portals, ledger APIs, and automated billing solutions.',
-      icon: 'fas fa-university'
-    },
-    {
-      title: language === 'ar' ? 'الرعاية الصحية والتقنية الحيوية' : 'Healthcare & Biotech',
-      description: language === 'ar' ? 'بوابات للمرضى مطابقة للمعايير الصحية، ودمج السجلات الطبية.' : 'Compliance-focused patient portals, records integration, and telemedicine systems.',
-      icon: 'fas fa-heartbeat'
-    },
-    {
-      title: language === 'ar' ? 'العقارات والتكنولوجيا العقارية' : 'Real Estate & PropTech',
-      description: language === 'ar' ? 'لوحات عقارية تفاعلية، وقنوات لمعالجة استعلامات المشترين.' : 'Dynamic property listings, interactive mapping, and custom buyer workflows.',
-      icon: 'fas fa-building'
-    },
-    {
-      title: language === 'ar' ? 'التجارة الإلكترونية والتجزئة' : 'E-commerce & Retail',
-      description: language === 'ar' ? 'متاجر رأسية سريعة التحميل، مع دمج أنظمة الدفع وبوابات سداد متعددة.' : 'High-conversion headless storefronts, multi-vendor support, and Stripe checkout pipelines.',
-      icon: 'fas fa-shopping-cart'
-    },
-    {
-      title: language === 'ar' ? 'الخدمات اللوجستية وسلاسل الإمداد' : 'Logistics & Supply Chain',
-      description: language === 'ar' ? 'تتبع حركة الأساطيل، وتوزيع مهام التسليم آلياً، ومستودعات التخزين.' : 'Fleet operations tracking, dynamic delivery dispatch, and multi-tenant inventory hubs.',
-      icon: 'fas fa-truck'
-    },
-    {
-      title: language === 'ar' ? 'منصات البرمجيات وحوسبة السحاب' : 'SaaS & Enterprise Cloud',
-      description: language === 'ar' ? 'بنية تحتية سحابية متعددة المستأجرين، مع أنظمة تحكم ومقاييس تشغيل متكاملة.' : 'Multi-tenant cloud infrastructure, metered subscription metrics, and custom operational consoles.',
-      icon: 'fas fa-cloud'
-    }
-  ];
+  const rawIndustries = safeParseArray(service.industries);
+  let industriesList = rawIndustries.map((item: any) => {
+    const title = language === 'ar'
+      ? (item.titleAr || item.title_ar || item.title)
+      : (item.titleEn || item.title_en || item.title);
+    const description = language === 'ar'
+      ? (item.descriptionAr || item.description_ar || item.description)
+      : (item.descriptionEn || item.description_en || item.description);
+    const icon = item.icon || 'fas fa-cog';
+    return { title: title || '', description: description || '', icon };
+  }).filter(i => i.title);
+
+  if (industriesList.length === 0) {
+    industriesList = [
+      {
+        title: language === 'ar' ? 'التكنولوجيا المالية (FinTech)' : 'Financial Technology (FinTech)',
+        description: language === 'ar' ? 'بوابات مالية آمنة، وربط للعمليات المصرفية، وأنظمة فوترة تلقائية.' : 'Secure transactional portals, ledger APIs, and automated billing solutions.',
+        icon: 'fas fa-university'
+      },
+      {
+        title: language === 'ar' ? 'الرعاية الصحية والتقنية الحيوية' : 'Healthcare & Biotech',
+        description: language === 'ar' ? 'بوابات للمرضى مطابقة للمعايير الصحية، ودمج السجلات الطبية.' : 'Compliance-focused patient portals, records integration, and telemedicine systems.',
+        icon: 'fas fa-heartbeat'
+      },
+      {
+        title: language === 'ar' ? 'العقارات والتكنولوجيا العقارية' : 'Real Estate & PropTech',
+        description: language === 'ar' ? 'لوحات عقارية تفاعلية، وقنوات لمعالجة استعلامات المشترين.' : 'Dynamic property listings, interactive mapping, and custom buyer workflows.',
+        icon: 'fas fa-building'
+      },
+      {
+        title: language === 'ar' ? 'التجارة الإلكترونية والتجزئة' : 'E-commerce & Retail',
+        description: language === 'ar' ? 'متاجر رأسية سريعة التحميل، مع دمج أنظمة الدفع وبوابات سداد متعددة.' : 'High-conversion headless storefronts, multi-vendor support, and Stripe checkout pipelines.',
+        icon: 'fas fa-shopping-cart'
+      },
+      {
+        title: language === 'ar' ? 'الخدمات اللوجستية وسلاسل الإمداد' : 'Logistics & Supply Chain',
+        description: language === 'ar' ? 'تتبع حركة الأساطيل، وتوزيع مهام التسليم آلياً، ومستودعات التخزين.' : 'Fleet operations tracking, dynamic delivery dispatch, and multi-tenant inventory hubs.',
+        icon: 'fas fa-truck'
+      },
+      {
+        title: language === 'ar' ? 'منصات البرمجيات وحوسبة السحاب' : 'SaaS & Enterprise Cloud',
+        description: language === 'ar' ? 'بنية تحتية سحابية متعددة المستأجرين، مع أنظمة تحكم ومقاييس تشغيل متكاملة.' : 'Multi-tenant cloud infrastructure, metered subscription metrics, and custom operational consoles.',
+        icon: 'fas fa-cloud'
+      }
+    ];
+  }
 
   const INDUSTRIES_THEMES = [
     {
@@ -551,7 +565,8 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
       </section>
 
       {/* SECTION 2: ABOUT */}
-      <section className="relative py-16 border-b border-corematrix-border bg-corematrix-bg1/50">
+      {/* <section className="relative py-16 border-b border-corematrix-border bg-corematrix-bg1/50"> */}
+      <section className="relative py-16 bg-corematrix-bg1/50">
         <div className="absolute top-1/2 left-0 h-[250px] w-[250px] rounded-full bg-corematrix-green900/5 blur-[90px] pointer-events-none" />
 
         <Container>
@@ -623,7 +638,8 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
 
       {/* SECTION 3: SOLUTIONS / CAPABILITIES */}
       {capabilitiesList && capabilitiesList.length > 0 && (
-        <section className="relative py-16 border-b border-corematrix-border overflow-hidden">
+        // <section className="relative py-16 border-b border-corematrix-border overflow-hidden">
+        <section className="relative py-16 overflow-hidden">
           <div className="absolute top-[20%] right-[-10%] h-[300px] w-[300px] rounded-full bg-corematrix-green900/5 blur-[110px] pointer-events-none" />
 
           <Container>
@@ -666,7 +682,8 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
 
       {/* SECTION 4: INDUSTRIES */}
       {industriesList && industriesList.length > 0 && (
-        <section className="relative py-16 border-b border-corematrix-border bg-corematrix-bg1/30">
+        // <section className="relative py-16 border-b border-corematrix-border bg-corematrix-bg1/30">
+        <section className="relative py-16 bg-corematrix-bg1/30">
           <Container>
             <div className="mx-auto max-w-7xl">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -674,7 +691,7 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
                 <div className="lg:col-span-5">
                   <div className="sticky top-[160px] self-start">
                     <img
-                      src="/images/use-cases-image.png"
+                      src={industriesImageUrlResolved}
                       alt={industriesImgAlt || 'Industries we support'}
                       className="w-full h-auto object-cover rounded-2xl"
                       loading="lazy"
@@ -722,9 +739,11 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
                     })}
                   </div>
 
-                  {service.industriesSectionBottomNote && (
+                  {(service.industriesSectionBottomNote || service.industriesSectionBottomNoteAr) && (
                     <p className="mt-6 text-xs font-mono text-corematrix-textMuted leading-relaxed">
-                      * {language === 'ar' ? service.industriesSectionBottomNoteAr : service.industriesSectionBottomNote}
+                      * {language === 'ar'
+                        ? (service.industriesSectionBottomNoteAr || service.industriesSectionBottomNote)
+                        : (service.industriesSectionBottomNote || service.industriesSectionBottomNoteAr)}
                     </p>
                   )}
                 </div>
@@ -735,93 +754,95 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
       )}
 
       {/* SECTION 5: WHY CRITICAL SECTION */}
-      <section className="relative py-16 border-b border-corematrix-border overflow-hidden bg-corematrix-bg0">
+      {/* <section className="relative py-16 border-b border-corematrix-border bg-corematrix-bg0"> */}
+      <section className="relative py-16 bg-corematrix-bg0">
         <div className="absolute inset-0 bg-radial-gradient(circle_at_bottom_left,#031a0e_0%,transparent_50%) opacity-30 pointer-events-none" />
 
         <Container>
           <div className="mx-auto max-w-7xl">
-            {/* Outer highly aesthetic card wrapper */}
-            <div className="relative overflow-hidden rounded-3xl border border-corematrix-border bg-gradient-to-br from-corematrix-card/60 via-corematrix-bg1/60 to-corematrix-bg0/60 p-6 sm:p-12 shadow-2xl">
-              {/* Inner accent neon border glow */}
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-corematrix-green500/40 to-transparent" />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+              {/* Left side description */}
+              <div className="lg:col-span-5 text-start font-sans sticky top-[100px] self-start -mt-5">
+                <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-corematrix-green400 bg-corematrix-green900/40 border border-corematrix-green700/20 px-3 py-1 rounded-full">
+                  {language === 'ar' ? 'الجدوى التقنية والأمان' : 'Technical & Business Value'}
+                </span>
+                <h2
+                  style={{ fontFamily: 'var(--font-display)' }}
+                  className="mt-6 text-2xl sm:text-3xl font-extrabold tracking-tight text-corematrix-textPrimary leading-tight"
+                >
+                  {criticalTitle}
+                </h2>
+                {criticalDesc && (
+                  <p className="mt-4 text-sm text-corematrix-textSecondary/90 font-light leading-relaxed">
+                    {criticalDesc}
+                  </p>
+                )}
+                {service.criticalSectionButtonText && (
+                  <div className="mt-8">
+                    <Link
+                      href={criticalBtnLink}
+                      className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-5 py-3 text-xs font-semibold text-white hover:bg-corematrix-green500 hover:scale-[1.02] shadow-lg shadow-corematrix-green900/30 transition-all duration-300"
+                    >
+                      {criticalBtnText}
+                    </Link>
+                  </div>
+                )}
+              </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                {/* Left side description */}
-                <div className="lg:col-span-5 text-start">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-corematrix-green400 bg-corematrix-green900/40 border border-corematrix-green700/20 px-3 py-1 rounded-full">
-                    {language === 'ar' ? 'الجدوى التقنية والأمان' : 'Technical & Business Value'}
-                  </span>
-                  <h2
-                    style={{ fontFamily: 'var(--font-display)' }}
-                    className="mt-6 text-2xl sm:text-3xl font-extrabold tracking-tight text-corematrix-textPrimary leading-tight"
-                  >
-                    {criticalTitle}
-                  </h2>
-                  {criticalDesc && (
-                    <p className="mt-4 text-sm text-corematrix-textSecondary/90 font-light leading-relaxed">
-                      {criticalDesc}
-                    </p>
-                  )}
-                  {service.criticalSectionButtonText && (
-                    <div className="mt-8">
-                      <Link
-                        href={criticalBtnLink}
-                        className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-5 py-3 text-xs font-semibold text-white hover:bg-corematrix-green500 hover:scale-[1.02] shadow-lg shadow-corematrix-green900/30 transition-all duration-300"
-                      >
-                        {criticalBtnText}
-                      </Link>
-                    </div>
-                  )}
-                </div>
+              {/* Right side cards grid */}
+              <div className="lg:col-span-7 w-full">
+                <h3 className="text-xs font-mono uppercase text-corematrix-green400 tracking-wider mb-6 text-start">
+                  {criticalRightTitleVal || (language === 'ar' ? 'الركائز الأساسية لنجاح الخدمة' : 'Primary Value Anchors')}
+                </h3>
 
-                {/* Right side cards grid */}
-                <div className="lg:col-span-7 w-full">
-                  <h3 className="text-xs font-mono uppercase text-corematrix-green400 tracking-wider mb-6 text-start">
-                    {criticalRightTitleVal || (language === 'ar' ? 'الركائز الأساسية لنجاح الخدمة' : 'Primary Value Anchors')}
-                  </h3>
-
-                  {criticalCardsList && criticalCardsList.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {criticalCardsList.map((card, idx) => (
+                {criticalCardsList && criticalCardsList.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {criticalCardsList.map((card, idx) => {
+                      const theme = INDUSTRIES_THEMES[idx % INDUSTRIES_THEMES.length];
+                      return (
                         <div
                           key={idx}
-                          className="group relative p-5 sm:p-6 rounded-xl border border-corematrix-border bg-corematrix-bg0/80 hover:bg-corematrix-card/50 hover:border-corematrix-green700/40 hover:shadow-[0_0_30px_rgba(21,128,61,0.15)] hover:scale-[1.01] transition-all duration-300 text-start overflow-hidden"
+                          className={`group relative p-5 sm:p-6 rounded-xl border ${theme.border} ${theme.bg} backdrop-blur-sm ${theme.hoverBorder} ${theme.hoverBg} hover:scale-[1.01] transition-all duration-300 text-start overflow-hidden ${theme.glow}`}
                         >
                           {/* Accent glow line inside */}
-                          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-corematrix-green500/20 to-transparent group-hover:via-corematrix-green500/60 transition-all duration-300" />
+                          <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent ${theme.lineGlow} to-transparent transition-all duration-300`} />
 
-                          <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-lg bg-corematrix-green950/90 border border-corematrix-green700/20 text-corematrix-green400 group-hover:bg-corematrix-green500 group-hover:text-white transition-all duration-300 shrink-0">
+                          <div className={`mb-4 flex h-8 w-8 items-center justify-center rounded-lg ${theme.iconBg} ${theme.iconColor} ${theme.iconHoverBg} transition-all duration-300 shrink-0`}>
                             {renderIcon(card.icon, "h-4 w-4")}
                           </div>
-                          <h4 className="text-sm font-bold text-corematrix-textPrimary group-hover:text-corematrix-green300 transition-colors duration-200">{card.title}</h4>
+                          <h4 className={`text-sm font-bold text-corematrix-textPrimary transition-colors duration-200 ${theme.titleColor}`}>{card.title}</h4>
                           <p className="mt-2 text-xs text-corematrix-textSecondary/70 leading-relaxed font-light">
                             {card.description}
                           </p>
                         </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {/* Default fallback values if no critical highlights are uploaded */}
-                      <div className="group relative p-5 rounded-xl border border-corematrix-border bg-corematrix-bg0/80 hover:bg-corematrix-card/50 hover:border-corematrix-green700/40 hover:shadow-[0_0_30px_rgba(21,128,61,0.15)] hover:scale-[1.01] transition-all duration-300 text-start overflow-hidden">
-                        {/* Accent glow line inside */}
-                        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-corematrix-green500/20 to-transparent group-hover:via-corematrix-green500/60 transition-all duration-300" />
-
-                        <span className="text-xl mb-3 block">🔒</span>
-                        <h4 className="text-sm font-bold text-corematrix-textPrimary group-hover:text-corematrix-green300 transition-colors duration-200">Zero Trust Architecture</h4>
-                        <p className="mt-2 text-xs text-corematrix-textSecondary/60 leading-relaxed font-light">Ensuring complete authentication and dynamic verification at every stage.</p>
-                      </div>
-                      <div className="group relative p-5 rounded-xl border border-corematrix-border bg-corematrix-bg0/80 hover:bg-corematrix-card/50 hover:border-corematrix-green700/40 hover:shadow-[0_0_30px_rgba(21,128,61,0.15)] hover:scale-[1.01] transition-all duration-300 text-start overflow-hidden">
-                        {/* Accent glow line inside */}
-                        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-corematrix-green500/20 to-transparent group-hover:via-corematrix-green500/60 transition-all duration-300" />
-
-                        <span className="text-xl mb-3 block">📈</span>
-                        <h4 className="text-sm font-bold text-corematrix-textPrimary group-hover:text-corematrix-green300 transition-colors duration-200">Autonomic Scalability</h4>
-                        <p className="mt-2 text-xs text-corematrix-textSecondary/60 leading-relaxed font-light">Engineered to absorb server traffic surges without compromising API latency.</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Default fallback values if no critical highlights are uploaded */}
+                    {(() => {
+                      const theme1 = INDUSTRIES_THEMES[0];
+                      const theme2 = INDUSTRIES_THEMES[1];
+                      return (
+                        <>
+                          <div className={`group relative p-5 rounded-xl border ${theme1.border} ${theme1.bg} backdrop-blur-sm ${theme1.hoverBorder} ${theme1.hoverBg} hover:scale-[1.01] transition-all duration-300 text-start overflow-hidden ${theme1.glow}`}>
+                            <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent ${theme1.lineGlow} to-transparent transition-all duration-300`} />
+                            <span className="text-xl mb-3 block">🔒</span>
+                            <h4 className={`text-sm font-bold text-corematrix-textPrimary transition-colors duration-200 ${theme1.titleColor}`}>Zero Trust Architecture</h4>
+                            <p className="mt-2 text-xs text-corematrix-textSecondary/60 leading-relaxed font-light">Ensuring complete authentication and dynamic verification at every stage.</p>
+                          </div>
+                          <div className={`group relative p-5 rounded-xl border ${theme2.border} ${theme2.bg} backdrop-blur-sm ${theme2.hoverBorder} ${theme2.hoverBg} hover:scale-[1.01] transition-all duration-300 text-start overflow-hidden ${theme2.glow}`}>
+                            <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent ${theme2.lineGlow} to-transparent transition-all duration-300`} />
+                            <span className="text-xl mb-3 block">📈</span>
+                            <h4 className={`text-sm font-bold text-corematrix-textPrimary transition-colors duration-200 ${theme2.titleColor}`}>Autonomic Scalability</h4>
+                            <p className="mt-2 text-xs text-corematrix-textSecondary/60 leading-relaxed font-light">Engineered to absorb server traffic surges without compromising API latency.</p>
+                          </div>
+                        </>
+                      );
+                    })()}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -829,76 +850,82 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
       </section>
 
       {/* SECTION 6: WHY CHOOSE US */}
-      {whyChooseUsList && whyChooseUsList.length > 0 && (
-        <section className="relative py-16 border-b border-corematrix-border overflow-hidden bg-corematrix-bg1/20">
-          <Container>
-            <div className="mx-auto max-w-7xl text-center">
-              <SectionLabel>
-                {language === 'ar' ? 'الميزة التنافسية' : 'Our Advantage'}
-              </SectionLabel>
-              <SectionHeading className="mt-2">
-                {whyChooseUsTitle}
-              </SectionHeading>
-              {whyChooseUsDesc && (
-                <p className="mt-4 text-base text-corematrix-textSecondary/80 max-w-2xl mx-auto font-light leading-relaxed">
-                  {whyChooseUsDesc}
-                </p>
-              )}
+      {
+        whyChooseUsList && whyChooseUsList.length > 0 && (
+          // <section className="relative py-16 border-b border-corematrix-border overflow-hidden bg-corematrix-bg1/20">
+          <section className="relative py-16 overflow-hidden bg-corematrix-bg1/20">
+            <Container>
+              <div className="mx-auto max-w-7xl text-center">
+                <SectionLabel>
+                  {language === 'ar' ? 'الميزة التنافسية' : 'Our Advantage'}
+                </SectionLabel>
+                <SectionHeading className="mt-2">
+                  {whyChooseUsTitle}
+                </SectionHeading>
+                {/* {whyChooseUsDesc && (
+                  <p className="mt-4 text-base text-corematrix-textSecondary/80 max-w-2xl mx-auto font-light leading-relaxed">
+                    {whyChooseUsDesc}
+                  </p>
+                )} */}
 
-              {/* Cards List */}
-              <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {whyChooseUsList.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="group relative flex flex-col p-6 sm:p-8 rounded-2xl border border-corematrix-border bg-corematrix-card/30 backdrop-blur-sm hover:bg-corematrix-card/50 hover:border-corematrix-green700/40 hover:shadow-[0_0_30px_rgba(21,128,61,0.15)] hover:scale-[1.01] transition-all duration-300 text-start overflow-hidden"
-                  >
-                    {/* Accent glow line inside */}
-                    <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-corematrix-green500/20 to-transparent group-hover:via-corematrix-green500/60 transition-all duration-300" />
+                {/* Cards List */}
+                <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {whyChooseUsList.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="group relative flex flex-col p-6 sm:p-8 rounded-2xl border border-corematrix-border bg-corematrix-card/30 backdrop-blur-sm hover:bg-corematrix-card/50 hover:border-corematrix-green700/40 hover:shadow-[0_0_30px_rgba(21,128,61,0.15)] hover:scale-[1.01] transition-all duration-300 text-start overflow-hidden"
+                    >
+                      {/* Accent glow line inside */}
+                      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-corematrix-green500/20 to-transparent group-hover:via-corematrix-green500/60 transition-all duration-300" />
 
-                    <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-corematrix-green900/60 border border-corematrix-green700/20 text-corematrix-green400 group-hover:bg-corematrix-green500 group-hover:text-white transition-all duration-300 shrink-0">
-                      {renderIcon(item.icon, "h-5 w-5")}
+                      <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-corematrix-green900/60 border border-corematrix-green700/20 text-corematrix-green400 group-hover:bg-corematrix-green500 group-hover:text-white transition-all duration-300 shrink-0">
+                        {renderIcon(item.icon, "h-5 w-5")}
+                      </div>
+                      <h4 className="text-base font-bold text-corematrix-textPrimary group-hover:text-corematrix-green300 transition-colors duration-200">
+                        {item.title}
+                      </h4>
+                      <p className="mt-2.5 text-xs text-corematrix-textSecondary/70 leading-relaxed font-light">
+                        {item.description}
+                      </p>
                     </div>
-                    <h4 className="text-base font-bold text-corematrix-textPrimary group-hover:text-corematrix-green300 transition-colors duration-200">
-                      {item.title}
-                    </h4>
-                    <p className="mt-2.5 text-xs text-corematrix-textSecondary/70 leading-relaxed font-light">
-                      {item.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
 
-              {whyChooseUsBottom && (
-                <p className="mt-10 text-xs font-mono text-corematrix-textMuted">
-                  {whyChooseUsBottom}
-                </p>
-              )}
-            </div>
-          </Container>
-        </section>
-      )}
+                {whyChooseUsBottom && (
+                  <p className="mt-10 text-xs font-mono text-corematrix-textMuted">
+                    {whyChooseUsBottom}
+                  </p>
+                )}
+              </div>
+            </Container>
+          </section>
+        )
+      }
 
       {/* SECTION 7: POPULAR FAQS */}
-      {resolvedFaqs && resolvedFaqs.length > 0 && (
-        <TwoColumnFaqSection
-          sectionId="faq"
-          headingId="faq-heading"
-          title={t("You've Got Questions.", "لديك أسئلة؟")}
-          description={t("We believe in radical transparency — no jargon, no vague answers.", "نحن نؤمن بالشفافية المطلقة — لا توجد مصطلحات معقدة ولا إجابات غامضة.")}
-          items={resolvedFaqs}
-          sectionClassName="border-b border-corematrix-border bg-corematrix-bg0 py-16"
-          gridClassName={FAQ_GRID_HOME}
-          faqVariant="default"
-          cta={
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
-            >
-              {t("Talk to Us →", "تحدث إلينا ←")}
-            </Link>
-          }
-        />
-      )}
+      {
+        resolvedFaqs && resolvedFaqs.length > 0 && (
+          <TwoColumnFaqSection
+            sectionId="faq"
+            headingId="faq-heading"
+            title={t("You've Got Questions.", "لديك أسئلة؟")}
+            description={t("We believe in radical transparency — no jargon, no vague answers.", "نحن نؤمن بالشفافية المطلقة — لا توجد مصطلحات معقدة ولا إجابات غامضة.")}
+            items={resolvedFaqs}
+            // sectionClassName="border-b border-corematrix-border bg-corematrix-bg0 py-16"
+            sectionClassName="bg-corematrix-bg0 py-16"
+            gridClassName={FAQ_GRID_HOME}
+            faqVariant="default"
+            cta={
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
+              >
+                {t("Talk to Us →", "تحدث إلينا ←")}
+              </Link>
+            }
+          />
+        )
+      }
 
       {/* SECTION 8: NEXT STEP CTA BANNER */}
       <section className="relative py-16 bg-corematrix-bg0 overflow-hidden">
@@ -937,6 +964,6 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
           </div>
         </Container>
       </section>
-    </div>
+    </div >
   );
 }

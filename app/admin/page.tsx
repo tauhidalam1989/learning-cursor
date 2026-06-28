@@ -2175,6 +2175,7 @@ export default function AdminPortal() {
                       { id: 'hero', label: 'Hero Section' },
                       { id: 'about', label: 'About' },
                       { id: 'solutions', label: 'Solutions Grid' },
+                      { id: 'industries', label: 'Use Cases' },
                       { id: 'critical', label: 'Critical Why' },
                       { id: 'why-choose', label: 'Why Us' },
                       { id: 'extra', label: 'FAQ & SEO' },
@@ -2692,6 +2693,198 @@ export default function AdminPortal() {
                                     setCapabilities(n);
                                   }}
                                   placeholder="وصف البطاقة بالعربية (AR)"
+                                  className="bg-transparent border-b border-corematrix-border py-1 text-xs outline-none text-corematrix-textSecondary focus:border-corematrix-green700 resize-none text-right font-light leading-relaxed"
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* SUBTAB: USE CASES / INDUSTRIES */}
+                  {modalSubTab === 'industries' && (
+                    <div className="space-y-4 text-left">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="mb-2 block text-xs font-semibold text-corematrix-textMuted">Use Cases Section Title</label>
+                          <input
+                            type="text"
+                            value={serviceForm.industriesSectionTitle || ''}
+                            onChange={(e) => setServiceForm({ ...serviceForm, industriesSectionTitle: e.target.value })}
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-xs font-semibold text-corematrix-textMuted text-right">عنوان قسم تطبيقات عملية / القطاعات (AR)</label>
+                          <input
+                            type="text"
+                            value={serviceForm.industriesSectionTitleAr || ''}
+                            onChange={(e) => setServiceForm({ ...serviceForm, industriesSectionTitleAr: e.target.value })}
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-right"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="mb-2 block text-xs font-semibold text-corematrix-textMuted">Use Cases Description</label>
+                          <textarea
+                            rows={3}
+                            value={serviceForm.industriesSectionDescription || ''}
+                            onChange={(e) => setServiceForm({ ...serviceForm, industriesSectionDescription: e.target.value })}
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm resize-none"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-xs font-semibold text-corematrix-textMuted text-right">الوصف (AR)</label>
+                          <textarea
+                            rows={3}
+                            value={serviceForm.industriesSectionDescriptionAr || ''}
+                            onChange={(e) => setServiceForm({ ...serviceForm, industriesSectionDescriptionAr: e.target.value })}
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm resize-none text-right"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="mb-2 block text-xs font-semibold text-corematrix-textMuted">Section Image Alt Text</label>
+                          <input
+                            type="text"
+                            value={serviceForm.industriesImageAlt || ''}
+                            onChange={(e) => setServiceForm({ ...serviceForm, industriesImageAlt: e.target.value })}
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-xs font-semibold text-corematrix-textMuted text-right">نص بديل للصورة (AR)</label>
+                          <input
+                            type="text"
+                            value={serviceForm.industriesImageAltAr || ''}
+                            onChange={(e) => setServiceForm({ ...serviceForm, industriesImageAltAr: e.target.value })}
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-right"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="mb-2 block text-xs font-semibold text-corematrix-textMuted">Section Bottom Note</label>
+                          <input
+                            type="text"
+                            value={serviceForm.industriesSectionBottomNote || ''}
+                            onChange={(e) => setServiceForm({ ...serviceForm, industriesSectionBottomNote: e.target.value })}
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-xs font-semibold text-corematrix-textMuted text-right">ملاحظة أسفل القسم (AR)</label>
+                          <input
+                            type="text"
+                            value={serviceForm.industriesSectionBottomNoteAr || ''}
+                            onChange={(e) => setServiceForm({ ...serviceForm, industriesSectionBottomNoteAr: e.target.value })}
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-right"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="mb-2 block text-xs font-semibold text-corematrix-textMuted">Section Image File</label>
+                          <div className="flex items-center gap-3">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleServiceFileChange(e, 'industriesImage')}
+                              className="text-xs text-corematrix-textMuted cursor-pointer"
+                            />
+                            {servicePreviews.industriesImage && (
+                              <img src={servicePreviews.industriesImage} className="h-10 w-10 object-cover rounded-lg border border-corematrix-border" />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Industries Dynamic Checklist */}
+                      <div className="border-t border-corematrix-border pt-4">
+                        <div className="flex justify-between items-center mb-3">
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-corematrix-green400 font-semibold">Industries / Use Cases List</h4>
+                          <button
+                            type="button"
+                            onClick={() => setIndustries([...industries, { title: '', titleAr: '', description: '', descriptionAr: '', icon: 'fas fa-university' }])}
+                            className="text-[10px] font-bold bg-corematrix-green900/30 text-corematrix-green400 border border-corematrix-green700/30 px-3 py-1 rounded hover:bg-corematrix-green700 hover:text-white transition cursor-pointer"
+                          >
+                            + Add Use Case
+                          </button>
+                        </div>
+                        <div className="space-y-3">
+                          {industries.map((ind, idx) => (
+                            <div key={idx} className="p-4 rounded-xl border border-corematrix-border bg-corematrix-card2 relative space-y-3">
+                              <button
+                                type="button"
+                                onClick={() => setIndustries(industries.filter((_, i) => i !== idx))}
+                                className="absolute top-2 right-2 text-corematrix-textMuted hover:text-red-400 font-bold cursor-pointer"
+                              >
+                                ×
+                              </button>
+                              <div className="grid grid-cols-3 gap-4">
+                                <input
+                                  type="text"
+                                  value={ind.title || ''}
+                                  onChange={(e) => {
+                                    const n = [...industries];
+                                    n[idx].title = e.target.value;
+                                    setIndustries(n);
+                                  }}
+                                  placeholder="Use Case Title (EN)"
+                                  className="bg-transparent border-b border-corematrix-border py-1 text-xs outline-none text-corematrix-textPrimary focus:border-corematrix-green700"
+                                />
+                                <input
+                                  type="text"
+                                  value={ind.titleAr || ''}
+                                  onChange={(e) => {
+                                    const n = [...industries];
+                                    n[idx].titleAr = e.target.value;
+                                    setIndustries(n);
+                                  }}
+                                  placeholder="العنوان (AR)"
+                                  className="bg-transparent border-b border-corematrix-border py-1 text-xs outline-none text-corematrix-textPrimary focus:border-corematrix-green700 text-right"
+                                />
+                                <input
+                                  type="text"
+                                  value={ind.icon || ''}
+                                  onChange={(e) => {
+                                    const n = [...industries];
+                                    n[idx].icon = e.target.value;
+                                    setIndustries(n);
+                                  }}
+                                  placeholder="Icon (Class/Emoji, e.g. fas fa-university)"
+                                  className="bg-transparent border-b border-corematrix-border py-1 text-[11px] outline-none text-corematrix-textSecondary"
+                                />
+                              </div>
+                              <div className="grid grid-cols-2 gap-4">
+                                <textarea
+                                  rows={2}
+                                  value={ind.description || ''}
+                                  onChange={(e) => {
+                                    const n = [...industries];
+                                    n[idx].description = e.target.value;
+                                    setIndustries(n);
+                                  }}
+                                  placeholder="Use case description (EN)"
+                                  className="bg-transparent border-b border-corematrix-border py-1 text-xs outline-none text-corematrix-textSecondary focus:border-corematrix-green700 resize-none font-light leading-relaxed"
+                                />
+                                <textarea
+                                  rows={2}
+                                  value={ind.descriptionAr || ''}
+                                  onChange={(e) => {
+                                    const n = [...industries];
+                                    n[idx].descriptionAr = e.target.value;
+                                    setIndustries(n);
+                                  }}
+                                  placeholder="وصف حالة الاستخدام بالعربية (AR)"
                                   className="bg-transparent border-b border-corematrix-border py-1 text-xs outline-none text-corematrix-textSecondary focus:border-corematrix-green700 resize-none text-right font-light leading-relaxed"
                                 />
                               </div>
