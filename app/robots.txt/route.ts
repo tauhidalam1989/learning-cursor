@@ -9,17 +9,32 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const content = `User-agent: *
+
 Allow: /
 
-Disallow: /admin/
-Disallow: /login/
-Disallow: /register/
-Disallow: /forgot-password/
-Disallow: /dashboard/
-Disallow: /api/
+# Block WordPress admin
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
 
+# Block system files
+Disallow: /xmlrpc.php
+Disallow: /cgi-bin/
+
+# Block internal search
+Disallow: /?s=
+
+# Block staging folders
+Disallow: /staging/
+Disallow: /stage/
+Disallow: /dev/
+Disallow: /test/
+Disallow: /beta/
+Disallow: /backup/
+Disallow: /old/
+Disallow: /demo/
+
+# Sitemap
 Sitemap: ${siteUrl}/sitemap.xml
-Host: ${siteUrl.replace(/^https?:\/\//, '')}
 `;
 
   return new Response(content, {

@@ -13,9 +13,28 @@ export function organizationJsonLd(overrides?: {
     '@type': 'Organization',
     name: siteConfig.name,
     url: baseUrl,
+    logo: `${baseUrl}/images/logo.svg`,
     email: siteConfig.email,
     telephone: siteConfig.phone.replace(/\s/g, ''),
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '1st Floor, Super Office, Sayda Street, Ad Duraihimiyah',
+      addressLocality: 'Riyadh',
+      postalCode: '12791',
+      addressCountry: 'SA',
+    },
     sameAs: [siteConfig.linkedin, siteConfig.twitter, siteConfig.github],
+    description: 'AI-first IT services and consulting company delivering custom AI products, full-stack web apps, SaaS platforms, and dedicated development teams.',
+    foundingDate: '2019',
+    numberOfEmployees: 25,
+    knowsAbout: [
+      'Artificial Intelligence',
+      'Machine Learning',
+      'LLM Integration',
+      'Next.js Development',
+      'SaaS Development',
+      'Full-Stack Engineering',
+    ],
     ...overrides,
   } as const;
 }
@@ -353,4 +372,5 @@ export function faqPageJsonLd(faqs: { q: string; a: string }[]) {
     })),
   } as const;
 }
+
 

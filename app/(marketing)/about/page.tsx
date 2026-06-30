@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { siteUrl } from '@/lib/seo';
-import { organizationJsonLd } from '@/lib/seo/jsonld';
 import { AboutHeroSection } from '@/sections/about/AboutHeroSection';
 import { WhoWeAreSection } from '@/sections/about/WhoWeAreSection';
 import { MissionVisionSection } from '@/sections/about/MissionVisionSection';
@@ -41,28 +40,9 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = organizationJsonLd({
-  description:
-    'AI-first IT services and consulting company delivering custom AI products, full-stack web apps, SaaS platforms, and dedicated development teams.',
-  foundingDate: '2019',
-  numberOfEmployees: 25,
-  knowsAbout: [
-    'Artificial Intelligence',
-    'Machine Learning',
-    'LLM Integration',
-    'Next.js Development',
-    'SaaS Development',
-    'Full-Stack Engineering',
-  ],
-});
-
 export default function AboutPage() {
   return (
     <div className="bg-corematrix-bg0">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
       <AboutHeroSection />
       <WhoWeAreSection />
       <MissionVisionSection />

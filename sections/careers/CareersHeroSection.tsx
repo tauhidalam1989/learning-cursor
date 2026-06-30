@@ -302,11 +302,10 @@ export function CareersHeroSection() {
                     </div>
                     {r.badge && (
                       <span
-                        className={`rounded-full px-2 py-0.5 text-[0.6rem] font-bold ${
-                          r.badge === 'hot' || r.badge === 'عاجل'
+                        className={`rounded-full px-2 py-0.5 text-[0.6rem] font-bold ${r.badge === 'hot' || r.badge === 'عاجل'
                             ? 'bg-red-900/20 text-red-400'
                             : theme.badgeBg
-                        }`}
+                          }`}
                       >
                         {r.badge}
                       </span>

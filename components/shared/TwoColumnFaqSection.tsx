@@ -49,6 +49,25 @@ export function TwoColumnFaqSection({
 }: TwoColumnFaqSectionProps) {
   return (
     <section id={sectionId} aria-labelledby={headingId} className={sectionClassName}>
+      {items && items.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: items.map((item) => ({
+                '@type': 'Question',
+                name: item.q,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: item.a,
+                },
+              })),
+            }),
+          }}
+        />
+      )}
       <Container>
         <div className={gridClassName}>
           <div className="reveal">
