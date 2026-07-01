@@ -130,7 +130,7 @@ export function WhatHappensNextSection() {
                 <h3 className={`mb-2 font-display text-sm font-bold ${theme.titleColor}`}>
                   {s.title}
                 </h3>
-                <p className={`mb-4 text-xs font-light leading-relaxed ${theme.bodyColor}`}>
+                <p className={`mb-4 text-sm font-light leading-relaxed ${theme.bodyColor}`}>
                   {s.body}
                 </p>
                 <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-display text-[0.65rem] font-semibold transition-colors duration-300 ${theme.badge}`}>

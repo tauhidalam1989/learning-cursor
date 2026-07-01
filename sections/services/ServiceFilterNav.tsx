@@ -17,6 +17,56 @@ function scrollToServices() {
   window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
 }
 
+const FILTER_THEMES = [
+  {
+    active: 'border-cyan-400 bg-cyan-950/30 font-bold text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.15)] scale-[1.02]',
+    inactive: 'border-cyan-500/20 bg-cyan-950/5 text-cyan-400/70 hover:border-cyan-500/40 hover:text-cyan-300 hover:bg-cyan-950/15',
+  },
+  {
+    active: 'border-sky-400 bg-sky-950/30 font-bold text-sky-400 shadow-[0_0_15px_rgba(14,165,233,0.15)] scale-[1.02]',
+    inactive: 'border-sky-500/20 bg-sky-950/5 text-sky-400/70 hover:border-sky-500/40 hover:text-sky-300 hover:bg-sky-950/15',
+  },
+  {
+    active: 'border-emerald-400 bg-emerald-950/30 font-bold text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.15)] scale-[1.02]',
+    inactive: 'border-emerald-500/20 bg-emerald-950/5 text-emerald-400/70 hover:border-emerald-500/40 hover:text-emerald-300 hover:bg-emerald-950/15',
+  },
+  {
+    active: 'border-amber-400 bg-amber-950/30 font-bold text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.15)] scale-[1.02]',
+    inactive: 'border-amber-500/20 bg-amber-950/5 text-amber-400/70 hover:border-amber-500/40 hover:text-amber-300 hover:bg-amber-950/15',
+  },
+  {
+    active: 'border-purple-400 bg-purple-950/30 font-bold text-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.15)] scale-[1.02]',
+    inactive: 'border-purple-500/20 bg-purple-950/5 text-purple-400/70 hover:border-purple-500/40 hover:text-purple-300 hover:bg-purple-950/15',
+  },
+  {
+    active: 'border-rose-400 bg-rose-950/30 font-bold text-rose-400 shadow-[0_0_15px_rgba(244,63,94,0.15)] scale-[1.02]',
+    inactive: 'border-rose-500/20 bg-rose-950/5 text-rose-400/70 hover:border-rose-500/40 hover:text-rose-300 hover:bg-rose-950/15',
+  },
+  {
+    active: 'border-orange-400 bg-orange-950/30 font-bold text-orange-400 shadow-[0_0_15px_rgba(249,115,22,0.15)] scale-[1.02]',
+    inactive: 'border-orange-500/20 bg-orange-950/5 text-orange-400/70 hover:border-orange-500/40 hover:text-orange-300 hover:bg-orange-950/15',
+  },
+  {
+    active: 'border-teal-400 bg-teal-950/30 font-bold text-teal-400 shadow-[0_0_15px_rgba(20,184,166,0.15)] scale-[1.02]',
+    inactive: 'border-teal-500/20 bg-teal-950/5 text-teal-400/70 hover:border-teal-500/40 hover:text-teal-300 hover:bg-teal-950/15',
+  },
+];
+
+const getThemeIndex = (filterKey: string): number => {
+  const mapping: Record<string, number> = {
+    'ai-automation-services': 0,          // Cyan
+    'cyber-security-services': 4,        // Purple
+    'web-developement-services': 2,      // Emerald
+    'mobile-app-developement-services': 3, // Amber
+    'cloud-devops-services': 7,          // Teal
+    'data-analytics-services': 5,        // Rose
+    'ui-ux-product-design': 6,           // Orange
+    'quality-assurance-testing': 4,      // Purple
+    'it-consulting-strategy': 1,         // Sky
+  };
+  return mapping[filterKey] !== undefined ? mapping[filterKey] : 0;
+};
+
 export function ServiceFilterNav() {
   const { active: activeFilter, dispatch } = useFilterDispatch('serviceFilter');
   const { language, t } = useLanguage();
@@ -62,15 +112,24 @@ export function ServiceFilterNav() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await fetch('/api/service-categories');
-        if (!res.ok) throw new Error('API offline');
-        const data = await res.json();
+        const [catsRes, servicesRes] = await Promise.all([
+          fetch('/api/service-categories'),
+          fetch('/api/services')
+        ]);
+        if (!catsRes.ok || !servicesRes.ok) throw new Error('API offline');
+        const catsData = await catsRes.json();
+        const servicesData = await servicesRes.json();
         
-        // Construct filters array from backend category keys
-        const dynamicFilters = data.map((cat: any) => ({
-          id: cat.filterKey,
-          label: language === 'ar' ? cat.label_ar : cat.label_en,
-        }));
+        // Construct filters array from backend category keys only if they have services
+        const dynamicFilters = catsData
+          .filter((cat: any) => {
+            const hasServices = servicesData.some((s: any) => s.category === cat.filterKey);
+            return hasServices;
+          })
+          .map((cat: any) => ({
+            id: cat.filterKey,
+            label: language === 'ar' ? cat.label_ar : cat.label_en,
+          }));
         
         setCategories(dynamicFilters);
       } catch (e) {
@@ -150,20 +209,22 @@ export function ServiceFilterNav() {
             >
               {allLabel}
             </button>
-            {categories.map((f) => (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => handleFilter(f.id)}
-                className={`cursor-pointer shrink-0 rounded-full border px-5 py-2 text-sm font-medium transition-all ${
-                  activeFilter === f.id
-                    ? 'border-corematrix-green400/30 bg-corematrix-green900/20 font-semibold text-corematrix-green400'
-                    : 'border-corematrix-border bg-corematrix-card text-corematrix-textMuted hover:border-corematrix-border2 hover:text-corematrix-textPrimary'
-                }`}
-              >
-                {f.label}
-              </button>
-            ))}
+            {categories.map((f) => {
+              const themeIndex = getThemeIndex(f.id);
+              const theme = FILTER_THEMES[themeIndex];
+              return (
+                <button
+                  key={f.id}
+                  type="button"
+                  onClick={() => handleFilter(f.id)}
+                  className={`cursor-pointer shrink-0 rounded-full border px-5 py-2 text-sm font-medium transition-all ${
+                    activeFilter === f.id ? theme.active : theme.inactive
+                  }`}
+                >
+                  {f.label}
+                </button>
+              );
+            })}
           </div>
 
           {/* Right Arrow Button */}

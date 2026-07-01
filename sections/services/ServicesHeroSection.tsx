@@ -1,13 +1,14 @@
 'use client';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { useLanguage } from '@/context/LanguageContext';
+import { useFilterDispatch } from '@/hooks/usePortalFilter';
 
-type ServiceTile = {
+type ThemeConfig = {
   icon: string;
-  title: string;
-  tag: string;
-  href?: string;
+  tag_en: string;
+  tag_ar: string;
   iconColor: string;
   iconBg: string;
   cardBg: string;
@@ -19,12 +20,11 @@ type ServiceTile = {
   tagColor: string;
 };
 
-const SERVICE_TILES: ServiceTile[] = [
-  {
+const CATEGORY_THEMES: Record<string, ThemeConfig> = {
+  'ai-automation-services': {
     icon: 'fas fa-brain',
-    title: 'AI Development',
-    tag: 'LLMs · Agents · ML',
-    href: '/services/ai-product-development',
+    tag_en: 'LLMs · Agents · Flows',
+    tag_ar: 'النماذج اللغوية · الوكلاء · التدفقات',
     iconColor: 'text-purple-400',
     iconBg: 'bg-purple-500/10 border-purple-500/20',
     cardBg: 'bg-purple-950/20',
@@ -35,71 +35,10 @@ const SERVICE_TILES: ServiceTile[] = [
     titleColor: 'text-purple-100',
     tagColor: 'text-purple-300/70',
   },
-  {
-    icon: 'fas fa-code',
-    title: 'Web Applications',
-    tag: 'Next.js · React · Node',
-    href: '/services/custom-web-application-development',
-    iconColor: 'text-cyan-400',
-    iconBg: 'bg-cyan-500/10 border-cyan-500/20',
-    cardBg: 'bg-cyan-950/20',
-    cardBorder: 'border-cyan-500/15',
-    hoverBorder: 'hover:border-cyan-500/40',
-    hoverBg: 'hover:bg-cyan-950/35',
-    hoverGlow: 'hover:shadow-[0_0_24px_rgba(6,182,212,0.15)]',
-    titleColor: 'text-cyan-100',
-    tagColor: 'text-cyan-300/70',
-  },
-  {
-    icon: 'fas fa-mobile-alt',
-    title: 'Mobile Apps',
-    tag: 'iOS · Android · RN',
-    href: '/services/mobile-app-development',
-    iconColor: 'text-amber-400',
-    iconBg: 'bg-amber-500/10 border-amber-500/20',
-    cardBg: 'bg-amber-950/20',
-    cardBorder: 'border-amber-500/15',
-    hoverBorder: 'hover:border-amber-500/40',
-    hoverBg: 'hover:bg-amber-950/35',
-    hoverGlow: 'hover:shadow-[0_0_24px_rgba(245,158,11,0.15)]',
-    titleColor: 'text-amber-100',
-    tagColor: 'text-amber-300/70',
-  },
-  {
-    icon: 'fas fa-cloud',
-    title: 'SaaS Platforms',
-    tag: 'Multi-tenant · Cloud',
-    href: '/services/saas-platform-development',
-    iconColor: 'text-indigo-400',
-    iconBg: 'bg-indigo-500/10 border-indigo-500/20',
-    cardBg: 'bg-indigo-950/20',
-    cardBorder: 'border-indigo-500/15',
-    hoverBorder: 'hover:border-indigo-500/40',
-    hoverBg: 'hover:bg-indigo-950/35',
-    hoverGlow: 'hover:shadow-[0_0_24px_rgba(99,102,241,0.15)]',
-    titleColor: 'text-indigo-100',
-    tagColor: 'text-indigo-300/70',
-  },
-  {
-    icon: 'fas fa-cogs',
-    title: 'AI Automation',
-    tag: 'RAG · Pipelines · Flows',
-    href: '/services/ai-product-development',
-    iconColor: 'text-orange-400',
-    iconBg: 'bg-orange-500/10 border-orange-500/20',
-    cardBg: 'bg-orange-950/20',
-    cardBorder: 'border-orange-500/15',
-    hoverBorder: 'hover:border-orange-500/40',
-    hoverBg: 'hover:bg-orange-950/35',
-    hoverGlow: 'hover:shadow-[0_0_24px_rgba(249,115,22,0.15)]',
-    titleColor: 'text-orange-100',
-    tagColor: 'text-orange-300/70',
-  },
-  {
-    icon: 'fas fa-users',
-    title: 'Dedicated Teams',
-    tag: 'Staffing · Outsourcing',
-    href: '/services/dedicated-development-teams',
+  'cyber-security-services': {
+    icon: 'fas fa-shield-alt',
+    tag_en: 'Zero Trust · Audit · MLOps',
+    tag_ar: 'أمان صفرى · تدقيق · عمليات MLOps',
     iconColor: 'text-rose-400',
     iconBg: 'bg-rose-500/10 border-rose-500/20',
     cardBg: 'bg-rose-950/20',
@@ -110,11 +49,80 @@ const SERVICE_TILES: ServiceTile[] = [
     titleColor: 'text-rose-100',
     tagColor: 'text-rose-300/70',
   },
-  {
-    icon: 'fas fa-scroll',
-    title: 'Adobe Licensing',
-    tag: 'VIP · ETLA · Compliance',
-    href: '/services/adobe-licensing',
+  'web-developement-services': {
+    icon: 'fas fa-code',
+    tag_en: 'Next.js · React · Node',
+    tag_ar: 'Next.js · React · Node',
+    iconColor: 'text-cyan-400',
+    iconBg: 'bg-cyan-500/10 border-cyan-500/20',
+    cardBg: 'bg-cyan-950/20',
+    cardBorder: 'border-cyan-500/15',
+    hoverBorder: 'hover:border-cyan-500/40',
+    hoverBg: 'hover:bg-cyan-950/35',
+    hoverGlow: 'hover:shadow-[0_0_24px_rgba(6,182,212,0.15)]',
+    titleColor: 'text-cyan-100',
+    tagColor: 'text-cyan-300/70',
+  },
+  'mobile-app-developement-services': {
+    icon: 'fas fa-mobile-alt',
+    tag_en: 'iOS · Android · RN',
+    tag_ar: 'آيفون · أندرويد · ريأكت نيتف',
+    iconColor: 'text-amber-400',
+    iconBg: 'bg-amber-500/10 border-amber-500/20',
+    cardBg: 'bg-amber-950/20',
+    cardBorder: 'border-amber-500/15',
+    hoverBorder: 'hover:border-amber-500/40',
+    hoverBg: 'hover:bg-amber-950/35',
+    hoverGlow: 'hover:shadow-[0_0_24px_rgba(245,158,11,0.15)]',
+    titleColor: 'text-amber-100',
+    tagColor: 'text-amber-300/70',
+  },
+  'cloud-devops-services': {
+    icon: 'fas fa-cloud',
+    tag_en: 'CI/CD · AWS · Docker',
+    tag_ar: 'التحميل المستمر · حوسبة أمازون · دوتكر',
+    iconColor: 'text-indigo-400',
+    iconBg: 'bg-indigo-500/10 border-indigo-500/20',
+    cardBg: 'bg-indigo-950/20',
+    cardBorder: 'border-indigo-500/15',
+    hoverBorder: 'hover:border-indigo-500/40',
+    hoverBg: 'hover:bg-indigo-950/35',
+    hoverGlow: 'hover:shadow-[0_0_24px_rgba(99,102,241,0.15)]',
+    titleColor: 'text-indigo-100',
+    tagColor: 'text-indigo-300/70',
+  },
+  'data-analytics-services': {
+    icon: 'fas fa-chart-bar',
+    tag_en: 'Big Data · BI · ML',
+    tag_ar: 'بيانات ضخمة · ذكاء أعمال · تعلم آلة',
+    iconColor: 'text-sky-400',
+    iconBg: 'bg-sky-500/10 border-sky-500/20',
+    cardBg: 'bg-sky-950/20',
+    cardBorder: 'border-sky-500/15',
+    hoverBorder: 'hover:border-sky-500/40',
+    hoverBg: 'hover:bg-sky-950/35',
+    hoverGlow: 'hover:shadow-[0_0_24px_rgba(14,165,233,0.15)]',
+    titleColor: 'text-sky-100',
+    tagColor: 'text-sky-300/70',
+  },
+  'ui-ux-product-design': {
+    icon: 'fas fa-paint-brush',
+    tag_en: 'Figma · Design Systems',
+    tag_ar: 'فيجما · أنظمة التصميم وواجهات',
+    iconColor: 'text-orange-400',
+    iconBg: 'bg-orange-500/10 border-orange-500/20',
+    cardBg: 'bg-orange-950/20',
+    cardBorder: 'border-orange-500/15',
+    hoverBorder: 'hover:border-orange-500/40',
+    hoverBg: 'hover:bg-orange-950/35',
+    hoverGlow: 'hover:shadow-[0_0_24px_rgba(249,115,22,0.15)]',
+    titleColor: 'text-orange-100',
+    tagColor: 'text-orange-300/70',
+  },
+  'quality-assurance-testing': {
+    icon: 'fas fa-check-circle',
+    tag_en: 'Unit · E2E · Security',
+    tag_ar: 'اختبارات الوحدة · اختبار شامل · أمان',
     iconColor: 'text-emerald-400',
     iconBg: 'bg-emerald-500/10 border-emerald-500/20',
     cardBg: 'bg-emerald-950/20',
@@ -125,38 +133,172 @@ const SERVICE_TILES: ServiceTile[] = [
     titleColor: 'text-emerald-100',
     tagColor: 'text-emerald-300/70',
   },
-];
+  'it-consulting-strategy': {
+    icon: 'fas fa-lightbulb',
+    tag_en: 'Roadmaps · Architecture',
+    tag_ar: 'خرائط طريق · هندسة الأنظمة والحلول',
+    iconColor: 'text-emerald-400',
+    iconBg: 'bg-emerald-500/10 border-emerald-500/20',
+    cardBg: 'bg-emerald-950/20',
+    cardBorder: 'border-emerald-500/15',
+    hoverBorder: 'hover:border-emerald-500/40',
+    hoverBg: 'hover:bg-emerald-950/35',
+    hoverGlow: 'hover:shadow-[0_0_24px_rgba(16,185,129,0.15)]',
+    titleColor: 'text-emerald-100',
+    tagColor: 'text-emerald-300/70',
+  },
+};
 
-const NAV_PILLS = [
+const defaultTheme: ThemeConfig = {
+  icon: 'fas fa-cog',
+  tag_en: 'Intelligent Digital Services',
+  tag_ar: 'الخدمات الرقمية الذكية',
+  iconColor: 'text-emerald-400',
+  iconBg: 'bg-emerald-500/10 border-emerald-500/20',
+  cardBg: 'bg-emerald-950/20',
+  cardBorder: 'border-emerald-500/15',
+  hoverBorder: 'hover:border-emerald-500/40',
+  hoverBg: 'hover:bg-emerald-950/35',
+  hoverGlow: 'hover:shadow-[0_0_24px_rgba(16,185,129,0.15)]',
+  titleColor: 'text-emerald-100',
+  tagColor: 'text-emerald-300/70',
+};
+
+const PILL_CLASSES: Record<string, string> = {
+  'ai-automation-services': 'bg-purple-950/20 border-purple-500/15 text-purple-300 hover:bg-purple-950/40 hover:border-purple-500/45 hover:text-purple-200',
+  'cyber-security-services': 'bg-rose-950/20 border-rose-500/15 text-rose-300 hover:bg-rose-950/40 hover:border-rose-500/45 hover:text-rose-200',
+  'web-developement-services': 'bg-cyan-950/20 border-cyan-500/15 text-cyan-300 hover:bg-cyan-950/40 hover:border-cyan-500/45 hover:text-cyan-200',
+  'mobile-app-developement-services': 'bg-amber-950/20 border-amber-500/15 text-amber-300 hover:bg-amber-950/40 hover:border-amber-500/45 hover:text-amber-200',
+  'cloud-devops-services': 'bg-indigo-950/20 border-indigo-500/15 text-indigo-300 hover:bg-indigo-950/40 hover:border-indigo-500/45 hover:text-indigo-200',
+  'data-analytics-services': 'bg-sky-950/20 border-sky-500/15 text-sky-300 hover:bg-sky-950/40 hover:border-sky-500/45 hover:text-sky-200',
+  'ui-ux-product-design': 'bg-orange-950/20 border-orange-500/15 text-orange-300 hover:bg-orange-950/40 hover:border-orange-500/45 hover:text-orange-200',
+  'quality-assurance-testing': 'bg-emerald-950/20 border-emerald-500/15 text-emerald-300 hover:bg-emerald-950/40 hover:border-emerald-500/45 hover:text-emerald-200',
+  'it-consulting-strategy': 'bg-emerald-950/20 border-emerald-500/15 text-emerald-300 hover:bg-emerald-950/40 hover:border-emerald-500/45 hover:text-emerald-200',
+};
+const defaultPillClass = 'bg-emerald-950/20 border-emerald-500/15 text-emerald-300 hover:bg-emerald-950/40 hover:border-emerald-500/45 hover:text-emerald-200';
+
+const FALLBACK_CATEGORIES = [
   {
-    label: 'AI Development',
-    href: '#ai-dev',
-    classes: 'bg-purple-950/20 border-purple-500/15 text-purple-300 hover:bg-purple-950/40 hover:border-purple-500/45 hover:text-purple-200',
+    filterKey: 'ai-automation-services',
+    label_en: 'AI & Automation Services',
+    label_ar: 'خدمات الذكاء الاصطناعي والأتمتة',
+    anchorId: 'ai-automation-services-dev',
   },
   {
-    label: 'Web Apps',
-    href: '#web-dev',
-    classes: 'bg-cyan-950/20 border-cyan-500/15 text-cyan-300 hover:bg-cyan-950/40 hover:border-cyan-500/45 hover:text-cyan-200',
+    filterKey: 'cyber-security-services',
+    label_en: 'Cyber Security Services',
+    label_ar: 'خدمات الأمن السيبراني',
+    anchorId: 'cyber-security-services-dev',
   },
   {
-    label: 'Mobile',
-    href: '#web-dev',
-    classes: 'bg-amber-950/20 border-amber-500/15 text-amber-300 hover:bg-amber-950/40 hover:border-amber-500/45 hover:text-amber-200',
+    filterKey: 'web-developement-services',
+    label_en: 'Web Developement Services',
+    label_ar: 'خدمات تطوير الويب',
+    anchorId: 'web-developement-services-dev',
   },
   {
-    label: 'SaaS',
-    href: '#saas',
-    classes: 'bg-indigo-950/20 border-indigo-500/15 text-indigo-300 hover:bg-indigo-950/40 hover:border-indigo-500/45 hover:text-indigo-200',
+    filterKey: 'mobile-app-developement-services',
+    label_en: 'Mobile App Developement Services',
+    label_ar: 'خدمات تطوير تطبيقات الهاتف المحمول',
+    anchorId: 'mobile-app-developement-services-dev',
   },
   {
-    label: 'Dedicated Teams',
-    href: '#teams',
-    classes: 'bg-rose-950/20 border-rose-500/15 text-rose-300 hover:bg-rose-950/40 hover:border-rose-500/45 hover:text-rose-200',
+    filterKey: 'cloud-devops-services',
+    label_en: 'Cloud & DevOps Services',
+    label_ar: 'خدمات السحابة و DevOps',
+    anchorId: 'cloud-devops-services-dev',
+  },
+  {
+    filterKey: 'data-analytics-services',
+    label_en: 'Data & Analytics Services',
+    label_ar: 'خدمات البيانات والتحليلات',
+    anchorId: 'data-analytics-services-dev',
+  },
+  {
+    filterKey: 'ui-ux-product-design',
+    label_en: 'UI/UX & Product Design',
+    label_ar: 'تصميم واجهات وتجربة المستخدم (UI/UX) وتصميم المنتجات',
+    anchorId: 'ui-ux-product-design-dev',
+  },
+  {
+    filterKey: 'quality-assurance-testing',
+    label_en: 'Quality Assurance & Testing',
+    label_ar: 'ضمان الجودة واختبار البرمجيات',
+    anchorId: 'quality-assurance-testing-dev',
+  },
+  {
+    filterKey: 'it-consulting-strategy',
+    label_en: 'IT Consulting & Strategy',
+    label_ar: 'الاستشارات التقنية واستراتيجية تقنية المعلومات',
+    anchorId: 'it-consulting-strategy-dev',
   },
 ];
 
 export function ServicesHeroSection() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const { dispatch } = useFilterDispatch('serviceFilter');
+  const [categories, setCategories] = useState<any[]>(FALLBACK_CATEGORIES);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await fetch('/api/service-categories');
+        if (!res.ok) throw new Error('API offline');
+        const data = await res.json();
+        if (data && data.length > 0) {
+          setCategories(data);
+        }
+      } catch (e) {
+        console.warn('API error retrieving service categories for hero:', e);
+      }
+    }
+    fetchCategories();
+  }, []);
+
+  const dynamicNavPills = categories.slice(0, 5).map((cat) => {
+    const label = language === 'ar' ? cat.label_ar : cat.label_en;
+    return {
+      label,
+      href: `#${cat.anchorId}`,
+      filterKey: cat.filterKey,
+      anchorId: cat.anchorId,
+      classes: PILL_CLASSES[cat.filterKey] || defaultPillClass,
+    };
+  });
+
+  const dynamicServiceTiles = categories.map((cat) => {
+    const theme = CATEGORY_THEMES[cat.filterKey] || defaultTheme;
+    const title = language === 'ar' ? cat.label_ar : cat.label_en;
+    const tag = language === 'ar' ? theme.tag_ar : theme.tag_en;
+    return {
+      title,
+      tag,
+      href: `#${cat.anchorId}`,
+      filterKey: cat.filterKey,
+      anchorId: cat.anchorId,
+      ...theme,
+    };
+  });
+
+  const handleTileClick = (e: React.MouseEvent, filterKey: string, anchorId: string) => {
+    e.preventDefault();
+    dispatch(filterKey);
+    
+    setTimeout(() => {
+      if (typeof window === 'undefined') return;
+      const target = document.getElementById('services');
+      if (target) {
+        const OFFSET = 160; // header (~68px) + filter nav (~85px) + 7px breathing room
+        const top = target.getBoundingClientRect().top + window.scrollY - OFFSET;
+        window.scrollTo({
+          top: Math.max(0, top),
+          behavior: 'smooth',
+        });
+      }
+      window.history.pushState(null, '', `#${anchorId}`);
+    }, 100);
+  };
+
   return (
     <section
       id="services-hero"
@@ -211,42 +353,49 @@ export function ServicesHeroSection() {
             )}
           </p>
 
-          <div className="mt-10 flex flex-wrap gap-4">
+          <div className="mt-10 flex flex-col sm:flex-row gap-4">
             <Link
               href="#services"
-              className="inline-flex items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
+              onClick={(e) => {
+                e.preventDefault();
+                dispatch('all');
+                setTimeout(() => {
+                  const target = document.getElementById('services');
+                  if (target) {
+                    const OFFSET = 160; // header (~68px) + filter nav (~85px) + 7px breathing room
+                    const top = target.getBoundingClientRect().top + window.scrollY - OFFSET;
+                    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+                  }
+                }, 100);
+              }}
+              className="inline-flex w-full sm:w-auto items-center justify-center rounded-lg bg-corematrix-green700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-corematrix-green500"
             >
               {t('Explore All Services →', 'استكشاف جميع الخدمات →')}
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center rounded-lg border border-corematrix-border2 bg-transparent px-6 py-3 text-sm font-semibold text-corematrix-textPrimary transition hover:border-corematrix-green700 hover:bg-corematrix-green900/20"
+              className="inline-flex w-full sm:w-auto items-center justify-center rounded-lg border border-corematrix-border2 bg-transparent px-6 py-3 text-sm font-semibold text-corematrix-textPrimary transition hover:border-corematrix-green700 hover:bg-corematrix-green900/20"
             >
               {t('Get a Free Consultation', 'احصل على استشارة مجانية')}
             </Link>
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-2">
-            {NAV_PILLS.map((pill) => (
+          <div className="mt-6 flex flex-nowrap overflow-x-auto gap-2 scrollbar-hide pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:overflow-visible">
+            {dynamicNavPills.map((pill) => (
               <Link
-                key={pill.label}
+                key={pill.href}
                 href={pill.href}
-                className={`flex items-center gap-1.5 rounded-full border px-4 py-1.5 text-xs font-semibold transition-all duration-300 ${pill.classes}`}
+                onClick={(e) => handleTileClick(e, pill.filterKey, pill.anchorId)}
+                className={`flex-shrink-0 flex items-center gap-1.5 rounded-full border px-4 py-1.5 text-xs font-semibold transition-all duration-300 ${pill.classes}`}
               >
-                {t(pill.label, {
-                  'AI Development': 'تطوير الذكاء الاصطناعي',
-                  'Web Apps': 'تطبيقات الويب',
-                  'Mobile': 'موبايل',
-                  'SaaS': 'SaaS',
-                  'Dedicated Teams': 'فرق مخصصة',
-                }[pill.label])}
+                {pill.label}
               </Link>
             ))}
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-3">
-          {SERVICE_TILES.map((tile) => {
+          {dynamicServiceTiles.map((tile) => {
             const cardClass =
               `reveal rounded-2xl border p-5 transition-all duration-300 hover:-translate-y-1 ${tile.cardBorder} ${tile.cardBg} ${tile.hoverBorder} ${tile.hoverBg} ${tile.hoverGlow} ` +
               (tile.href ? 'block cursor-pointer' : 'cursor-default');
@@ -256,31 +405,20 @@ export function ServicesHeroSection() {
                   <i className={tile.icon} />
                 </span>
                 <h3 className={`mt-3 font-display text-sm font-bold ${tile.titleColor}`}>
-                  {t(tile.title, {
-                    'AI Development': 'تطوير الذكاء الاصطناعي',
-                    'Web Applications': 'تطبيقات الويب',
-                    'Mobile Apps': 'تطبيقات الموبايل',
-                    'SaaS Platforms': 'منصات SaaS',
-                    'AI Automation': 'أتمتة الذكاء الاصطناعي',
-                    'Dedicated Teams': 'فرق مخصصة',
-                    'Adobe Licensing': 'ترخيص أدوبي',
-                  }[tile.title])}
+                  {tile.title}
                 </h3>
                 <p className={`mt-0.5 text-xs ${tile.tagColor}`}>
-                  {t(tile.tag, {
-                    'LLMs · Agents · ML': 'نماذج اللغة الكبيرة · الوكلاء · تعلم الآلة',
-                    'Next.js · React · Node': 'Next.js · React · Node',
-                    'iOS · Android · RN': 'iOS · Android · RN',
-                    'Multi-tenant · Cloud': 'متعدد المستأجرين · سحابة',
-                    'RAG · Pipelines · Flows': 'RAG · خطوط الأنابيب · التدفقات',
-                    'Staffing · Outsourcing': 'التوظيف · التعهيد',
-                    'VIP · ETLA · Compliance': 'VIP · ETLA · الامتثال',
-                  }[tile.tag])}
+                  {tile.tag}
                 </p>
               </>
             );
             return tile.href ? (
-              <Link key={tile.title} href={tile.href} className={cardClass}>
+              <Link
+                key={tile.title}
+                href={tile.href}
+                onClick={(e) => handleTileClick(e, tile.filterKey, tile.anchorId)}
+                className={cardClass}
+              >
                 {inner}
               </Link>
             ) : (

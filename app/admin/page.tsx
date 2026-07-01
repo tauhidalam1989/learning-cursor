@@ -241,6 +241,8 @@ export default function AdminPortal() {
     // FINAL CALL TO ACTION (CTA)
     ctaMessage: '',
     ctaMessageAr: '',
+    ctaDescription: '',
+    ctaDescriptionAr: '',
     ctaPrimaryText: '',
     ctaPrimaryTextAr: '',
     ctaPrimaryLink: '',
@@ -1456,6 +1458,8 @@ export default function AdminPortal() {
                     // FINAL CTA
                     ctaMessage: '',
                     ctaMessageAr: '',
+                    ctaDescription: '',
+                    ctaDescriptionAr: '',
                     ctaPrimaryText: '',
                     ctaPrimaryTextAr: '',
                     ctaPrimaryLink: '',
@@ -1615,6 +1619,8 @@ export default function AdminPortal() {
                           // FINAL CTA
                           ctaMessage: s.ctaMessage || '',
                           ctaMessageAr: s.ctaMessageAr || '',
+                          ctaDescription: s.ctaDescription || '',
+                          ctaDescriptionAr: s.ctaDescriptionAr || '',
                           ctaPrimaryText: s.ctaPrimaryText || '',
                           ctaPrimaryTextAr: s.ctaPrimaryTextAr || '',
                           ctaPrimaryLink: s.ctaPrimaryLink || '',
@@ -2178,6 +2184,7 @@ export default function AdminPortal() {
                       { id: 'industries', label: 'Use Cases' },
                       { id: 'critical', label: 'Critical Why' },
                       { id: 'why-choose', label: 'Why Us' },
+                      { id: 'cta', label: 'Call To Action' },
                       { id: 'extra', label: 'FAQ & SEO' },
                     ].map(tab => (
                       <button
@@ -3234,6 +3241,124 @@ export default function AdminPortal() {
                               </div>
                             </div>
                           ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* SUBTAB 7.5: CALL TO ACTION (CTA) */}
+                  {modalSubTab === 'cta' && (
+                    <div className="space-y-4 text-left">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-corematrix-green400 border-b border-corematrix-border pb-2">🎯 Call to Action (CTA) Section</h4>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="mb-2 block text-xs text-corematrix-textMuted">CTA Heading Message (EN)</label>
+                          <input
+                            type="text"
+                            value={serviceForm.ctaMessage}
+                            onChange={(e) => setServiceForm({ ...serviceForm, ctaMessage: e.target.value })}
+                            placeholder="Ready to build high-end intelligent systems together?"
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-xs text-corematrix-textMuted text-right">عنوان دعوة العمل (AR)</label>
+                          <input
+                            type="text"
+                            value={serviceForm.ctaMessageAr}
+                            onChange={(e) => setServiceForm({ ...serviceForm, ctaMessageAr: e.target.value })}
+                            placeholder="جاهز لبناء حلول تقنية بالغة الذكاء معاً؟"
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700 text-right"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="mb-2 block text-xs text-corematrix-textMuted">CTA Description (EN)</label>
+                          <textarea
+                            rows={3}
+                            value={serviceForm.ctaDescription}
+                            onChange={(e) => setServiceForm({ ...serviceForm, ctaDescription: e.target.value })}
+                            placeholder="Consult with our expert engineering team and receive a comprehensive technological proposal tailored precisely to your company operations."
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700 resize-none"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-xs text-corematrix-textMuted text-right">وصف دعوة العمل (AR)</label>
+                          <textarea
+                            rows={3}
+                            value={serviceForm.ctaDescriptionAr}
+                            onChange={(e) => setServiceForm({ ...serviceForm, ctaDescriptionAr: e.target.value })}
+                            placeholder="ناقش متطلباتك الفريدة مع أحد كبار مستشارينا التقنيين وسنقوم بتوفير عرض توضيحي وحل هندسي مخصص يلبي توقعاتك بالكامل."
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700 text-right resize-none"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-4 border-t border-corematrix-border pt-4">
+                        <div>
+                          <label className="mb-2 block text-xs text-corematrix-textMuted">Primary Button Text (EN)</label>
+                          <input
+                            type="text"
+                            value={serviceForm.ctaPrimaryText}
+                            onChange={(e) => setServiceForm({ ...serviceForm, ctaPrimaryText: e.target.value })}
+                            placeholder="Start Your Free Consultation"
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-xs text-corematrix-textMuted text-right">نص الزر الأساسي (AR)</label>
+                          <input
+                            type="text"
+                            value={serviceForm.ctaPrimaryTextAr}
+                            onChange={(e) => setServiceForm({ ...serviceForm, ctaPrimaryTextAr: e.target.value })}
+                            placeholder="ابدأ استشارتك المجانية"
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700 text-right"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-xs text-corematrix-textMuted">Primary Button Link</label>
+                          <input
+                            type="text"
+                            value={serviceForm.ctaPrimaryLink}
+                            onChange={(e) => setServiceForm({ ...serviceForm, ctaPrimaryLink: e.target.value })}
+                            placeholder="/contact"
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-4">
+                        <div>
+                          <label className="mb-2 block text-xs text-corematrix-textMuted">Secondary Button Text (EN)</label>
+                          <input
+                            type="text"
+                            value={serviceForm.ctaSecondaryText}
+                            onChange={(e) => setServiceForm({ ...serviceForm, ctaSecondaryText: e.target.value })}
+                            placeholder="Consult Senior Engineers"
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-xs text-corematrix-textMuted text-right">نص الزر الثانوي (AR)</label>
+                          <input
+                            type="text"
+                            value={serviceForm.ctaSecondaryTextAr}
+                            onChange={(e) => setServiceForm({ ...serviceForm, ctaSecondaryTextAr: e.target.value })}
+                            placeholder="تحدث مع مهندسينا الكبار"
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700 text-right"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-xs text-corematrix-textMuted">Secondary Button Link</label>
+                          <input
+                            type="text"
+                            value={serviceForm.ctaSecondaryLink}
+                            onChange={(e) => setServiceForm({ ...serviceForm, ctaSecondaryLink: e.target.value })}
+                            placeholder="/contact"
+                            className="w-full rounded-xl border-[1.5px] border-corematrix-border bg-corematrix-card2 px-4 py-3 text-sm text-corematrix-textPrimary outline-none focus:border-corematrix-green700"
+                          />
                         </div>
                       </div>
                     </div>

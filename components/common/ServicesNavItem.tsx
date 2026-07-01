@@ -1,10 +1,57 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { NAV_SERVICES_DROPDOWN } from '@/config/nav';
 import { useLanguage } from '@/context/LanguageContext';
+
+const THEME_TEMPLATES = [
+  {
+    cardClass: 'border-cyan-500/20 bg-cyan-950/10 hover:border-cyan-400/50 hover:bg-cyan-950/20 text-cyan-400 hover:text-cyan-300 shadow-[0_2px_10px_rgba(6,182,212,0.02)]',
+    iconBg: 'bg-cyan-950/30 border-cyan-800/20 text-cyan-400',
+  },
+  {
+    cardClass: 'border-emerald-500/20 bg-emerald-950/10 hover:border-emerald-400/50 hover:bg-emerald-950/20 text-emerald-400 hover:text-emerald-300 shadow-[0_2px_10px_rgba(16,185,129,0.02)]',
+    iconBg: 'bg-emerald-950/30 border-emerald-800/20 text-emerald-400',
+  },
+  {
+    cardClass: 'border-sky-500/20 bg-sky-950/10 hover:border-sky-400/50 hover:bg-sky-950/20 text-sky-400 hover:text-sky-300 shadow-[0_2px_10px_rgba(14,165,233,0.02)]',
+    iconBg: 'bg-sky-950/30 border-sky-800/20 text-sky-400',
+  },
+  {
+    cardClass: 'border-amber-500/20 bg-amber-950/10 hover:border-amber-400/50 hover:bg-amber-950/20 text-amber-400 hover:text-amber-300 shadow-[0_2px_10px_rgba(245,158,11,0.02)]',
+    iconBg: 'bg-amber-950/30 border-amber-800/20 text-amber-400',
+  },
+  {
+    cardClass: 'border-purple-500/20 bg-purple-950/10 hover:border-purple-400/50 hover:bg-purple-950/20 text-purple-400 hover:text-purple-300 shadow-[0_2px_10px_rgba(168,85,247,0.02)]',
+    iconBg: 'bg-purple-950/30 border-purple-800/20 text-purple-400',
+  },
+  {
+    cardClass: 'border-rose-500/20 bg-rose-950/10 hover:border-rose-400/50 hover:bg-rose-950/20 text-rose-400 hover:text-rose-300 shadow-[0_2px_10px_rgba(244,63,94,0.02)]',
+    iconBg: 'bg-rose-950/30 border-rose-800/20 text-rose-400',
+  },
+  {
+    cardClass: 'border-teal-500/20 bg-teal-950/10 hover:border-teal-400/50 hover:bg-teal-950/20 text-teal-400 hover:text-teal-300 shadow-[0_2px_10px_rgba(20,184,166,0.02)]',
+    iconBg: 'bg-teal-950/30 border-teal-800/20 text-teal-400',
+  },
+];
+
+const renderIcon = (iconClass: string, className = "text-sm") => {
+  if (!iconClass) return null;
+  const trimmed = iconClass.trim();
+  if (
+    trimmed.startsWith('fa-') ||
+    trimmed.startsWith('fas ') ||
+    trimmed.startsWith('fab ') ||
+    trimmed.startsWith('far ') ||
+    trimmed.startsWith('fal ') ||
+    trimmed.startsWith('fad ')
+  ) {
+    return <i className={`${trimmed} ${className}`} />;
+  }
+  return <span className="text-base leading-none">{trimmed}</span>;
+};
 
 const MEGA_SERVICES_THEMES = [
   {
@@ -65,18 +112,54 @@ const MEGA_SERVICES_THEMES = [
   },
 ];
 
-/**
- * Desktop: hover / focus-within dropdown for Service.
- */
 export function ServicesNavItemDesktop() {
   const pathname = usePathname() || '/';
   const { t, language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+  const [services, setServices] = useState<any[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    async function getServices() {
+      try {
+        const res = await fetch('/api/services');
+        if (res.ok && active) {
+          const data = await res.json();
+          const sorted = (data || [])
+            .sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
+            .slice(0, 8);
+          if (sorted.length > 0) {
+            setServices(sorted);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching header services:', err);
+      }
+    }
+    getServices();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const servicesActive =
     pathname === '/services' || pathname.startsWith('/services/');
 
   const handleClose = () => setIsOpen(false);
+
+  const resolvedList = services.length > 0
+    ? services.map((s, idx) => {
+        const theme = THEME_TEMPLATES[idx % THEME_TEMPLATES.length];
+        return {
+          icon: s.cardIcon || s.icon || 'fas fa-cog',
+          titleEn: s.title_en || s.title || '',
+          titleAr: s.title_ar || s.title_en || s.title || '',
+          href: `/services/${s.detailSlug}`,
+          cardClass: theme.cardClass,
+          iconBg: theme.iconBg
+        };
+      })
+    : MEGA_SERVICES_THEMES;
 
   return (
     <div
@@ -145,14 +228,14 @@ export function ServicesNavItemDesktop() {
                   </p>
                 </div>
               </div>
-
+ 
               {/* Column 2: Service list in cards (span-6) */}
               <div className="col-span-6 flex flex-col rtl:text-right">
                 <p className="font-display text-[0.7rem] font-bold uppercase tracking-widest text-white/40 mb-3">
                   {t('Solutions', 'الحلول والخدمات')}
                 </p>
                 <div className="grid grid-cols-2 gap-3 max-h-[290px] overflow-y-auto pl-1 pr-2 custom-scrollbar">
-                  {MEGA_SERVICES_THEMES.map((s) => {
+                  {resolvedList.map((s) => {
                     return (
                       <Link
                         key={s.href}
@@ -162,7 +245,7 @@ export function ServicesNavItemDesktop() {
                         className={`flex items-center gap-3 rounded-xl border p-3 text-xs font-bold transition-all duration-300 ${s.cardClass}`}
                       >
                         <span className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border text-sm transition-transform duration-300 ${s.iconBg}`}>
-                          <i className={s.icon} />
+                          {renderIcon(s.icon)}
                         </span>
                         <span className="leading-snug">{language === 'ar' ? s.titleAr : s.titleEn}</span>
                       </Link>
@@ -219,11 +302,49 @@ export function ServicesNavItemDesktop() {
   );
 }
 
-/** Sublinks for the mobile drawer under Service. */
 export function ServicesNavItemMobile({ onNavigate }: { onNavigate: () => void }) {
   const pathname = usePathname() || '/';
   const { t, language } = useLanguage();
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
+  const [services, setServices] = useState<any[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    async function getServices() {
+      try {
+        const res = await fetch('/api/services');
+        if (res.ok && active) {
+          const data = await res.json();
+          const sorted = (data || [])
+            .sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
+            .slice(0, 8);
+          if (sorted.length > 0) {
+            setServices(sorted);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching header services:', err);
+      }
+    }
+    getServices();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const resolvedList = services.length > 0
+    ? services.map((s, idx) => {
+        const theme = THEME_TEMPLATES[idx % THEME_TEMPLATES.length];
+        return {
+          icon: s.cardIcon || s.icon || 'fas fa-cog',
+          titleEn: s.title_en || s.title || '',
+          titleAr: s.title_ar || s.title_en || s.title || '',
+          href: `/services/${s.detailSlug}`,
+          cardClass: theme.cardClass,
+          iconBg: theme.iconBg
+        };
+      })
+    : MEGA_SERVICES_THEMES;
 
   return (
     <li className="rounded-xl border border-white/8 bg-white/[0.02] overflow-hidden list-none">
@@ -257,7 +378,7 @@ export function ServicesNavItemMobile({ onNavigate }: { onNavigate: () => void }
             {t('Solutions', 'الحلول والخدمات')}
           </p>
           <div className="space-y-2">
-            {MEGA_SERVICES_THEMES.map((s) => {
+            {resolvedList.map((s) => {
               return (
                 <Link
                   key={s.href}
@@ -266,7 +387,7 @@ export function ServicesNavItemMobile({ onNavigate }: { onNavigate: () => void }
                   className={`flex items-center gap-3 rounded-xl border p-2.5 text-xs font-bold transition-all duration-300 ${s.cardClass}`}
                 >
                   <span className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg border text-xs ${s.iconBg}`}>
-                    <i className={s.icon} />
+                    {renderIcon(s.icon, "text-xs")}
                   </span>
                   <span>{language === 'ar' ? s.titleAr : s.titleEn}</span>
                 </Link>

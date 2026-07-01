@@ -114,6 +114,8 @@ interface DynamicServiceProps {
     // FINAL CALL TO ACTION (CTA)
     ctaMessage?: string;
     ctaMessageAr?: string;
+    ctaDescription?: string;
+    ctaDescriptionAr?: string;
     ctaPrimaryText?: string;
     ctaPrimaryTextAr?: string;
     ctaPrimaryLink?: string;
@@ -125,6 +127,23 @@ interface DynamicServiceProps {
 
 export function DynamicServiceLanding({ service }: DynamicServiceProps) {
   const { language, t } = useLanguage();
+
+  // Helper to split title and wrap last two words in a green span
+  const renderSplitTitle = (title: string) => {
+    if (!title) return '';
+    const words = title.trim().split(/\s+/);
+    if (words.length <= 2) {
+      return <span className="text-corematrix-green400">{title}</span>;
+    }
+    const mainPart = words.slice(0, -2).join(' ');
+    const greenPart = words.slice(-2).join(' ');
+    return (
+      <>
+        {mainPart}{' '}
+        <span className="text-corematrix-green400">{greenPart}</span>
+      </>
+    );
+  };
 
   // Helper to parse arrays from JSON safely (since PostgreSQL returns parsed objects/arrays directly,
   // but sqlite or request body payloads might be stringified).
@@ -447,6 +466,10 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
     ? (service.ctaMessageAr || 'جاهز لبناء حلول تقنية بالغة الذكاء معاً؟')
     : (service.ctaMessage || 'Ready to build high-end intelligent systems together?');
 
+  const ctaDesc = language === 'ar'
+    ? (service.ctaDescriptionAr || 'ناقش متطلباتك الفريدة مع أحد كبار مستشارينا التقنيين وسنقوم بتوفير عرض توضيحي وحل هندسي مخصص يلبي توقعاتك بالكامل.')
+    : (service.ctaDescription || 'Consult with our expert engineering team and receive a comprehensive technological proposal tailored precisely to your company operations.');
+
   const ctaPrimary = language === 'ar'
     ? (service.ctaPrimaryTextAr || 'ابدأ استشارتك المجانية ←')
     : (service.ctaPrimaryText || 'Start Your Free Consultation ←');
@@ -498,7 +521,8 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
             <div className="w-full text-start max-w-full">
               {/* Tagline / Badge */}
               {heroTaglineVal && (
-                <span className="inline-block rounded-full border border-corematrix-green700/30 bg-corematrix-green900/50 px-4 py-1.5 text-xs font-semibold text-corematrix-green400 mb-6 uppercase tracking-wider">
+                <span className="inline-flex items-center gap-2 rounded-full border border-corematrix-green700/30 bg-corematrix-green900/50 px-4 py-1.5 text-xs font-semibold text-corematrix-green400 mb-6 uppercase tracking-wider">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-corematrix-green400" />
                   {heroTaglineVal}
                 </span>
               )}
@@ -519,9 +543,9 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
                 {/* Glowing Main Title */}
                 <h1
                   style={{ fontFamily: 'var(--font-display)' }}
-                  className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.18] text-transparent bg-clip-text bg-gradient-to-r from-corematrix-textPrimary via-corematrix-green300 to-corematrix-textPrimary"
+                  className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.18] text-white"
                 >
-                  {heroTitleVal}
+                  {renderSplitTitle(heroTitleVal)}
                 </h1>
               </div>
 
@@ -592,7 +616,7 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
                   <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {pillars.map((pillar, idx) => (
                       <div key={idx} className="flex gap-3 text-start">
-                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-corematrix-green900/80 border border-corematrix-green700/30 text-[10px] text-corematrix-green400 font-bold">
+                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky-950/80 border border-sky-700/30 text-[10px] text-sky-400 font-bold">
                           ✓
                         </span>
                         <div>
@@ -607,7 +631,7 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
                 )}
 
                 {aboutBottomNote && (
-                  <div className="mt-8 border-s-2 border-corematrix-green500 ps-4 pe-4 py-1 text-xs text-corematrix-textMuted font-mono">
+                  <div className="mt-8 border-s-2 border-amber-500 ps-4 pe-4 py-1 text-xs text-amber-400/80 font-mono">
                     {aboutBottomNote}
                   </div>
                 )}
@@ -653,27 +677,30 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
 
               {/* Grid Layout (Mobile Responsive) */}
               <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {capabilitiesList.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="group relative flex flex-col text-start p-6 sm:p-8 rounded-2xl border border-corematrix-border bg-corematrix-card/30 backdrop-blur-sm hover:bg-corematrix-card/50 hover:border-corematrix-green700/40 hover:shadow-[0_0_30px_rgba(21,128,61,0.15)] hover:scale-[1.01] transition-all duration-300"
-                  >
-                    {/* Accent glow line inside */}
-                    <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-corematrix-green500/20 to-transparent group-hover:via-corematrix-green500/60 transition-all duration-300" />
+                {capabilitiesList.map((item, idx) => {
+                  const theme = CARD_THEMES[idx % CARD_THEMES.length];
+                  return (
+                    <div
+                      key={idx}
+                      className={`group relative flex flex-col text-start p-6 sm:p-8 rounded-2xl border border-corematrix-border bg-corematrix-card/30 backdrop-blur-sm hover:bg-corematrix-card/50 hover:scale-[1.01] transition-all duration-300 ${theme.hoverBorder} ${theme.hoverGlow}`}
+                    >
+                      {/* Accent glow line inside */}
+                      <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent to-transparent transition-all duration-300 ${theme.accentLine}`} />
 
-                    {/* Icon wrapper */}
-                    <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-corematrix-green900/80 border border-corematrix-green700/20 text-corematrix-green400 group-hover:bg-corematrix-green500 group-hover:text-white transition-all duration-300 shrink-0">
-                      {renderIcon(item.icon, "h-7 w-7 text-2xl")}
+                      {/* Icon wrapper */}
+                      <div className={`mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border transition-all duration-300 shrink-0 ${theme.iconClass}`}>
+                        {renderIcon(item.icon, "h-7 w-7 text-2xl")}
+                      </div>
+
+                      <h3 className={`text-lg font-bold text-corematrix-textPrimary transition-colors duration-200 ${theme.titleHover}`}>
+                        {item.title}
+                      </h3>
+                      <p className="mt-3 text-sm text-corematrix-textSecondary/80 leading-relaxed font-light flex-grow">
+                        {item.description}
+                      </p>
                     </div>
-
-                    <h3 className="text-lg font-bold text-corematrix-textPrimary group-hover:text-corematrix-green300 transition-colors duration-200">
-                      {item.title}
-                    </h3>
-                    <p className="mt-3 text-sm text-corematrix-textSecondary/80 leading-relaxed font-light flex-grow">
-                      {item.description}
-                    </p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </Container>
@@ -870,29 +897,32 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
 
                 {/* Cards List */}
                 <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {whyChooseUsList.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="group relative flex flex-col p-6 sm:p-8 rounded-2xl border border-corematrix-border bg-corematrix-card/30 backdrop-blur-sm hover:bg-corematrix-card/50 hover:border-corematrix-green700/40 hover:shadow-[0_0_30px_rgba(21,128,61,0.15)] hover:scale-[1.01] transition-all duration-300 text-start overflow-hidden"
-                    >
-                      {/* Accent glow line inside */}
-                      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-corematrix-green500/20 to-transparent group-hover:via-corematrix-green500/60 transition-all duration-300" />
+                  {whyChooseUsList.map((item, idx) => {
+                    const theme = CARD_THEMES[idx % CARD_THEMES.length];
+                    return (
+                      <div
+                        key={idx}
+                        className={`group relative flex flex-col p-6 sm:p-8 rounded-2xl border border-corematrix-border bg-corematrix-card/30 backdrop-blur-sm hover:bg-corematrix-card/50 hover:scale-[1.01] transition-all duration-300 text-start overflow-hidden ${theme.hoverBorder} ${theme.hoverGlow}`}
+                      >
+                        {/* Accent glow line inside */}
+                        <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent to-transparent transition-all duration-300 ${theme.accentLine}`} />
 
-                      <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-corematrix-green900/60 border border-corematrix-green700/20 text-corematrix-green400 group-hover:bg-corematrix-green500 group-hover:text-white transition-all duration-300 shrink-0">
-                        {renderIcon(item.icon, "h-5 w-5")}
+                        <div className={`mb-5 flex h-12 w-12 items-center justify-center rounded-xl border transition-all duration-300 shrink-0 ${theme.iconClass}`}>
+                          {renderIcon(item.icon, "h-6 w-6 text-xl")}
+                        </div>
+                        <h4 className={`text-base font-bold text-corematrix-textPrimary transition-colors duration-200 ${theme.titleHover}`}>
+                          {item.title}
+                        </h4>
+                        <p className="mt-2.5 text-xs text-corematrix-textSecondary/70 leading-relaxed font-light">
+                          {item.description}
+                        </p>
                       </div>
-                      <h4 className="text-base font-bold text-corematrix-textPrimary group-hover:text-corematrix-green300 transition-colors duration-200">
-                        {item.title}
-                      </h4>
-                      <p className="mt-2.5 text-xs text-corematrix-textSecondary/70 leading-relaxed font-light">
-                        {item.description}
-                      </p>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
                 {whyChooseUsBottom && (
-                  <p className="mt-10 text-xs font-mono text-corematrix-textMuted">
+                  <p className="mt-10 text-xs font-mono text-amber-400/80">
                     {whyChooseUsBottom}
                   </p>
                 )}
@@ -941,9 +971,7 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
               </SectionHeading>
 
               <p className="mt-4 text-xs sm:text-sm text-corematrix-textSecondary/80 max-w-xl mx-auto font-light leading-relaxed">
-                {language === 'ar'
-                  ? 'ناقش متطلباتك الفريدة مع أحد كبار مستشارينا التقنيين وسنقوم بتوفير عرض توضيحي وحل هندسي مخصص يلبي توقعاتك بالكامل.'
-                  : 'Consult with our expert engineering team and receive a comprehensive technological proposal tailored precisely to your company operations.'}
+                {ctaDesc}
               </p>
 
               <div className="mt-10 flex flex-wrap justify-center gap-4">
@@ -967,3 +995,54 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
     </div >
   );
 }
+
+const CARD_THEMES = [
+  {
+    // Purple
+    hoverBorder: 'hover:border-purple-500/40',
+    hoverGlow: 'hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]',
+    accentLine: 'via-purple-500/20 group-hover:via-purple-500/60',
+    iconClass: 'bg-purple-950/80 border-purple-500/20 text-purple-400 group-hover:bg-purple-500 group-hover:text-white',
+    titleHover: 'group-hover:text-purple-300',
+  },
+  {
+    // Sky Blue
+    hoverBorder: 'hover:border-sky-500/40',
+    hoverGlow: 'hover:shadow-[0_0_30px_rgba(14,165,233,0.15)]',
+    accentLine: 'via-sky-500/20 group-hover:via-sky-500/60',
+    iconClass: 'bg-sky-950/80 border-sky-500/20 text-sky-400 group-hover:bg-sky-500 group-hover:text-white',
+    titleHover: 'group-hover:text-sky-300',
+  },
+  {
+    // Amber/Yellow
+    hoverBorder: 'hover:border-amber-500/40',
+    hoverGlow: 'hover:shadow-[0_0_30px_rgba(245,158,11,0.15)]',
+    accentLine: 'via-amber-500/20 group-hover:via-amber-500/60',
+    iconClass: 'bg-amber-950/80 border-amber-500/20 text-amber-400 group-hover:bg-amber-500 group-hover:text-white',
+    titleHover: 'group-hover:text-amber-300',
+  },
+  {
+    // Rose/Pink
+    hoverBorder: 'hover:border-rose-500/40',
+    hoverGlow: 'hover:shadow-[0_0_30px_rgba(244,63,94,0.15)]',
+    accentLine: 'via-rose-500/20 group-hover:via-rose-500/60',
+    iconClass: 'bg-rose-950/80 border-rose-500/20 text-rose-400 group-hover:bg-rose-500 group-hover:text-white',
+    titleHover: 'group-hover:text-rose-300',
+  },
+  {
+    // Teal
+    hoverBorder: 'hover:border-teal-500/40',
+    hoverGlow: 'hover:shadow-[0_0_30px_rgba(20,184,166,0.15)]',
+    accentLine: 'via-teal-500/20 group-hover:via-teal-500/60',
+    iconClass: 'bg-teal-950/80 border-teal-500/20 text-teal-400 group-hover:bg-teal-500 group-hover:text-white',
+    titleHover: 'group-hover:text-teal-300',
+  },
+  {
+    // Orange
+    hoverBorder: 'hover:border-orange-500/40',
+    hoverGlow: 'hover:shadow-[0_0_30px_rgba(249,115,22,0.15)]',
+    accentLine: 'via-orange-500/20 group-hover:via-orange-500/60',
+    iconClass: 'bg-orange-950/80 border-orange-500/20 text-orange-400 group-hover:bg-orange-500 group-hover:text-white',
+    titleHover: 'group-hover:text-orange-300',
+  },
+];

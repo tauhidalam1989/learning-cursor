@@ -135,7 +135,7 @@ export function CoreValuesSection() {
               <h3 className={`font-display text-sm font-bold ${v.titleColor}`}>
                 {language === 'ar' ? v.title_ar : v.title_en}
               </h3>
-              <p className={`text-xs font-light leading-relaxed ${v.bodyColor}`}>
+              <p className={`text-sm font-light leading-relaxed ${v.bodyColor}`}>
                 {language === 'ar' ? v.body_ar : v.body_en}
               </p>
             </article>

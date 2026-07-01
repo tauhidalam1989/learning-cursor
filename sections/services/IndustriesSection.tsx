@@ -196,7 +196,7 @@ export function IndustriesSection() {
               <h3 className={`mb-2 font-display text-sm font-bold text-corematrix-textPrimary transition-colors duration-300 group-hover:${industry.headingColor}`}>
                 {t(industry.name, nameTranslations[industry.name] ?? industry.name)}
               </h3>
-              <p className="text-xs font-light leading-relaxed text-corematrix-textMuted/90 transition-colors duration-300 group-hover:text-corematrix-textPrimary/80">
+              <p className="text-sm font-light leading-relaxed text-corematrix-textMuted/90 transition-colors duration-300 group-hover:text-corematrix-textPrimary/80">
                 {t(industry.description, descriptionTranslations[industry.description] ?? industry.description)}
               </p>
             </div>

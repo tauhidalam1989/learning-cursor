@@ -55,8 +55,10 @@ export default function ServicesPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <ServicesHeroSection />
-      <ServiceFilterNav />
-      <MainServicesSection />
+      <div className="relative">
+        <ServiceFilterNav />
+        <MainServicesSection />
+      </div>
       <TechSolutionsSection />
       <HowWeWorkSection />
       <EngagementModelsSection />

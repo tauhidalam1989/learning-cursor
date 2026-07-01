@@ -125,8 +125,12 @@ export function HowWeWorkSection() {
           />
           {PROCESS_STEPS.map((step) => (
             <div key={step.num} className="group flex flex-col items-center px-3 text-center">
-              <div className={`relative z-10 mb-5 flex h-14 w-14 items-center justify-center rounded-full border-2 font-display text-xs font-extrabold transition-all ${step.bgClass} ${step.numColor} ${step.hoverBorder} ${step.hoverBg} group-hover:text-white ${step.hoverGlow}`}>
-                {step.num}
+              <div className="relative mb-5">
+                {/* Solid mask to hide the horizontal line behind the transparent circle */}
+                <div className="absolute inset-0 rounded-full bg-corematrix-bg0" />
+                <div className={`relative z-10 flex h-14 w-14 items-center justify-center rounded-full border-2 font-display text-xs font-extrabold transition-all ${step.bgClass} ${step.numColor} ${step.hoverBorder} ${step.hoverBg} group-hover:text-white ${step.hoverGlow}`}>
+                  {step.num}
+                </div>
               </div>
               <h3 className="mb-1.5 font-display text-xs font-bold text-corematrix-textPrimary">
                 {t(step.title, titleTranslations[step.title] ?? step.title)}
