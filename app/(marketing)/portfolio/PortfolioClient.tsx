@@ -39,37 +39,12 @@ interface PortfolioClientProps {
 const getMediaUrl = (url: string | null | undefined) => {
   if (!url) return '';
 
-  // Clean local development prefixes if we are in production client
-  let cleanUrl = url;
-  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-    cleanUrl = url.replace(/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/, '');
-  }
+  // Always clean local development prefixes to ensure SSR matches CSR
+  const cleanUrl = url.replace(/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/, '');
 
   if (cleanUrl.startsWith('http://') || cleanUrl.startsWith('https://')) return cleanUrl;
 
-  const isProdClient = typeof window !== 'undefined' && 
-    window.location.hostname !== 'localhost' && 
-    window.location.hostname !== '127.0.0.1';
-
-  let apiOrigin = process.env.NEXT_PUBLIC_API_URL || '';
-
-  // If in production client but API points to localhost, ignore it and use relative path
-  if (isProdClient && (!apiOrigin || apiOrigin.includes('localhost') || apiOrigin.includes('127.0.0.1'))) {
-    return `${cleanUrl.startsWith('/') ? '' : '/'}${cleanUrl}`;
-  }
-
-  if (!apiOrigin) {
-    apiOrigin = typeof window !== 'undefined' 
-      ? '' 
-      : (process.env.NEXT_PUBLIC_SITE_URL || 'https://corematrixs.com');
-  }
-
-  // If we end up with no origin (e.g. client side relative path)
-  if (!apiOrigin) {
-    return `${cleanUrl.startsWith('/') ? '' : '/'}${cleanUrl}`;
-  }
-
-  return `${apiOrigin.replace(/\/$/, '')}${cleanUrl.startsWith('/') ? '' : '/'}${cleanUrl}`;
+  return `${cleanUrl.startsWith('/') ? '' : '/'}${cleanUrl}`;
 };
 
 export default function PortfolioClient({ portfolioData }: PortfolioClientProps) {
