@@ -33,6 +33,7 @@ const nextConfig = {
       { source: '/admin/:path*', destination: '/api/payload/admin/:path*' },
       { source: '/admin', destination: '/api/payload/admin' },
       // Proxy backend APIs to Express server
+      { source: '/uploads/:path*', destination: `${backendUrl}/uploads/:path*` },
       { source: '/api/services', destination: `${backendUrl}/api/services` },
       { source: '/api/services/:path*', destination: `${backendUrl}/api/services/:path*` },
       { source: '/api/service-categories', destination: `${backendUrl}/api/service-categories` },
