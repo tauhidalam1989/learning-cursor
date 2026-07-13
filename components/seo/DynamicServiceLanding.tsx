@@ -639,7 +639,7 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
 
               {/* Right Column: About Section Image — sticky while content scrolls */}
               <div className="lg:col-span-5 order-1 lg:order-2">
-                <div className="sticky top-[160px] self-start">
+                <div className="lg:sticky lg:top-[160px] lg:self-start">
                   {aboutSectionImageUrlResolved ? (
                     <img
                       src={aboutSectionImageUrlResolved}
@@ -716,7 +716,7 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
                 {/* Left side: Image — sticky while content scrolls */}
                 <div className="lg:col-span-5">
-                  <div className="sticky top-[160px] self-start">
+                  <div className="lg:sticky lg:top-[160px] lg:self-start">
                     <img
                       src={industriesImageUrlResolved}
                       alt={industriesImgAlt || 'Industries we support'}
@@ -789,7 +789,7 @@ export function DynamicServiceLanding({ service }: DynamicServiceProps) {
           <div className="mx-auto max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
               {/* Left side description */}
-              <div className="lg:col-span-5 text-start font-sans sticky top-[100px] self-start -mt-5">
+              <div className="lg:col-span-5 text-start font-sans lg:sticky lg:top-[100px] lg:self-start lg:-mt-5">
                 <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-corematrix-green400 bg-corematrix-green900/40 border border-corematrix-green700/20 px-3 py-1 rounded-full">
                   {language === 'ar' ? 'الجدوى التقنية والأمان' : 'Technical & Business Value'}
                 </span>

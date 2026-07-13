@@ -53,7 +53,10 @@ export async function GET() {
   // 4. Fetch Dynamic Published Blogs from Database REST API
   let dynamicBlogs: any[] = [];
   try {
-    const res = await fetch(apiEndpoint('/api/blogs'), { cache: 'no-store' });
+    let res = await fetch(apiEndpoint('/api/blogs'), { cache: 'no-store' });
+    if (!res.ok) {
+      res = await fetch('https://corematrixs.com/api/blogs', { cache: 'no-store' });
+    }
     if (res.ok) {
       const posts = await res.json();
       dynamicBlogs = posts
@@ -64,17 +67,33 @@ export async function GET() {
           changefreq: 'weekly',
           lastmod: post.updatedAt || post.publishedAt || new Date().toISOString(),
         }));
-    } else {
-      console.warn(`Sitemap: Blogs API returned non-OK status ${res.status}`);
     }
   } catch (err) {
-    console.error('Sitemap: Failed to fetch dynamic blogs from database:', err);
+    try {
+      const res = await fetch('https://corematrixs.com/api/blogs', { cache: 'no-store' });
+      if (res.ok) {
+        const posts = await res.json();
+        dynamicBlogs = posts
+          .filter((post: any) => post.status === 'PUBLISHED')
+          .map((post: any) => ({
+            url: `/blog/${post.slug}`,
+            priority: 0.7,
+            changefreq: 'weekly',
+            lastmod: post.updatedAt || post.publishedAt || new Date().toISOString(),
+          }));
+      }
+    } catch (fallbackErr) {
+      console.error('Sitemap: Failed to fetch dynamic blogs from both local and production:', fallbackErr);
+    }
   }
 
   // 5. Fetch Dynamic Active Careers from Database REST API
   let dynamicCareers: any[] = [];
   try {
-    const res = await fetch(apiEndpoint('/api/careers'), { cache: 'no-store' });
+    let res = await fetch(apiEndpoint('/api/careers'), { cache: 'no-store' });
+    if (!res.ok) {
+      res = await fetch('https://corematrixs.com/api/careers', { cache: 'no-store' });
+    }
     if (res.ok) {
       const careers = await res.json();
       dynamicCareers = careers.map((career: any) => ({
@@ -83,32 +102,55 @@ export async function GET() {
         changefreq: 'weekly',
         lastmod: career.updatedAt || career.createdAt || new Date().toISOString(),
       }));
-    } else {
-      console.warn(`Sitemap: Careers API returned non-OK status ${res.status}`);
     }
   } catch (err) {
-    console.error('Sitemap: Failed to fetch dynamic careers from database:', err);
+    try {
+      const res = await fetch('https://corematrixs.com/api/careers', { cache: 'no-store' });
+      if (res.ok) {
+        const careers = await res.json();
+        dynamicCareers = careers.map((career: any) => ({
+          url: `/careers/${career.id}`,
+          priority: 0.6,
+          changefreq: 'weekly',
+          lastmod: career.updatedAt || career.createdAt || new Date().toISOString(),
+        }));
+      }
+    } catch (fallbackErr) {
+      console.error('Sitemap: Failed to fetch dynamic careers from both local and production:', fallbackErr);
+    }
   }
 
   // 6. Fetch Dynamic Published Services from Database REST API
   let dynamicServices: any[] = [];
   try {
-    const res = await fetch(apiEndpoint('/api/services'), { cache: 'no-store' });
+    let res = await fetch(apiEndpoint('/api/services'), { cache: 'no-store' });
+    if (!res.ok) {
+      res = await fetch('https://corematrixs.com/api/services', { cache: 'no-store' });
+    }
     if (res.ok) {
       const services = await res.json();
-      dynamicServices = services
-        .filter((svc: any) => svc.isPublished)
-        .map((svc: any) => ({
+      dynamicServices = services.map((svc: any) => ({
+        url: `/services/${svc.detailSlug}`,
+        priority: 0.8,
+        changefreq: 'weekly',
+        lastmod: svc.updatedAt || svc.publishedAt || new Date().toISOString(),
+      }));
+    }
+  } catch (err) {
+    try {
+      const res = await fetch('https://corematrixs.com/api/services', { cache: 'no-store' });
+      if (res.ok) {
+        const services = await res.json();
+        dynamicServices = services.map((svc: any) => ({
           url: `/services/${svc.detailSlug}`,
           priority: 0.8,
           changefreq: 'weekly',
           lastmod: svc.updatedAt || svc.publishedAt || new Date().toISOString(),
         }));
-    } else {
-      console.warn(`Sitemap: Services API returned non-OK status ${res.status}`);
+      }
+    } catch (fallbackErr) {
+      console.error('Sitemap: Failed to fetch dynamic services from both local and production:', fallbackErr);
     }
-  } catch (err) {
-    console.error('Sitemap: Failed to fetch dynamic services from database:', err);
   }
 
   const now = new Date().toISOString();
