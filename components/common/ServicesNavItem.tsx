@@ -122,10 +122,22 @@ export function ServicesNavItemDesktop() {
     let active = true;
     async function getServices() {
       try {
-        const res = await fetch('/api/services');
+        const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+        const apiBase = backendUrl.endsWith('/api') ? backendUrl : `${backendUrl}/api`;
+        const res = await fetch(`${apiBase}/services`, {
+          cache: 'no-store'
+        });
         if (res.ok && active) {
-          const data = await res.json();
-          const sorted = (data || [])
+          const rawData = await res.json();
+          const items = Array.isArray(rawData)
+            ? rawData
+            : Array.isArray(rawData?.data)
+            ? rawData.data
+            : Array.isArray(rawData?.result)
+            ? rawData.result
+            : [];
+          const sorted = items
+            .slice()
             .sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
             .slice(0, 8);
           if (sorted.length > 0) {
@@ -312,10 +324,22 @@ export function ServicesNavItemMobile({ onNavigate }: { onNavigate: () => void }
     let active = true;
     async function getServices() {
       try {
-        const res = await fetch('/api/services');
+        const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+        const apiBase = backendUrl.endsWith('/api') ? backendUrl : `${backendUrl}/api`;
+        const res = await fetch(`${apiBase}/services`, {
+          cache: 'no-store'
+        });
         if (res.ok && active) {
-          const data = await res.json();
-          const sorted = (data || [])
+          const rawData = await res.json();
+          const items = Array.isArray(rawData)
+            ? rawData
+            : Array.isArray(rawData?.data)
+            ? rawData.data
+            : Array.isArray(rawData?.result)
+            ? rawData.result
+            : [];
+          const sorted = items
+            .slice()
             .sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
             .slice(0, 8);
           if (sorted.length > 0) {

@@ -242,14 +242,18 @@ export function ServicesHeroSection() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await fetch('/api/service-categories');
-        if (!res.ok) throw new Error('API offline');
-        const data = await res.json();
-        if (data && data.length > 0) {
-          setCategories(data);
+        const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+        const apiBase = backendUrl.endsWith('/api') ? backendUrl : `${backendUrl}/api`;
+        const res = await fetch(`${apiBase}/service-categories`, { cache: 'no-store' });
+        if (res.ok) {
+          const raw = await res.json();
+          const data = Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : []);
+          if (data.length > 0) {
+            setCategories(data);
+          }
         }
       } catch (e) {
-        console.warn('API error retrieving service categories for hero:', e);
+        // Silently keep default fallback categories
       }
     }
     fetchCategories();

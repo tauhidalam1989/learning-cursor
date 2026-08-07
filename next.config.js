@@ -49,6 +49,12 @@ const nextConfig = {
       { source: '/api/blogs/:path*', destination: `${backendUrl}/api/blogs/:path*` },
       { source: '/api/portfolio', destination: `${backendUrl}/api/portfolio` },
       { source: '/api/portfolio/:path*', destination: `${backendUrl}/api/portfolio/:path*` },
+      { source: '/api/client-partner', destination: `${backendUrl}/api/client-partner` },
+      { source: '/api/client-partner/:path*', destination: `${backendUrl}/api/client-partner/:path*` },
+      { source: '/api/product-categories', destination: `${backendUrl}/api/product-categories` },
+      { source: '/api/product-categories/:path*', destination: `${backendUrl}/api/product-categories/:path*` },
+      { source: '/api/products', destination: `${backendUrl}/api/products` },
+      { source: '/api/products/:path*', destination: `${backendUrl}/api/products/:path*` },
     ];
   },
 };

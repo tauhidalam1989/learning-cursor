@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { siteUrl } from '@/lib/seo';
 import { HeroSection } from '@/sections/home/HeroSection';
 import { TechStackMarquee } from '@/sections/home/TechStackMarquee';
@@ -12,6 +13,7 @@ import { FaqSection } from '@/sections/home/FaqSection';
 import { CtaBannerSection } from '@/sections/home/CtaBannerSection';
 import { ContactFormSection } from '@/sections/common/ContactFormSection';
 import { defaultContactBlock } from '@/data/contact';
+import ClientsSectionWrapper from '@/components/ClientsSectionWrapper';
 
 export const metadata: Metadata = {
   title: 'Corematrix — AI Development & IT Services Company',
@@ -53,9 +55,13 @@ export default function HomePage() {
       <WhyCorematrixSection />
       <IndustriesSection />
       <TestimonialsSection />
+      <Suspense fallback={<div className="py-20 text-center text-zinc-500">Loading clients...</div>}>
+        <ClientsSectionWrapper />
+      </Suspense>
       <FaqSection />
       <CtaBannerSection />
       {/* <ContactFormSection block={defaultContactBlock} id="contact-form" /> */}
     </div>
   );
 }
+

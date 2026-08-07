@@ -78,8 +78,9 @@ export async function getPostBySlug(slug: string): Promise<BlogDetail | null> {
 export async function getAllDbPosts(language: 'en' | 'ar'): Promise<BlogPost[]> {
   try {
     const res = await fetch(API_BASE, { cache: 'no-store' });
-    if (!res.ok) throw new Error('API down');
+    if (!res.ok) return [];
     const dbPosts = await res.json();
+    if (!Array.isArray(dbPosts)) return [];
     // Only return published blogs
     const published = dbPosts.filter((p: any) => p.status === 'PUBLISHED');
     return published.map((p: any) => mapDbPostToBlogPost(p, language));

@@ -112,36 +112,45 @@ export function ServiceFilterNav() {
   useEffect(() => {
     async function fetchCategories() {
       try {
+        const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+        const apiBase = backendUrl.endsWith('/api') ? backendUrl : `${backendUrl}/api`;
+
         const [catsRes, servicesRes] = await Promise.all([
-          fetch('/api/service-categories'),
-          fetch('/api/services')
+          fetch(`${apiBase}/service-categories`, { cache: 'no-store' }),
+          fetch(`${apiBase}/services`, { cache: 'no-store' })
         ]);
-        if (!catsRes.ok || !servicesRes.ok) throw new Error('API offline');
-        const catsData = await catsRes.json();
-        const servicesData = await servicesRes.json();
         
-        // Construct filters array from backend category keys only if they have services
-        const dynamicFilters = catsData
-          .filter((cat: any) => {
-            const hasServices = servicesData.some((s: any) => s.category === cat.filterKey);
-            return hasServices;
-          })
-          .map((cat: any) => ({
-            id: cat.filterKey,
-            label: language === 'ar' ? cat.label_ar : cat.label_en,
-          }));
-        
-        setCategories(dynamicFilters);
+        if (catsRes.ok && servicesRes.ok) {
+          const rawCats = await catsRes.json();
+          const rawServices = await servicesRes.json();
+          const catsData = Array.isArray(rawCats) ? rawCats : (Array.isArray(rawCats?.data) ? rawCats.data : []);
+          const servicesData = Array.isArray(rawServices) ? rawServices : (Array.isArray(rawServices?.data) ? rawServices.data : []);
+
+          if (catsData.length > 0) {
+            const dynamicFilters = catsData
+              .filter((cat: any) => servicesData.some((s: any) => s.category === cat.filterKey))
+              .map((cat: any) => ({
+                id: cat.filterKey,
+                label: language === 'ar' ? cat.label_ar : cat.label_en,
+              }));
+            
+            if (dynamicFilters.length > 0) {
+              setCategories(dynamicFilters);
+              return;
+            }
+          }
+        }
       } catch (e) {
-        console.warn('API error retrieving service categories for navigation:', e);
-        // Fallback static list in case of network/database disconnect
-        setCategories([
-          { id: 'ai', label: language === 'ar' ? 'أنظمة الذكاء الاصطناعي' : 'AI & Automation' },
-          { id: 'web', label: language === 'ar' ? 'تطوير الويب والجوال' : 'Web & Mobile' },
-          { id: 'saas', label: language === 'ar' ? 'تطوير المنصات وحلول المؤسسات' : 'SaaS & Cloud' },
-          { id: 'teams', label: language === 'ar' ? 'الفرق المخصصة والتعهيد' : 'Dedicated Teams' },
-        ]);
+        // Silently fall back to default static list
       }
+      
+      // Fallback static list in case of network/database disconnect
+      setCategories([
+        { id: 'ai', label: language === 'ar' ? 'أنظمة الذكاء الاصطناعي' : 'AI & Automation' },
+        { id: 'web', label: language === 'ar' ? 'تطوير الويب والجوال' : 'Web & Mobile' },
+        { id: 'saas', label: language === 'ar' ? 'تطوير المنصات وحلول المؤسسات' : 'SaaS & Cloud' },
+        { id: 'teams', label: language === 'ar' ? 'الفرق المخصصة والتعهيد' : 'Dedicated Teams' },
+      ]);
     }
     fetchCategories();
   }, [language]);

@@ -43,8 +43,9 @@ export function mapDbCareerToOpenRole(dbJob: any, language: 'en' | 'ar'): OpenRo
 export async function getAllDbCareers(language: 'en' | 'ar'): Promise<OpenRole[]> {
   try {
     const res = await fetch(API_BASE, { cache: 'no-store' });
-    if (!res.ok) throw new Error('API down');
+    if (!res.ok) return [];
     const dbJobs = await res.json();
+    if (!Array.isArray(dbJobs)) return [];
     return dbJobs.map((job: any) => mapDbCareerToOpenRole(job, language));
   } catch (err) {
     console.warn('getAllDbCareers: failed to fetch from dynamic DB API', err);

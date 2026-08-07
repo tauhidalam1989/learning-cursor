@@ -5,8 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
+import ClientPartnerAdminManager from '@/components/admin/ClientPartnerAdminManager';
+import ProductCategoryAdminManager from '@/components/admin/ProductCategoryAdminManager';
+import ProductAdminManager from '@/components/admin/ProductAdminManager';
 
-type Tab = 'overview' | 'services' | 'blogs' | 'careers' | 'applications' | 'categories' | 'newsletter' | 'portfolio' | 'settings' | 'users';
+type Tab = 'overview' | 'services' | 'blogs' | 'careers' | 'applications' | 'categories' | 'newsletter' | 'portfolio' | 'client-partner' | 'product-categories' | 'products' | 'settings' | 'users';
 
 function parseArrayToString(val: any): string {
   if (!val) return '';
@@ -1208,6 +1211,9 @@ export default function AdminPortal() {
               { id: 'applications', label: 'Applications', icon: 'fas fa-users' },
               { id: 'newsletter', label: 'Newsletter', icon: 'fas fa-envelope' },
               { id: 'portfolio', label: 'Portfolio Manager', icon: 'fas fa-layer-group' },
+              { id: 'client-partner', label: 'Clients & Partners', icon: 'fas fa-handshake' },
+              { id: 'product-categories', label: 'Product Categories', icon: 'fas fa-tags' },
+              { id: 'products', label: 'Products Manager', icon: 'fas fa-box' },
               { id: 'users', label: 'Users', icon: 'fas fa-user-shield' },
               { id: 'settings', label: 'Settings', icon: 'fas fa-cog' },
             ].filter(t => t.id !== 'users' || userRole === 'admin').map((t) => (
@@ -1218,13 +1224,13 @@ export default function AdminPortal() {
                   setActiveTab(t.id as Tab);
                   setShowFormModal(false);
                 }}
-                className={`w-full flex items-center gap-3.5 rounded-xl px-4 py-3 text-sm font-medium tracking-wide transition-all cursor-pointer ${activeTab === t.id
+                className={`w-full flex items-center gap-3.5 rounded-xl px-4 py-3 text-sm font-medium tracking-wide transition-all cursor-pointer whitespace-nowrap ${activeTab === t.id
                   ? 'bg-corematrix-green900/40 border border-corematrix-green700/30 text-corematrix-green400 font-semibold'
                   : 'text-corematrix-textMuted hover:text-corematrix-textPrimary hover:bg-corematrix-card/45'
                   }`}
               >
-                <i className={`${t.icon} w-5 text-center`} />
-                {t.label}
+                <i className={`${t.icon} w-5 text-center shrink-0`} />
+                <span className="whitespace-nowrap truncate">{t.label}</span>
               </button>
             ))}
           </nav>
@@ -4823,6 +4829,21 @@ export default function AdminPortal() {
               </div>
             )}
           </div>
+        )}
+
+        {/* CLIENT & PARTNER TAB */}
+        {activeTab === 'client-partner' && (
+          <ClientPartnerAdminManager />
+        )}
+
+        {/* PRODUCT CATEGORIES TAB */}
+        {activeTab === 'product-categories' && (
+          <ProductCategoryAdminManager />
+        )}
+
+        {/* PRODUCTS MANAGER TAB */}
+        {activeTab === 'products' && (
+          <ProductAdminManager />
         )}
 
       </main>
