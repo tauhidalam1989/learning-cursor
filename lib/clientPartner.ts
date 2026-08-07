@@ -44,8 +44,7 @@ export async function getClients(status?: string): Promise<Client[]> {
   try {
     const query = status ? `?status=${status}` : '';
     const res = await fetch(`${getBaseUrl()}/clients${query}`, {
-      next: { revalidate: 10 },
-      cache: 'no-store'
+      next: { revalidate: 10 }
     });
     if (!res.ok) return [];
     const data = await res.json();
@@ -60,8 +59,7 @@ export async function getPartners(status?: string): Promise<Partner[]> {
   try {
     const query = status ? `?status=${status}` : '';
     const res = await fetch(`${getBaseUrl()}/partners${query}`, {
-      next: { revalidate: 10 },
-      cache: 'no-store'
+      next: { revalidate: 10 }
     });
     if (!res.ok) return [];
     const data = await res.json();
@@ -76,8 +74,7 @@ export async function getCertificates(status?: string): Promise<Certificate[]> {
   try {
     const query = status ? `?status=${status}` : '';
     const res = await fetch(`${getBaseUrl()}/certificates${query}`, {
-      next: { revalidate: 10 },
-      cache: 'no-store'
+      next: { revalidate: 10 }
     });
     if (!res.ok) return [];
     const data = await res.json();

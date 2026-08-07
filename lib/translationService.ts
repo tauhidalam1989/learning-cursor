@@ -24,6 +24,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'HOME': 'HOME',
     'ABOUT US': 'ABOUT US',
     'SERVICE': 'SERVICE',
+    'PRODUCTS': 'PRODUCTS',
     'BLOG': 'BLOG',
     'CAREERS': 'CAREERS',
     'PORTFOLIO': 'PORTFOLIO',
@@ -33,6 +34,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'Home': 'Home',
     'About us': 'About us',
     'Service': 'Service',
+    'Products': 'Products',
     'Blog': 'Blog',
     'Portfolio': 'Portfolio',
     
@@ -116,6 +118,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'HOME': 'الرئيسية',
     'ABOUT US': 'من نحن',
     'SERVICE': 'الخدمات',
+    'PRODUCTS': 'المنتجات',
     'BLOG': 'المدونة',
     'CAREERS': 'الوظائف',
     'PORTFOLIO': 'المعرض',
@@ -125,6 +128,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'Home': 'الرئيسية',
     'About us': 'من نحن',
     'Service': 'الخدمات',
+    'Products': 'المنتجات',
     'Blog': 'المدونة',
     'Portfolio': 'المعرض',
     
