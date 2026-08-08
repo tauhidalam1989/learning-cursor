@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { Product, ProductCategory, getMediaUrl } from '@/lib/products';
 import { useLanguage } from '@/context/LanguageContext';
+import { apiEndpoint } from '@/lib/apiBase';
 
 const FILTER_THEMES = [
   {
@@ -100,10 +101,47 @@ interface ProductsClientProps {
   categories: ProductCategory[];
 }
 
-export default function ProductsClient({ products, categories }: ProductsClientProps) {
+export default function ProductsClient({ products: initialProducts = [], categories: initialCategories = [] }: ProductsClientProps) {
   const { language, dir, t } = useLanguage();
   const isAr = language === 'ar';
   const [activeCategory, setActiveCategory] = useState<string>('all');
+
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [categories, setCategories] = useState<ProductCategory[]>(initialCategories);
+
+  useEffect(() => {
+    if (initialProducts.length > 0) setProducts(initialProducts);
+    if (initialCategories.length > 0) setCategories(initialCategories);
+  }, [initialProducts, initialCategories]);
+
+  useEffect(() => {
+    async function fetchProductsFallback() {
+      try {
+        const apiBase = (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_API_URL) ? '/api' : apiEndpoint('/api');
+        const [pRes, cRes] = await Promise.all([
+          products.length === 0 ? fetch(`${apiBase}/products/published`, { cache: 'no-store' }) : null,
+          categories.length === 0 ? fetch(`${apiBase}/product-categories`, { cache: 'no-store' }) : null
+        ]);
+
+        if (pRes && pRes.ok) {
+          const pData = await pRes.json();
+          const items = Array.isArray(pData?.data) ? pData.data : (Array.isArray(pData) ? pData : []);
+          if (items.length > 0) setProducts(items);
+        }
+        if (cRes && cRes.ok) {
+          const cData = await cRes.json();
+          const items = Array.isArray(cData?.data) ? cData.data : (Array.isArray(cData) ? cData : []);
+          if (items.length > 0) setCategories(items);
+        }
+      } catch (err) {
+        console.error('Client-side products fetch error:', err);
+      }
+    }
+
+    if (products.length === 0 || categories.length === 0) {
+      fetchProductsFallback();
+    }
+  }, [products.length, categories.length]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);

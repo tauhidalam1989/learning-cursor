@@ -30,9 +30,5 @@ export default async function ProductDetailPage({
   const { slug } = await params;
   const product = await getProductBySlug(slug);
 
-  if (!product) {
-    notFound();
-  }
-
-  return <ProductDetailClient product={product} />;
+  return <ProductDetailClient product={product} slug={slug} />;
 }

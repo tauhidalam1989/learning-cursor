@@ -2,7 +2,10 @@ const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://corematrixs.com')
 
 /** Public API origin used in server/client requests and generated URLs. */
 export function getApiOrigin(): string {
-  const configured = process.env.NEXT_PUBLIC_API_URL?.trim();
+  const configured =
+    process.env.NEXT_PUBLIC_API_URL?.trim() ||
+    process.env.API_URL?.trim() ||
+    process.env.BACKEND_URL?.trim();
   if (configured) return configured.replace(/\/$/, '');
 
   if (typeof window !== 'undefined') {
@@ -10,9 +13,9 @@ export function getApiOrigin(): string {
     return '';
   }
 
-  // On server: fallback to localhost port
+  // On server: fallback to SITE_URL in production or 127.0.0.1 in dev
   const port = process.env.PORT || '5000';
-  return `http://127.0.0.1:${port}`;
+  return process.env.NODE_ENV === 'production' && SITE_URL ? SITE_URL : `http://127.0.0.1:${port}`;
 }
 
 export function apiEndpoint(path: string): string {

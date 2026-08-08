@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Product, getMediaUrl } from '@/lib/products';
 import ProductFaqAccordion from '@/components/ProductFaqAccordion';
 import { useLanguage } from '@/context/LanguageContext';
+import { apiEndpoint } from '@/lib/apiBase';
 
 const CARD_THEMES = [
   {
@@ -108,9 +109,58 @@ const FeatureText = ({ text }: { text: string }) => {
   );
 };
 
-export default function ProductDetailClient({ product }: { product: Product }) {
+export default function ProductDetailClient({ product: initialProduct, slug }: { product: Product | null; slug?: string }) {
   const { language, dir, t } = useLanguage();
   const isAr = language === 'ar';
+  const [product, setProduct] = useState<Product | null>(initialProduct || null);
+  const [loading, setLoading] = useState(!initialProduct);
+
+  useEffect(() => {
+    if (initialProduct) setProduct(initialProduct);
+  }, [initialProduct]);
+
+  useEffect(() => {
+    async function fetchProductBySlug() {
+      if (!slug || product) return;
+      try {
+        setLoading(true);
+        const apiBase = (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_API_URL) ? '/api' : apiEndpoint('/api');
+        const res = await fetch(`${apiBase}/products/slug/${slug}`, { cache: 'no-store' });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.data) {
+            setProduct(json.data);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching product detail fallback:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    if (!product && slug) {
+      fetchProductBySlug();
+    }
+  }, [slug, product]);
+
+  if (!product) {
+    if (loading) {
+      return (
+        <div className="min-h-screen bg-corematrix-bg0 text-white flex items-center justify-center p-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-corematrix-green400"></div>
+        </div>
+      );
+    }
+    return (
+      <div className="min-h-screen bg-corematrix-bg0 text-white flex flex-col items-center justify-center p-12 text-center" dir={dir}>
+        <h2 className="text-3xl font-extrabold mb-4">{t('Product Not Found', 'المنتج غير موجود')}</h2>
+        <p className="text-corematrix-textMuted mb-8">{t('The requested product platform could not be loaded.', 'عذراً، لم نتمكن من تحميل تفاصيل المنصة المطلوبة.')}</p>
+        <Link href="/products" className="px-6 py-3 rounded-xl bg-corematrix-green700 text-white font-bold text-sm">
+          {t('Back to Products', 'العودة للمنتجات')}
+        </Link>
+      </div>
+    );
+  }
 
   const howItWorks = Array.isArray(product.howItWorks) ? product.howItWorks : [];
   const keyFeaturesList = Array.isArray(product.keyFeaturesList) ? product.keyFeaturesList : [];

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import { Client, Partner, Certificate } from '@/lib/clientPartner';
 import { getMediaUrl } from '@/lib/products';
+import { apiEndpoint } from '@/lib/apiBase';
 
 interface ClientsSectionProps {
   lang?: string;
@@ -17,14 +18,59 @@ interface ClientsSectionProps {
 export default function ClientsSection({
   lang,
   dict,
-  clients = [],
-  partners = [],
-  certificates = []
+  clients: initialClients = [],
+  partners: initialPartners = [],
+  certificates: initialCertificates = []
 }: ClientsSectionProps) {
   const { language } = useLanguage();
   const currentLang = lang || language || 'en';
   const isRtl = currentLang === 'ar';
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const [clients, setClients] = useState<Client[]>(initialClients);
+  const [partners, setPartners] = useState<Partner[]>(initialPartners);
+  const [certificates, setCertificates] = useState<Certificate[]>(initialCertificates);
+
+  useEffect(() => {
+    if (initialClients.length > 0) setClients(initialClients);
+    if (initialPartners.length > 0) setPartners(initialPartners);
+    if (initialCertificates.length > 0) setCertificates(initialCertificates);
+  }, [initialClients, initialPartners, initialCertificates]);
+
+  useEffect(() => {
+    async function fetchClientPartnerFallback() {
+      try {
+        const apiBase = (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_API_URL) ? '/api/client-partner' : apiEndpoint('/api/client-partner');
+        const [cRes, pRes, certRes] = await Promise.all([
+          clients.length === 0 ? fetch(`${apiBase}/clients?status=active`, { cache: 'no-store' }) : null,
+          partners.length === 0 ? fetch(`${apiBase}/partners?status=active`, { cache: 'no-store' }) : null,
+          certificates.length === 0 ? fetch(`${apiBase}/certificates?status=active`, { cache: 'no-store' }) : null
+        ]);
+
+        if (cRes && cRes.ok) {
+          const cData = await cRes.json();
+          const items = Array.isArray(cData?.data) ? cData.data : (Array.isArray(cData?.result) ? cData.result : (Array.isArray(cData) ? cData : []));
+          if (items.length > 0) setClients(items);
+        }
+        if (pRes && pRes.ok) {
+          const pData = await pRes.json();
+          const items = Array.isArray(pData?.data) ? pData.data : (Array.isArray(pData?.result) ? pData.result : (Array.isArray(pData) ? pData : []));
+          if (items.length > 0) setPartners(items);
+        }
+        if (certRes && certRes.ok) {
+          const certData = await certRes.json();
+          const items = Array.isArray(certData?.data) ? certData.data : (Array.isArray(certData?.result) ? certData.result : (Array.isArray(certData) ? certData : []));
+          if (items.length > 0) setCertificates(items);
+        }
+      } catch (err) {
+        console.error('Client-side client/partner fetch error:', err);
+      }
+    }
+
+    if (clients.length === 0 || partners.length === 0 || certificates.length === 0) {
+      fetchClientPartnerFallback();
+    }
+  }, [clients.length, partners.length, certificates.length]);
 
   const getFullImageUrl = (path: string) => {
     if (!path) return '/icon.png';
