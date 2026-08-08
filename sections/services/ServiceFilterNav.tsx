@@ -5,6 +5,8 @@ import { Container } from '@/components/ui/Container';
 import { useFilterDispatch } from '@/hooks/usePortalFilter';
 import { useLanguage } from '@/context/LanguageContext';
 
+import { apiEndpoint } from '@/lib/apiBase';
+
 export type FilterId = 'all' | string;
 
 /** Scrolls so the #services section sits just below the sticky filter bar */
@@ -112,8 +114,7 @@ export function ServiceFilterNav() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
-        const apiBase = backendUrl.endsWith('/api') ? backendUrl : `${backendUrl}/api`;
+        const apiBase = (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_API_URL) ? '/api' : apiEndpoint('/api');
 
         const [catsRes, servicesRes] = await Promise.all([
           fetch(`${apiBase}/service-categories`, { cache: 'no-store' }),

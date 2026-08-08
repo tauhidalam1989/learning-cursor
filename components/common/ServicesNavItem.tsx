@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { NAV_SERVICES_DROPDOWN } from '@/config/nav';
 import { useLanguage } from '@/context/LanguageContext';
+import { apiEndpoint } from '@/lib/apiBase';
 
 const THEME_TEMPLATES = [
   {
@@ -122,8 +123,7 @@ export function ServicesNavItemDesktop() {
     let active = true;
     async function getServices() {
       try {
-        const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
-        const apiBase = backendUrl.endsWith('/api') ? backendUrl : `${backendUrl}/api`;
+        const apiBase = (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_API_URL) ? '/api' : apiEndpoint('/api');
         const res = await fetch(`${apiBase}/services`, {
           cache: 'no-store'
         });
@@ -324,8 +324,7 @@ export function ServicesNavItemMobile({ onNavigate }: { onNavigate: () => void }
     let active = true;
     async function getServices() {
       try {
-        const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
-        const apiBase = backendUrl.endsWith('/api') ? backendUrl : `${backendUrl}/api`;
+        const apiBase = (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_API_URL) ? '/api' : apiEndpoint('/api');
         const res = await fetch(`${apiBase}/services`, {
           cache: 'no-store'
         });

@@ -1,3 +1,5 @@
+import { apiEndpoint, getApiOrigin } from '@/lib/apiBase';
+
 export interface ProductCategory {
   id: number;
   name: string;
@@ -89,14 +91,24 @@ export interface Product {
 }
 
 const getBaseUrl = () => {
-  const rawUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
-  return rawUrl.endsWith('/api') ? rawUrl : `${rawUrl}/api`;
+  if (typeof window !== 'undefined') {
+    const configured = process.env.NEXT_PUBLIC_API_URL?.trim()?.replace(/\/$/, '');
+    if (configured) return configured.endsWith('/api') ? configured : `${configured}/api`;
+    return '/api';
+  }
+  return apiEndpoint('/api');
 };
 
 export function getMediaUrl(path?: string): string {
   if (!path) return '';
   if (path.startsWith('http')) return path;
-  const origin = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/api\/?$/, '').replace(/\/$/, '');
+
+  if (typeof window !== 'undefined') {
+    const configured = process.env.NEXT_PUBLIC_API_URL?.trim()?.replace(/\/api\/?$/, '')?.replace(/\/$/, '');
+    if (configured) return `${configured}/${path.startsWith('/') ? path.slice(1) : path}`;
+    return `/${path.startsWith('/') ? path.slice(1) : path}`;
+  }
+  const origin = getApiOrigin().replace(/\/api\/?$/, '');
   return `${origin}/${path.startsWith('/') ? path.slice(1) : path}`;
 }
 

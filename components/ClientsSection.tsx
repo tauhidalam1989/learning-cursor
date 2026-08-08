@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import { Client, Partner, Certificate } from '@/lib/clientPartner';
+import { getMediaUrl } from '@/lib/products';
 
 interface ClientsSectionProps {
   lang?: string;
@@ -27,9 +28,7 @@ export default function ClientsSection({
 
   const getFullImageUrl = (path: string) => {
     if (!path) return '/icon.png';
-    if (path.startsWith('http')) return path;
-    const baseUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
-    return `${baseUrl}/${path.startsWith('/') ? path.slice(1) : path}`;
+    return getMediaUrl(path);
   };
 
   const SectionHeader = ({ title, subtitle, icon }: { title: string; subtitle: string; icon: string }) => (

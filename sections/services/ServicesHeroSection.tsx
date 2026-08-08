@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { useLanguage } from '@/context/LanguageContext';
 import { useFilterDispatch } from '@/hooks/usePortalFilter';
+import { apiEndpoint } from '@/lib/apiBase';
 
 type ThemeConfig = {
   icon: string;
@@ -242,8 +243,7 @@ export function ServicesHeroSection() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
-        const apiBase = backendUrl.endsWith('/api') ? backendUrl : `${backendUrl}/api`;
+        const apiBase = (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_API_URL) ? '/api' : apiEndpoint('/api');
         const res = await fetch(`${apiBase}/service-categories`, { cache: 'no-store' });
         if (res.ok) {
           const raw = await res.json();
