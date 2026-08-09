@@ -117,7 +117,7 @@ export default function ProductsClient({ products: initialProducts = [], categor
   useEffect(() => {
     async function fetchProductsFallback() {
       try {
-        const apiBase = (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_API_URL) ? '/api' : apiEndpoint('/api');
+        const apiBase = apiEndpoint('/api');
         const [pRes, cRes] = await Promise.all([
           products.length === 0 ? fetch(`${apiBase}/products/published`, { cache: 'no-store' }) : null,
           categories.length === 0 ? fetch(`${apiBase}/product-categories`, { cache: 'no-store' }) : null

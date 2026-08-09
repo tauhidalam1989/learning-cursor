@@ -31,11 +31,6 @@ export interface Certificate {
 }
 
 const getBaseUrl = () => {
-  if (typeof window !== 'undefined') {
-    const apiOrigin = process.env.NEXT_PUBLIC_API_URL?.trim()?.replace(/\/$/, '');
-    if (apiOrigin) return `${apiOrigin}/api/client-partner`;
-    return '/api/client-partner';
-  }
   return apiEndpoint('/api/client-partner');
 };
 

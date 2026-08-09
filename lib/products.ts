@@ -91,11 +91,6 @@ export interface Product {
 }
 
 const getBaseUrl = () => {
-  if (typeof window !== 'undefined') {
-    const configured = process.env.NEXT_PUBLIC_API_URL?.trim()?.replace(/\/$/, '');
-    if (configured) return configured.endsWith('/api') ? configured : `${configured}/api`;
-    return '/api';
-  }
   return apiEndpoint('/api');
 };
 
@@ -103,12 +98,8 @@ export function getMediaUrl(path?: string): string {
   if (!path) return '';
   if (path.startsWith('http')) return path;
 
-  if (typeof window !== 'undefined') {
-    const configured = process.env.NEXT_PUBLIC_API_URL?.trim()?.replace(/\/api\/?$/, '')?.replace(/\/$/, '');
-    if (configured) return `${configured}/${path.startsWith('/') ? path.slice(1) : path}`;
-    return `/${path.startsWith('/') ? path.slice(1) : path}`;
-  }
   const origin = getApiOrigin().replace(/\/api\/?$/, '');
+  if (!origin) return `/${path.startsWith('/') ? path.slice(1) : path}`;
   return `${origin}/${path.startsWith('/') ? path.slice(1) : path}`;
 }
 

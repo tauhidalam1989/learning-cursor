@@ -124,7 +124,7 @@ export default function ProductDetailClient({ product: initialProduct, slug }: {
       if (!slug || product) return;
       try {
         setLoading(true);
-        const apiBase = (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_API_URL) ? '/api' : apiEndpoint('/api');
+        const apiBase = apiEndpoint('/api');
         const res = await fetch(`${apiBase}/products/slug/${slug}`, { cache: 'no-store' });
         if (res.ok) {
           const json = await res.json();

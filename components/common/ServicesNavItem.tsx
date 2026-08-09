@@ -123,7 +123,7 @@ export function ServicesNavItemDesktop() {
     let active = true;
     async function getServices() {
       try {
-        const apiBase = (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_API_URL) ? '/api' : apiEndpoint('/api');
+        const apiBase = apiEndpoint('/api');
         const res = await fetch(`${apiBase}/services`, {
           cache: 'no-store'
         });
@@ -324,7 +324,7 @@ export function ServicesNavItemMobile({ onNavigate }: { onNavigate: () => void }
     let active = true;
     async function getServices() {
       try {
-        const apiBase = (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_API_URL) ? '/api' : apiEndpoint('/api');
+        const apiBase = apiEndpoint('/api');
         const res = await fetch(`${apiBase}/services`, {
           cache: 'no-store'
         });

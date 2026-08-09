@@ -114,7 +114,7 @@ export function ServiceFilterNav() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const apiBase = (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_API_URL) ? '/api' : apiEndpoint('/api');
+        const apiBase = apiEndpoint('/api');
 
         const [catsRes, servicesRes] = await Promise.all([
           fetch(`${apiBase}/service-categories`, { cache: 'no-store' }),

@@ -2,16 +2,28 @@ const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://corematrixs.com')
 
 /** Public API origin used in server/client requests and generated URLs. */
 export function getApiOrigin(): string {
-  const configured =
+  let configured =
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
     process.env.API_URL?.trim() ||
     process.env.BACKEND_URL?.trim();
-  if (configured) return configured.replace(/\/$/, '');
 
   if (typeof window !== 'undefined') {
+    const isBrowserLocalhost =
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1';
+
+    // In browser: if site is accessed on production domain (not localhost) but env variable points to localhost/127.0.0.1, IGNORE it!
+    if (!isBrowserLocalhost && configured && (configured.includes('localhost') || configured.includes('127.0.0.1'))) {
+      configured = undefined;
+    }
+
+    if (configured) return configured.replace(/\/$/, '');
+
     // In browser: return empty string so relative URLs like '/api/...' work directly in production
     return '';
   }
+
+  if (configured) return configured.replace(/\/$/, '');
 
   // On server: fallback to SITE_URL in production or 127.0.0.1 in dev
   const port = process.env.PORT || '5000';

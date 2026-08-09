@@ -243,7 +243,7 @@ export function ServicesHeroSection() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const apiBase = (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_API_URL) ? '/api' : apiEndpoint('/api');
+        const apiBase = apiEndpoint('/api');
         const res = await fetch(`${apiBase}/service-categories`, { cache: 'no-store' });
         if (res.ok) {
           const raw = await res.json();

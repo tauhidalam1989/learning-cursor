@@ -40,7 +40,7 @@ export default function ClientsSection({
   useEffect(() => {
     async function fetchClientPartnerFallback() {
       try {
-        const apiBase = (typeof window !== 'undefined' && !process.env.NEXT_PUBLIC_API_URL) ? '/api/client-partner' : apiEndpoint('/api/client-partner');
+        const apiBase = apiEndpoint('/api/client-partner');
         const [cRes, pRes, certRes] = await Promise.all([
           clients.length === 0 ? fetch(`${apiBase}/clients?status=active`, { cache: 'no-store' }) : null,
           partners.length === 0 ? fetch(`${apiBase}/partners?status=active`, { cache: 'no-store' }) : null,
