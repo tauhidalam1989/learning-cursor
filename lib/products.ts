@@ -96,11 +96,10 @@ const getBaseUrl = () => {
 
 export function getMediaUrl(path?: string): string {
   if (!path) return '';
-  if (path.startsWith('http')) return path;
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
 
-  const origin = getApiOrigin().replace(/\/api\/?$/, '');
-  if (!origin) return `/${path.startsWith('/') ? path.slice(1) : path}`;
-  return `${origin}/${path.startsWith('/') ? path.slice(1) : path}`;
+  // Return clean relative path so SSR and Client hydration match 100% identically
+  return path.startsWith('/') ? path : `/${path}`;
 }
 
 // Product Categories API

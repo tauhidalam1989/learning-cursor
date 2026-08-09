@@ -1180,7 +1180,7 @@ export default function AdminPortal() {
       <aside className="w-64 border-r border-corematrix-border bg-corematrix-bg1/90 backdrop-blur-md p-6 flex flex-col justify-between shrink-0 h-screen sticky top-0">
         <div className="flex flex-col flex-1 min-h-0">
           <div className="flex items-center mb-10 pb-4 border-b border-corematrix-border shrink-0">
-            <Image src="/images/logo.svg" alt="Corematrix Logo" width={140} height={35} className="h-8 w-auto object-contain" />
+            <Image src="/images/logo.svg" alt="Corematrix Logo" width={140} height={35} style={{ width: 'auto', height: 'auto' }} className="h-8 w-auto object-contain" />
           </div>
 
           {/* User Profile Info Badge */}

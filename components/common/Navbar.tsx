@@ -50,7 +50,7 @@ export function Navbar() {
           {/* Logo */}
           <div className="flex items-center gap-6">
             <Link href="/" aria-label={t('Go to homepage', 'الذهاب إلى الصفحة الرئيسية')} className="flex items-center">
-              <Image src="/images/logo.svg" alt={t('Corematrix logo', 'شعار كورماتريكس')} width={180} height={40} priority />
+              <Image src="/images/logo.svg" alt={t('Corematrix logo', 'شعار كورماتريكس')} width={180} height={40} style={{ width: 'auto', height: 'auto' }} priority />
             </Link>
           </div>
 
@@ -167,7 +167,7 @@ export function Navbar() {
         {/* Drawer Header: Logo + Close button */}
         <div className="flex h-20 items-center justify-between px-6 border-b border-white/5 flex-shrink-0">
           <Link href="/" onClick={closeMenu} className="flex items-center">
-            <Image src="/images/logo.svg" alt={t('Corematrix logo', 'شعار كورماتريكس')} width={150} height={35} priority />
+            <Image src="/images/logo.svg" alt={t('Corematrix logo', 'شعار كورماتريكس')} width={150} height={35} style={{ width: 'auto', height: 'auto' }} priority />
           </Link>
           <button
             type="button"

@@ -74,7 +74,7 @@ export function Footer() {
           {/* Column 1: Brand/About */}
           <div className="lg:col-span-3">
             <Link href="/" className="flex items-center gap-3">
-              <Image src="/images/logo.svg" alt={t('Corematrix logo', 'شعار كورماتريكس')} width={160} height={36} priority />
+              <Image src="/images/logo.svg" alt={t('Corematrix logo', 'شعار كورماتريكس')} width={160} height={36} style={{ width: 'auto', height: 'auto' }} priority />
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-white/70 max-w-[280px]">
               {t('COREMATRIX is a technology-driven IT services company focused on building intelligent, secure, and scalable solutions.', 'كورماتريكس هي شركة خدمات تقنية متطورة تركز على بناء حلول ذكية وآمنة وقابلة للتطوير.')}
