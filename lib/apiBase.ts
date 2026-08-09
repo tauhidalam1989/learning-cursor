@@ -25,9 +25,9 @@ export function getApiOrigin(): string {
 
   if (configured) return configured.replace(/\/$/, '');
 
-  // On server: fallback to SITE_URL in production or 127.0.0.1 in dev
+  // On server: fallback to 127.0.0.1 loopback to reach Express backend directly
   const port = process.env.PORT || '5000';
-  return process.env.NODE_ENV === 'production' && SITE_URL ? SITE_URL : `http://127.0.0.1:${port}`;
+  return `http://127.0.0.1:${port}`;
 }
 
 export function apiEndpoint(path: string): string {
