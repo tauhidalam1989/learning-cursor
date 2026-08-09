@@ -65,9 +65,8 @@ export default function ClientPartnerAdminManager() {
 
   const getFullImageUrl = (path: string) => {
     if (!path) return '/icon.png';
-    if (path.startsWith('http')) return path;
-    const baseUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
-    return `${baseUrl}/${path.startsWith('/') ? path.slice(1) : path}`;
+    if (path.startsWith('http://') || path.startsWith('https://')) return path;
+    return path.startsWith('/') ? path : `/${path}`;
   };
 
   const handleOpenAddModal = (type: ItemType) => {
