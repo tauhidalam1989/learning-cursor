@@ -8,6 +8,7 @@ export type FaqItem = {
 export type NavLink = {
   label: string;
   href: string;
+  labelAr?: string;
 };
 
 /** Animated stat counter data */

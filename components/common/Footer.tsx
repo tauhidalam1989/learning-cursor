@@ -106,13 +106,13 @@ export function Footer() {
             </h3>
             <nav className="mt-4" aria-label={t('Footer quick links', 'روابط سريعة في التذييل')}>
               <ul className="space-y-3" role="list">
-                {FOOTER_QUICK_LINKS.map(({ label, href }) => (
+                {FOOTER_QUICK_LINKS.map(({ label, href, labelAr }) => (
                   <li key={href}>
                     <Link
                       href={href}
                       className="text-sm text-white/70 transition-colors hover:text-[#149253] focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#149253] focus-visible:ring-offset-2 focus-visible:ring-offset-[#02140f]"
                     >
-                      {t(label)}
+                      {t(label, labelAr)}
                     </Link>
                   </li>
                 ))}
@@ -127,13 +127,13 @@ export function Footer() {
             </h3>
             <nav className="mt-4" aria-label={t('Footer services', 'الخدمات في التذييل')}>
               <ul className="space-y-3" role="list">
-                {FOOTER_SERVICES_LINKS.map(({ label, href }) => (
+                {FOOTER_SERVICES_LINKS.map(({ label, href, labelAr }) => (
                   <li key={href}>
                     <Link
                       href={href}
                       className="text-sm text-white/70 transition-colors hover:text-[#149253] focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#149253] focus-visible:ring-offset-2 focus-visible:ring-offset-[#02140f]"
                     >
-                      {t(label)}
+                      {t(label, labelAr)}
                     </Link>
                   </li>
                 ))}
@@ -148,13 +148,13 @@ export function Footer() {
             </h3>
             <nav className="mt-4" aria-label={t('Footer additional links', 'روابط إضافية')}>
               <ul className="space-y-3" role="list">
-                {FOOTER_ADDITIONAL_LINKS.map(({ label, href }) => (
+                {FOOTER_ADDITIONAL_LINKS.map(({ label, href, labelAr }) => (
                   <li key={href}>
                     <Link
                       href={href}
                       className="text-sm text-white/70 transition-colors hover:text-[#149253] focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#149253] focus-visible:ring-offset-2 focus-visible:ring-offset-[#02140f]"
                     >
-                      {t(label)}
+                      {t(label, labelAr)}
                     </Link>
                   </li>
                 ))}
@@ -221,13 +221,13 @@ export function Footer() {
           <p className="text-sm text-white/60">
             © {siteConfig.currentYear} {language === 'ar' ? 'كورماتريكس' : siteConfig.name}. {t('All rights reserved.', 'جميع الحقوق محفوظة.')}
           </p>
-          {FOOTER_LEGAL_LINKS.map(({ label, href }) => (
+          {FOOTER_LEGAL_LINKS.map(({ label, href, labelAr }) => (
             <Link
               key={href}
               href={href}
               className="text-sm text-white/60 transition-colors hover:text-[#149253] focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#149253] focus-visible:ring-offset-2 focus-visible:ring-offset-[#02140f]"
             >
-              {t(label)}
+              {t(label, labelAr)}
             </Link>
           ))}
         </div>

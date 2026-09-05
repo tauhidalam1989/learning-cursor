@@ -43,6 +43,10 @@ export const translations: Record<Language, Record<string, string>> = {
     'Adobe Licensing': 'Adobe Licensing',
 
     // Services Links
+    'Cloud Security Services': 'Cloud Security Services',
+    'Data Warehousing Services': 'Data Warehousing Services',
+    'Penetration Testing Services': 'Penetration Testing Services',
+    'Generative AI Solutions': 'Generative AI Solutions',
     'AI Development': 'AI Development',
     'Web Applications': 'Web Applications',
     'SaaS Platforms': 'SaaS Platforms',
@@ -137,6 +141,10 @@ export const translations: Record<Language, Record<string, string>> = {
     'Adobe Licensing': 'ترخيص أدوبي',
 
     // Services Links
+    'Cloud Security Services': 'خدمات الأمن السحابي',
+    'Data Warehousing Services': 'خدمات مستودعات البيانات',
+    'Penetration Testing Services': 'خدمات اختبار الاختراق',
+    'Generative AI Solutions': 'حلول الذكاء الاصطناعي التوليدي',
     'AI Development': 'تطوير الذكاء الاصطناعي',
     'Web Applications': 'تطبيقات الويب',
     'SaaS Platforms': 'منصات SaaS',
